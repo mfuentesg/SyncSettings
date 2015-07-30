@@ -1,0 +1,14 @@
+[
+  {
+  	"caption": "Sync Settings: Create and Upload",
+  	"command": "sync_settings_create_and_upload"
+	},
+  {
+  	"caption": "Sync Settings: Download",
+  	"command": "sync_settings_download"
+	},
+  {
+  	"caption": "Sync Settings: Upload",
+  	"command": "sync_settings_upload"
+	}
+]

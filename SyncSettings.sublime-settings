@@ -1,0 +1,31 @@
+/**
+  Don't edit this file
+  use the one the User folder
+ */
+
+{
+	/**
+		* This token allow to plugin do:
+		* - Create a Gist
+		* - Edit a Gist
+		* - Upload a Gist
+	 */
+  "access_token": "",
+  /**
+  	* This option has a list with the excluded files
+    * Files included: [
+    *   Package Control.merged-ca-bundle
+    *   Package Control.sublime-settings
+    *   Package Control.system-ca-bundle
+    *   Package Control.user-ca-bundle
+    *   Preferences.sublime-settings
+    * ]
+   */
+  "excluded_files": [
+    "Package Control.last-run"
+  ],
+  /*
+  	This option has the gist id for upload your configuration
+   */
+  "gist_id": ""
+}
