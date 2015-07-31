@@ -8,9 +8,9 @@ class SyncSettingsManager:
 	gistapi = None
 	files = [
 		"Package Control.merged-ca-bundle",
-		"Package Control.sublime-settings",
 		"Package Control.system-ca-bundle",
 		"Package Control.user-ca-bundle",
+		"Package Control.sublime-settings",
 		"Preferences.sublime-settings",
 		"Package Control.last-run"
 	]
@@ -35,7 +35,7 @@ class SyncSettingsManager:
 		r = {}
 		for f in SyncSettingsManager.getFiles():
 			fullPath = SyncSettingsManager.getPackagesPath(f)
-			content = json.dumps(open(fullPath, 'r').read())
+			content = open(fullPath, 'r').read()
 			r.update({
 				f: {
 					'content': content
