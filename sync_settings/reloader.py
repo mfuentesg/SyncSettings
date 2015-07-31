@@ -24,7 +24,6 @@ else:
 mods_load_order = [
     '',
     '.gistapi',
-    '.utils',
     '.sync_settings_manager',
 
     ".commands",
