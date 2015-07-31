@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from .gistapi import Gist
-from .utils import *
-import sublime
+from .gistapi import *
+import sublime, sys
 
 class SyncSettingsManager:
 	settingsFilename = 'SyncSettings.sublime-settings'
@@ -17,7 +16,7 @@ class SyncSettingsManager:
 	]
 
 	@staticmethod
-	def settings(key = None, newValue = None):
+	def settings (key = None, newValue = None):
 		settings =  sublime.load_settings(SyncSettingsManager.settingsFilename)
 		if not key is None and not newValue is None:
 			settings.set(key, newValue)
@@ -29,25 +28,45 @@ class SyncSettingsManager:
 	@staticmethod
 	def getFiles ():
 		excludedFiles = SyncSettingsManager.settings('excluded_files')
-		return excludeValues(SyncSettingsManager.files, excludedFiles)
+		return SyncSettingsManager.excludeValues(SyncSettingsManager.files, excludedFiles)
+
+	@staticmethod
+	def getContentFiles ():
+		r = {}
+		for f in SyncSettingsManager.getFiles():
+			fullPath = SyncSettingsManager.getPackagesPath(f)
+			content = json.dumps(open(fullPath, 'r').read())
+			r.update({
+				f: {
+					'content': content
+				}
+			})
+
+		return r
 
 	@staticmethod
 	def getPackagesPath (filename = None):
-		path = sublime.packages_path() + getSeparator() + 'User'
+		separator = SyncSettingsManager.getSeparator()
+		path = sublime.packages_path() + separator + 'User'
 		if not filename is None:
-			return path + getSeparator() + filename
+			return path + separator + filename
 
-		return path + getSeparator()
+		return path + separator
 
 	@staticmethod
 	def getSettingsFilename ():
 		return SyncSettingsManager.settingsFilename
 
 	@staticmethod
-	def gistapi ():
+	def excludeValues (l, e):
 		try:
-			SyncSettingsManager.gistapi = Gist(SyncSettingsManager.settings('access_token'))
-			sublime.status_message('Sync Settings: Token Accepted')
-			return SyncSettingsManager.gistapi
+			for el in e:
+				 l.remove(el)
 		except Exception as e:
-			sublime.status_message('Sync Settings: ' + str(e))
+			pass
+
+		return l
+
+	@staticmethod
+	def getSeparator ():
+		return "\\" if sys.platform.startswith('win') else "/"
