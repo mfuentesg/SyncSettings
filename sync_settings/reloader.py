@@ -30,8 +30,6 @@ mods_load_order = [
     ".commands.create_and_upload",
     ".commands.download",
     ".commands.upload"
-
-    ".requests"
 ]
 
 for suffix in mods_load_order:
