@@ -18,11 +18,15 @@
     *   Package Control.sublime-settings
     *   Package Control.system-ca-bundle
     *   Package Control.user-ca-bundle
-    *   Preferences.sublime-settings
+    *   Preferences.sublime-settings,
+    *   Package Control.last-run
     * ]
    */
   "excluded_files": [
-    "Package Control.last-run"
+    "Package Control.last-run",
+    "Package Control.merged-ca-bundle",
+    "Package Control.user-ca-bundle",
+    "Package Control.user-ca-bundle"
   ],
   /*
   	This option has the gist id for upload your configuration
