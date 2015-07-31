@@ -3,6 +3,7 @@
 import sublime, json
 from sublime_plugin import WindowCommand
 from ..sync_settings_manager import SyncSettingsManager
+from ..gistapi import Gist
 
 class SyncSettingsCreateAndUploadCommand (WindowCommand):
 	def run (self):
@@ -23,12 +24,12 @@ class SyncSettingsCreateAndUploadCommand (WindowCommand):
 	def onDone (self, description):
 		d = description if description != "" else ""
 		data = {
-			'files': self.getContentFiles()
+			'files': SyncSettingsManager.getContentFiles()
 		}
 		if d != "": data.update({"description": d})
 
 		try:
-			result = SyncSettingsManager.gistapi().create(data)
+			result = Gist(SyncSettingsManager.settings('access_token')).create(data)
 			sublime.status_message('Sync Settings: Gist created, id = ' + result.get('id'))
 			if sublime.yes_no_cancel_dialog('Sync Settings: \nYour gist was created successfully\nDo you want update the gist_id property in the config file?') == sublime.DIALOG_YES:
 				SyncSettingsManager.settings('gist_id', result.get('id'))
@@ -36,19 +37,6 @@ class SyncSettingsCreateAndUploadCommand (WindowCommand):
 				sublime.status_message('Sync Settings: Gist id updated successfully!')
 		except Exception as e:
 			sublime.status_message(str(e))
-
-	def getContentFiles (self):
-		r = {}
-		for f in SyncSettingsManager.getFiles():
-			fullPath = SyncSettingsManager.getPackagesPath(f)
-			content = json.dumps(open(fullPath, 'r').read())
-			r.update({
-				f: {
-					'content': content
-				}
-			})
-
-		return r
 
 	def onChange (self, text):
 		pass
