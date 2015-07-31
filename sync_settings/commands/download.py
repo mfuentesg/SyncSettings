@@ -20,6 +20,7 @@ class SyncSettingsDownloadCommand (WindowCommand):
 						fileOpened = open(SyncSettingsManager.getPackagesPath(f), 'w+')
 						fileOpened.write(fileJSON.get('content'))
 						fileOpened.close()
+				sublime.message_dialog('Sync Settings: Files Downloaded Successfully\nNow you need restart Sublime Text for Package Control installs all dependencies!')
 				sublime.status_message('Sync Settings: Files Downloaded Successfully')
 			except Exception as e:
 				sublime.status_message('Sync Settings: ' + str(e))
