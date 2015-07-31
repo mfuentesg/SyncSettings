@@ -75,13 +75,7 @@ class Gist:
 
 	def get (self, gistId):
 		response = requests.get(self.BASE_URL + '/gists/' + gistId)
-
-		print(response)
-
 		if response.status_code == 200:
 			return response.json()
 
 		raise Exception('The gist not exist')
-
-	def isValidToken (self, token):
-		pass
