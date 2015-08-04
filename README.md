@@ -22,4 +22,4 @@ Open Package Control and looks for **Sync Settings**, creates an access token in
 * excluded_files: are the files that are to be ignored at the time of synchronization, by default files that contain information with your editor license is found in this list.
 
 ##Donate
-You are welcome support this project using [Paypal](https://www.paypal.com/cl/cgi-bin/webscr?cmd=_flow&SESSION=o9vVu7E9N0c1FzHjyUQ0SIbawlcbzDoHKW-RiEvn3MF7kJB2Gfieh3pGqGS&dispatch=5885d80a13c0db1f8e263663d3faee8d5c97cbf3d75cb63effe5661cdf3adb6d)
+You are welcome support this project using [Paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7XCNSKK5W7DKJ)
