@@ -11,7 +11,7 @@
       "children": [
         {
           "command": "open_file",
-          "args": {"file": "${packages}/SyncSettings/SyncSettings.sublime-settings"},
+          "args": {"file": "${packages}/Sync Settings/SyncSettings.sublime-settings"},
           "caption": "Settings – Default"
         },
         {
