@@ -1,13 +1,13 @@
-Sublime Sync Settings
+Sync Settings
 ===============
 
-**Sublime Sync Settings**, is a way of keeping the Sublime Text synchronized between different operating systems, the synchronization to uses Github Gist allowing you to use all the technologies that this service provides for example to see the history of your configuration file.
+**Sync Settings**, is a way of keeping the **Sublime Text** synchronized between different operating systems, the synchronization to uses Github Gist allowing you to use all the technologies that this service provides for example to see the history of your configuration file.
 
 ##Installation:
 
-Open Package Control and looks for Sublimee Sync Settings, creates an access token in the github (https://github.com/settings/tokens) page, copy and paste this code into the plugin configuration file
+Open Package Control and looks for **Sync Settings**, creates an access token in the github (https://github.com/settings/tokens) page, copy and paste this code into the plugin configuration file
 
-```Preferences > Packages Settings > Sublime Sync Settings > Settings - User```
+```Preferences > Packages Settings > Sync Settings > Settings - User```
 
 ##You can set some parameters:
 
