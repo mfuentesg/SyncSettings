@@ -7,11 +7,11 @@
     "mnemonic": "P",
     "id": "package-settings",
     "children": [{
-      "caption": "Sublime Sync Settings",
+      "caption": "Sync Settings",
       "children": [
         {
           "command": "open_file",
-          "args": {"file": "${packages}/SublimeSyncSettings/SyncSettings.sublime-settings"},
+          "args": {"file": "${packages}/SyncSettings/SyncSettings.sublime-settings"},
           "caption": "Settings – Default"
         },
         {
