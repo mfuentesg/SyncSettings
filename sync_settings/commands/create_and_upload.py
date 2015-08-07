@@ -23,20 +23,23 @@ class SyncSettingsCreateAndUploadCommand (WindowCommand):
 
 	def onDone (self, description):
 		d = description if description != "" else ""
-		data = {
-			'files': SyncSettingsManager.getContentFiles()
-		}
-		if d != "": data.update({"description": d})
+		files = SyncSettingsManager.getContentFiles()
 
-		try:
-			result = Gist(SyncSettingsManager.settings('access_token')).create(data)
-			sublime.status_message('Sync Settings: Gist created, id = ' + result.get('id'))
-			if sublime.yes_no_cancel_dialog('Sync Settings: \nYour gist was created successfully\nDo you want update the gist_id property in the config file?') == sublime.DIALOG_YES:
-				SyncSettingsManager.settings('gist_id', result.get('id'))
-				sublime.save_settings(SyncSettingsManager.getSettingsFilename())
-				sublime.status_message('Sync Settings: Gist id updated successfully!')
-		except Exception as e:
-			sublime.status_message(str(e))
+		if len(files) > 0:
+			data = { 'files': files}
+			if d != "": data.update({"description": d})
+
+			try:
+				result = Gist(SyncSettingsManager.settings('access_token')).create(data)
+				sublime.status_message('Sync Settings: Gist created, id = ' + result.get('id'))
+				if sublime.yes_no_cancel_dialog('Sync Settings: \nYour gist was created successfully\nDo you want update the gist_id property in the config file?') == sublime.DIALOG_YES:
+					SyncSettingsManager.settings('gist_id', result.get('id'))
+					sublime.save_settings(SyncSettingsManager.getSettingsFilename())
+					sublime.status_message('Sync Settings: Gist id updated successfully!')
+			except Exception as e:
+				sublime.status_message(str(e))
+		else:
+			sublime.status_message('Sync Settings: There are not enough files to create the gist')
 
 	def onChange (self, text):
 		pass

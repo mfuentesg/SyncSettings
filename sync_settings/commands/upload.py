@@ -11,10 +11,13 @@ class SyncSettingsUploadCommand (WindowCommand):
 		if gistId:
 			try:
 				api = Gist(SyncSettingsManager.settings('access_token'))
-				data = {'files': SyncSettingsManager.getContentFiles() }
-				print(data)
-				api.edit(gistId, data)
-				sublime.status_message('Sync Settings: Your files was uploaded successfully!')
+				files = SyncSettingsManager.getContentFiles()
+				if len(files) > 0:
+					data = { 'files': files}
+					api.edit(gistId, data)
+					sublime.status_message('Sync Settings: Your files was uploaded successfully!')
+				else:
+					sublime.status_message('Sync Settings: There are not enough files to upload')
 			except Exception as e:
 				sublime.status_message('Sync Settings: ' + str(e))
 		else:
