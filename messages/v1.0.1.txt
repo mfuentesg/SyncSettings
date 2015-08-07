@@ -1,0 +1,8 @@
+Sync Settings
+
+This version has some bug fixes found
+
+* When files do not exist
+* Remove the file repeated in the list of excluded files
+* Include Default <platform>.sublime-keymap files and the User Settings
+* Include Changelog file
