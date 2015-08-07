@@ -8,6 +8,9 @@ Sync Settings
 * Working on Windows, Linux and OSX
 * Working on [Sublime Text 2](http://sublimetext.com/2), [Sublime Text 3](http://sublimetext.com/3)
 
+##Changelog
+
+You can check the changes to this plugin [here](CHANGELOG.md)
 
 ##Installation:
 
