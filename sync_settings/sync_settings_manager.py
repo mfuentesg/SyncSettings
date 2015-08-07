@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from .gistapi import *
-import sublime, sys
+import sublime, sys, os
 
 class SyncSettingsManager:
 	settingsFilename = 'SyncSettings.sublime-settings'
@@ -12,7 +12,10 @@ class SyncSettingsManager:
 		"Package Control.user-ca-bundle",
 		"Package Control.sublime-settings",
 		"Preferences.sublime-settings",
-		"Package Control.last-run"
+		"Package Control.last-run",
+		"Default (OSX).sublime-keymap",
+		"Default (Windows).sublime-keymap",
+		"Default (Linux).sublime-keymap"
 	]
 
 	@staticmethod
@@ -35,13 +38,13 @@ class SyncSettingsManager:
 		r = {}
 		for f in SyncSettingsManager.getFiles():
 			fullPath = SyncSettingsManager.getPackagesPath(f)
-			content = open(fullPath, 'r').read()
-			r.update({
-				f: {
-					'content': content
-				}
-			})
-
+			if os.path.isfile(fullPath) and os.path.exists(fullPath):
+				content = open(fullPath, 'r').read()
+				r.update({
+					f: {
+						'content': content
+					}
+				})
 		return r
 
 	@staticmethod
