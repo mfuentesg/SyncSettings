@@ -14,15 +14,15 @@ You can check the changes to this plugin [here](CHANGELOG.md)
 
 ##Installation:
 
-Open Package Control and looks for **Sync Settings**, creates an access token in the github (https://github.com/settings/tokens) page, copy and paste this code into the plugin configuration file
+Open Package Control and looks for **Sync Settings**, creates an access [token in the github](https://github.com/settings/tokens) page, copy and paste this code into the plugin configuration file
 
 ```Preferences > Packages Settings > Sync Settings > Settings - User```
 
 ##You can set some parameters:
 
-* access_token: refers to the access provided by GitHub token
-* gist_id: identifies to the id of the gist that is to be used for synchronization
-* excluded_files: are the files that are to be ignored at the time of synchronization, by default files that contain information with your editor license is found in this list.
+* **access_token**: refers to the access provided by GitHub token
+* **gist_id**: identifies to the id of the gist that is to be used for synchronization
+* **excluded_files**: are the files that are to be ignored at the time of synchronization, by default files that contain information with your editor license is found in this list.
 
 ##Donate
 You are welcome support this project using [Paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7XCNSKK5W7DKJ)
