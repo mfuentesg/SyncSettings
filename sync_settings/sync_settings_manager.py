@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from .gistapi import *
 import sublime, sys, os
 
 class SyncSettingsManager:
 	settingsFilename = 'SyncSettings.sublime-settings'
-	gistapi = None
 	files = [
 		"Package Control.merged-ca-bundle",
 		"Package Control.system-ca-bundle",
