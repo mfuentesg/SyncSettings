@@ -25,6 +25,7 @@ mods_load_order = [
     '',
     '.gistapi',
     '.sync_settings_manager',
+    '.logger',
 
     ".commands",
     ".commands.create_and_upload",
