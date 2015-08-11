@@ -29,7 +29,8 @@ mods_load_order = [
     ".commands",
     ".commands.create_and_upload",
     ".commands.download",
-    ".commands.upload"
+    ".commands.upload",
+    ".commands.about"
 ]
 
 for suffix in mods_load_order:
