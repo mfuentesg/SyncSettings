@@ -10,5 +10,9 @@
   {
   	"caption": "Sync Settings: Upload",
   	"command": "sync_settings_upload"
-	}
+	},
+	{
+    "caption": "Sync Settings: About",
+    "command": "sync_settings_about"
+  }
 ]
