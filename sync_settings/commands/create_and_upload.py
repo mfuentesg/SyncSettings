@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
-import sublime, json
+import sublime
 from sublime_plugin import WindowCommand
-from ..sync_settings_manager import SyncSettingsManager
+from ..sync_settings_manager import SyncSettingsManager as Manager
 from ..gistapi import Gist
 
 class SyncSettingsCreateAndUploadCommand (WindowCommand):
 	def run (self):
-		if SyncSettingsManager.settings('access_token'):
+		if Manager.settings('access_token'):
 			return sublime.set_timeout(self.showInputPanel, 10)
 		else:
 			sublime.status_message('Sync Settings: You need set your access token')
@@ -23,18 +23,18 @@ class SyncSettingsCreateAndUploadCommand (WindowCommand):
 
 	def onDone (self, description):
 		d = description if description != "" else ""
-		files = SyncSettingsManager.getContentFiles()
+		files = Manager.getContentFiles()
 
 		if len(files) > 0:
 			data = { 'files': files}
 			if d != "": data.update({"description": d})
 
 			try:
-				result = Gist(SyncSettingsManager.settings('access_token')).create(data)
+				result = Gist(Manager.settings('access_token')).create(data)
 				sublime.status_message('Sync Settings: Gist created, id = ' + result.get('id'))
 				if sublime.yes_no_cancel_dialog('Sync Settings: \nYour gist was created successfully\nDo you want update the gist_id property in the config file?') == sublime.DIALOG_YES:
-					SyncSettingsManager.settings('gist_id', result.get('id'))
-					sublime.save_settings(SyncSettingsManager.getSettingsFilename())
+					Manager.settings('gist_id', result.get('id'))
+					sublime.save_settings(Manager.getSettingsFilename())
 					sublime.status_message('Sync Settings: Gist id updated successfully!')
 			except Exception as e:
 				sublime.status_message(str(e))

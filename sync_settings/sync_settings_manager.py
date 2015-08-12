@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import sublime, sys, os
+import sublime, os
 
 class SyncSettingsManager:
 	settingsFilename = 'SyncSettings.sublime-settings'
@@ -47,12 +47,10 @@ class SyncSettingsManager:
 
 	@staticmethod
 	def getPackagesPath (filename = None):
-		separator = SyncSettingsManager.getSeparator()
-		path = sublime.packages_path() + separator + 'User'
+		path = os.path.join(sublime.packages_path(), 'User')
 		if not filename is None:
-			return path + separator + filename
-
-		return path + separator
+			return os.path.join(path, filename)
+		return path
 
 	@staticmethod
 	def getSettingsFilename ():
@@ -67,7 +65,3 @@ class SyncSettingsManager:
 			pass
 
 		return l
-
-	@staticmethod
-	def getSeparator ():
-		return "\\" if sys.platform.startswith('win') else "/"

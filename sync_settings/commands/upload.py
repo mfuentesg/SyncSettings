@@ -2,16 +2,16 @@
 
 import sublime
 from sublime_plugin import WindowCommand
-from ..sync_settings_manager import SyncSettingsManager
+from ..sync_settings_manager import SyncSettingsManager as Manager
 from ..gistapi import Gist
 
 class SyncSettingsUploadCommand (WindowCommand):
 	def run (self):
-		gistId = SyncSettingsManager.settings('gist_id')
+		gistId = Manager.settings('gist_id')
 		if gistId:
 			try:
-				api = Gist(SyncSettingsManager.settings('access_token'))
-				files = SyncSettingsManager.getContentFiles()
+				api = Gist(Manager.settings('access_token'))
+				files = Manager.getContentFiles()
 				if len(files) > 0:
 					data = { 'files': files}
 					api.edit(gistId, data)
