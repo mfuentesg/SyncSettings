@@ -35,7 +35,7 @@ class Gist:
 		if response.status_code == 201:
 			return response.json()
 
-		raise Exception('Gist can\'t created')
+		raise Exception(Gist.__getResponseError('Gist can\'t created', response))
 
 	def edit (self, gistId, gistData):
 		gistData = json.dumps(dict(self.__defaults, **gistData))
@@ -48,7 +48,7 @@ class Gist:
 		if response.status_code == 200:
 			return response.json()
 
-		raise Exception('Can\'t edit the gist')
+		raise Exception(Gist.__getResponseError('Can\'t edit the gist', response))
 
 	def list (self):
 		listUrl = (
@@ -60,7 +60,7 @@ class Gist:
 		if response.status_code == 200:
 			return response.json()
 
-		raise Exception('It is not possible to list files')
+		raise Exception(Gist.__getResponseError('It is not possible to list files', reponse))
 
 	def delete (self, gistId):
 		response = requests.delete(
@@ -71,18 +71,27 @@ class Gist:
 		if response.status_code == 204:
 			return True
 
-		raise Exception('The Gist can be deleted')
+		raise Exception(Gist.__getResponseError('The Gist can be deleted', response))
 
 	def get (self, gistId):
 		response = requests.get(self.BASE_URL + '/gists/' + gistId)
 		if response.status_code == 200:
 			return response.json()
 
-		raise Exception('The gist not exist')
+		raise Exception(Gist.__getResponseError('The gist not exist', response))
+
+	@staticmethod
+	def __getResponseError (message, response):
+		rjson = response.json()
+		errorDescription = "Code " + str(response.status_code) + " - " + rjson.get('message')
+		return {
+			'app_message': message,
+			'error_description': errorDescription
+		}
 
 	@staticmethod
 	def getCurrentRelease ():
 		response = requests.get(Gist.BASE_URL + '/repos/mfuentesg/SyncSettings/releases/latest')
 		if response.status_code == 200:
 			return response.json()
-		raise Exception('Repository troubles')
+		raise Exception(Gist.__getResponseError('Repository troubles', response))
