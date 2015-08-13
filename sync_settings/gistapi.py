@@ -2,13 +2,17 @@
 
 import requests, json
 
+class GistException (Exception):
+	def toJSON (self):
+		return json.loads(json.dumps(e.args[0]))
+
 class Gist:
 	BASE_URL = 'https://api.github.com'
 
 	def __init__ (self, token):
 		response = requests.get(self.BASE_URL + '/user?access_token=' + token)
 		if response.status_code != 200:
-			raise Exception('The entered token is invalid')
+			raise GistException(Gist.__getResponseError('The entered token is invalid', response))
 		else:
 			self.__userData = response.json()
 			self.__accessToken = token
@@ -35,7 +39,7 @@ class Gist:
 		if response.status_code == 201:
 			return response.json()
 
-		raise Exception(Gist.__getResponseError('Gist can\'t created', response))
+		raise GistException(Gist.__getResponseError('Gist can\'t created', response))
 
 	def edit (self, gistId, gistData):
 		gistData = json.dumps(dict(self.__defaults, **gistData))
@@ -48,7 +52,7 @@ class Gist:
 		if response.status_code == 200:
 			return response.json()
 
-		raise Exception(Gist.__getResponseError('Can\'t edit the gist', response))
+		raise GistException(Gist.__getResponseError('Can\'t edit the gist', response))
 
 	def list (self):
 		listUrl = (
@@ -60,7 +64,7 @@ class Gist:
 		if response.status_code == 200:
 			return response.json()
 
-		raise Exception(Gist.__getResponseError('It is not possible to list files', reponse))
+		raise GistException(Gist.__getResponseError('It is not possible to list files', reponse))
 
 	def delete (self, gistId):
 		response = requests.delete(
@@ -71,14 +75,14 @@ class Gist:
 		if response.status_code == 204:
 			return True
 
-		raise Exception(Gist.__getResponseError('The Gist can be deleted', response))
+		raise GistException(Gist.__getResponseError('The Gist can be deleted', response))
 
 	def get (self, gistId):
 		response = requests.get(self.BASE_URL + '/gists/' + gistId)
 		if response.status_code == 200:
 			return response.json()
 
-		raise Exception(Gist.__getResponseError('The gist not exist', response))
+		raise GistException(Gist.__getResponseError('The gist not exist', response))
 
 	@staticmethod
 	def __getResponseError (message, response):
@@ -94,4 +98,4 @@ class Gist:
 		response = requests.get(Gist.BASE_URL + '/repos/mfuentesg/SyncSettings/releases/latest')
 		if response.status_code == 200:
 			return response.json()
-		raise Exception(Gist.__getResponseError('Repository troubles', response))
+		raise GistException(Gist.__getResponseError('Repository troubles', response))
