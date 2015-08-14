@@ -22,10 +22,10 @@ class SyncSettingsDownloadCommand (WindowCommand):
 						 	fileOpened.write(fileJSON.get('content'))
 						 	fileOpened.close()
 					sublime.message_dialog('Sync Settings: Files Downloaded Successfully\nNow you need restart Sublime Text for Package Control installs all dependencies!')
-					sublime.status_message('Sync Settings: Files Downloaded Successfully')
+					Manager.showMessageAndLog('Files Downloaded Successfully', False)
 				else:
-					sublime.status_message('Sync Settings: There are not enough files to create the gist')
+					Manager.showMessageAndLog('There are not enough files to create the gist', False)
 			except Exception as e:
-				sublime.status_message('Sync Settings: ' + str(e))
+				Manager.showMessageAndLog(e)
 		else:
-			sublime.status_message('Sync Settings: Set the gist_id in the configuration file')
+			Manager.showMessageAndLog('Set the gist_id in the configuration file', False)

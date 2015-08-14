@@ -10,7 +10,7 @@ class SyncSettingsCreateAndUploadCommand (WindowCommand):
 		if Manager.settings('access_token'):
 			return sublime.set_timeout(self.showInputPanel, 10)
 		else:
-			sublime.status_message('Sync Settings: You need set your access token')
+			Manager.showMessageAndLog('You need set the access token', False)
 
 	def showInputPanel (self):
 		self.window.show_input_panel(
@@ -31,15 +31,15 @@ class SyncSettingsCreateAndUploadCommand (WindowCommand):
 
 			try:
 				result = Gist(Manager.settings('access_token')).create(data)
-				sublime.status_message('Sync Settings: Gist created, id = ' + result.get('id'))
+				Manager.showMessageAndLog('Gist created, id = ' + result.get('id'), False)
 				if sublime.yes_no_cancel_dialog('Sync Settings: \nYour gist was created successfully\nDo you want update the gist_id property in the config file?') == sublime.DIALOG_YES:
 					Manager.settings('gist_id', result.get('id'))
 					sublime.save_settings(Manager.getSettingsFilename())
-					sublime.status_message('Sync Settings: Gist id updated successfully!')
+					Manager.showMessageAndLog('Gist id updated successfully!', False)
 			except Exception as e:
-				sublime.status_message(str(e))
+				Manager.showMessageAndLog(e)
 		else:
-			sublime.status_message('Sync Settings: There are not enough files to create the gist')
+			Manager.showMessageAndLog('There are not enough files to create the gist', False)
 
 	def onChange (self, text):
 		pass
