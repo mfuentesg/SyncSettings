@@ -14,5 +14,9 @@
 	{
     "caption": "Sync Settings: About",
     "command": "sync_settings_about"
+  },
+  {
+    "caption": "Sync Settings: Show Logs",
+    "command": "sync_settings_open_logs"
   }
 ]
