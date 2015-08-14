@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sublime, os
+from .logger import Logger
 
 class SyncSettingsManager:
 	settingsFilename = 'SyncSettings.sublime-settings'
@@ -37,12 +38,15 @@ class SyncSettingsManager:
 		for f in SyncSettingsManager.getFiles():
 			fullPath = SyncSettingsManager.getPackagesPath(f)
 			if os.path.isfile(fullPath) and os.path.exists(fullPath):
-				content = open(fullPath, 'r').read()
-				r.update({
-					f: {
-						'content': content
-					}
-				})
+				try:
+					content = open(fullPath, 'r').read()
+					r.update({
+						f: {
+							'content': content
+						}
+					})
+				except Exception as e:
+					Logger.log(str(e), Logger.MESSAGE_ERROR_TYPE)
 		return r
 
 	@staticmethod
@@ -60,8 +64,21 @@ class SyncSettingsManager:
 	def excludeValues (l, e):
 		try:
 			for el in e:
-				 l.remove(el)
+				l.remove(el)
 		except Exception as e:
-			pass
+			Logger.log(str(e), Logger.MESSAGE_ERROR_TYPE)
 
 		return l
+
+	@staticmethod
+	def showMessageAndLog (message, error = True):
+		m = l = ''
+		if isinstance(message, Exception):
+			message = message.toJSON()
+			m = message.get('app_message')
+			l = message.get('error_description')+ ', File: ' + message.get('filename') +' - Line: ' + message.get('line')
+		elif isinstance(message, str):
+			m = l = message
+
+		sublime.status_message('Sync Settings: ' + m)
+		Logger.log(l, Logger.MESSAGE_ERROR_TYPE if error else Logger.MESSAGE_INFO_TYPE)
