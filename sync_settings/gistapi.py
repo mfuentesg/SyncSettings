@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
 
-import requests, json
+import requests, json, traceback, sys
 
 class GistException (Exception):
 	def toJSON (self):
-		return json.loads(json.dumps(e.args[0]))
+		jsonError = json.loads(json.dumps(self.args[0]))
+		trace = traceback.extract_tb(sys.exc_info()[2])[-1]
+		jsonError.update({
+			'filename': str(trace[0]),
+			'line': str(trace[1])
+		})
+		return jsonError
 
 class Gist:
 	BASE_URL = 'https://api.github.com'
