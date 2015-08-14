@@ -20,6 +20,13 @@ class Logger:
 		return os.path.join(os.path.expanduser('~'), Logger.FILE_NAME)
 
 	@staticmethod
+	def createEmptyFile ():
+		try:
+			open(x, 'a').close()
+		except:
+			print(e)
+
+	@staticmethod
 	def write (message):
 		fullTime = time.strftime("[%d/%m/%Y - %H:%M:%S] ")
 		message = fullTime + message
