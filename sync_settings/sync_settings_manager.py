@@ -64,10 +64,9 @@ class SyncSettingsManager:
 	def excludeValues (l, e):
 		try:
 			for el in e:
-				l.remove(el)
+				if el in l: l.remove(el)
 		except Exception as ex:
 			Logger.log(str(ex), Logger.MESSAGE_ERROR_TYPE)
-
 		return l
 
 	@staticmethod
