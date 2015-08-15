@@ -8,21 +8,37 @@ Sync Settings
 * Working on Windows, Linux and OSX
 * Working on [Sublime Text 2](http://sublimetext.com/2), [Sublime Text 3](http://sublimetext.com/3)
 
-##Changelog
-
-You can check the changes to this plugin [here](CHANGELOG.md)
-
 ##Installation:
 
-Open Package Control and looks for **Sync Settings**, creates an access [token in the github](https://github.com/settings/tokens) page, copy and paste this code into the plugin configuration file
+1. Install [Package Control](https://packagecontrol.io/installation)
+2. Open Package Control and looks for [Sync Settings](https://packagecontrol.io/packages/Sync%20Settings)
+
+##Configuration
+
+1. Creates an access [token in GitHub](https://github.com/settings/tokens)
+2. Paste this code into the plugin configuration file
 
 ```Preferences > Packages Settings > Sync Settings > Settings - User```
 
-##You can set some parameters:
+####Options
 
-* **access_token**: refers to the access provided by GitHub token
-* **gist_id**: identifies to the id of the gist that is to be used for synchronization
-* **excluded_files**: are the files that are to be ignored at the time of synchronization, by default files that contain information with your editor license is found in this list.
+* **access_token**: Refers to the access provided by GitHub token
+* **gist_id**: Identifies to the id of the gist that is to be used for synchronization
+* **excluded_files**: Are the files that are to be ignored at the time of synchronization, by default files that contain information with your editor license is found in this list.
+
+##Commands
+
+1. **Create and Upload**: Creates a new gist and upload your settings after uploaded a message asking if you wish to set the id of the gist in the plugin configuration is displayed. If you accept the gist id appears on 
+`Preferences > Packages Settings > Sync Settings > Settings - User`.
+2. **Upload**: Upload your settings files, excluding the files included in "excluded files" option.
+3. **Download**: Download your settings files, overwriting the existing files, after downloaded your files  [Sublime Text](http://www.sublimetext.com) need to be restarted.
+
+###Errors
+
+If you find errors in the plugin, you can to execute "Show Logs" command and report a new [issue](https://github.com/mfuentesg/SyncSettings/issues/new) with the file content.
+
+##Changelog
+You can check the changes to this plugin [here](CHANGELOG.md)
 
 ##Donate
 You are welcome support this project using [Paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7XCNSKK5W7DKJ)
