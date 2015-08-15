@@ -65,8 +65,8 @@ class SyncSettingsManager:
 		try:
 			for el in e:
 				l.remove(el)
-		except Exception as e:
-			Logger.log(str(e), Logger.MESSAGE_ERROR_TYPE)
+		except Exception as ex:
+			Logger.log(str(ex), Logger.MESSAGE_ERROR_TYPE)
 
 		return l
 
