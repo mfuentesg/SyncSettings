@@ -23,7 +23,7 @@ class Logger:
 	def createEmptyFile ():
 		try:
 			open(x, 'a').close()
-		except:
+		except Exception as e:
 			print(e)
 
 	@staticmethod
