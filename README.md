@@ -32,6 +32,7 @@ Sync Settings
 `Preferences > Packages Settings > Sync Settings > Settings - User`.
 2. **Upload**: Upload your settings files, excluding the files included in "excluded files" option.
 3. **Download**: Download your settings files, overwriting the existing files, after downloaded your files  [Sublime Text](http://www.sublimetext.com) need to be restarted.
+4. **Show Logs**: Open the log file in the active window.
 
 ###Errors
 
