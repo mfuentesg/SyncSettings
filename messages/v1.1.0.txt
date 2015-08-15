@@ -1,0 +1,7 @@
+Sync Settings
+==============
+
+* Now your operations and errors are saved
+* New commands added
+* Custom Exception Added
+* Fix minor errors
