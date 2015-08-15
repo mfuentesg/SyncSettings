@@ -25,11 +25,14 @@ mods_load_order = [
     '',
     '.gistapi',
     '.sync_settings_manager',
+    '.logger',
 
     ".commands",
     ".commands.create_and_upload",
     ".commands.download",
-    ".commands.upload"
+    ".commands.upload",
+    ".commands.about"
+    ".commands.open_logs"
 ]
 
 for suffix in mods_load_order:

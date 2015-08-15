@@ -2,23 +2,23 @@
 
 import sublime
 from sublime_plugin import WindowCommand
-from ..sync_settings_manager import SyncSettingsManager
+from ..sync_settings_manager import SyncSettingsManager as Manager
 from ..gistapi import Gist
 
 class SyncSettingsUploadCommand (WindowCommand):
 	def run (self):
-		gistId = SyncSettingsManager.settings('gist_id')
+		gistId = Manager.settings('gist_id')
 		if gistId:
 			try:
-				api = Gist(SyncSettingsManager.settings('access_token'))
-				files = SyncSettingsManager.getContentFiles()
+				api = Gist(Manager.settings('access_token'))
+				files = Manager.getContentFiles()
 				if len(files) > 0:
 					data = { 'files': files}
 					api.edit(gistId, data)
-					sublime.status_message('Sync Settings: Your files was uploaded successfully!')
+					Manager.showMessageAndLog('Your files was uploaded successfully!', False)
 				else:
-					sublime.status_message('Sync Settings: There are not enough files to upload')
+					Manager.showMessageAndLog('There are not enough files to upload', False)
 			except Exception as e:
-				sublime.status_message('Sync Settings: ' + str(e))
+				Manager.showMessageAndLog(e)
 		else:
-			sublime.status_message('Sync Settings: Set the gist_id in the configuration file')
+			Manager.showMessageAndLog('Set the gist_id in the configuration file', False)
