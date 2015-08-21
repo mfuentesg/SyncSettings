@@ -34,7 +34,38 @@ Sync Settings
 3. **Download**: Download your settings files, overwriting the existing files, after downloaded your files  [Sublime Text](http://www.sublimetext.com) need to be restarted.
 4. **Show Logs**: Open the log file in the active window.
 
-###Errors
+##Tests
+
+You can run and add new tests using the following instructions. For more information consulting the [framework documentation](https://docs.python.org/3/library/unittest.html#module-unittest).
+
+###Run tests
+
+```bash
+cd /path/to/plugin
+python -m unittest discover -s ./tests
+```
+
+###Add Tests
+
+```bash
+cd /path/to/plugin/tests
+touch test_<name>.py #Create a new file
+```
+
+```python
+#Example:
+
+from unittest import TestCase
+
+class TestExample (TestCase):
+	def test_upper (self):
+		self.assertEqual('foo'.upper(), 'FOO')
+
+	def test_<name> (self):
+		self.assertEqual('bar'.lower(), 'BAR')
+```
+
+##Errors
 
 If you find errors in the plugin, you can to execute "Show Logs" command and report a new [issue](https://github.com/mfuentesg/SyncSettings/issues/new) with the file content.
 
