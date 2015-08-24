@@ -1,10 +1,4 @@
 {
-	"gist_id": "",
 	"access_token": "",
-	"excluded_files": [
-		"Package Control.last-run",
-		"Package Control.merged-ca-bundle",
-		"Package Control.user-ca-bundle",
-		"Package Control.system-ca-bundle"
-	]
+	"logger_filename": ".logger_test.log"
 }
