@@ -29,7 +29,6 @@ class Gist:
 			}
 			self.__defaults = {
 				'public': False,
-				'description': 'Sublime Text Configuration',
 				'files': {}
 			}
 
@@ -48,6 +47,7 @@ class Gist:
 		raise GistException(Gist.__getResponseError('Gist can\'t created', response))
 
 	def edit (self, gistId, gistData):
+		self.__defaults.pop('description', None)
 		gistData = json.dumps(dict(self.__defaults, **gistData))
 		response = requests.patch(
 			self.BASE_URL + '/gists/%s' %gistId,
@@ -96,7 +96,8 @@ class Gist:
 		errorDescription = "Code " + str(response.status_code) + " - " + rjson.get('message')
 		return {
 			'app_message': message,
-			'error_description': errorDescription
+			'error_description': errorDescription,
+			'code': response.status_code
 		}
 
 	@staticmethod
