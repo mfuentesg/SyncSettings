@@ -38,6 +38,10 @@ Sync Settings
 
 You can run and add new tests using the following instructions. For more information consulting the [framework documentation](https://docs.python.org/3/library/unittest.html#module-unittest).
 
+###Configuration
+1. Rename `/path/to/plugin/tests/options.sample.json` to `/path/to/plugin/tests/options.json`
+2. Set `access_token` to start the testing process
+
 ###Run tests
 
 ```bash
