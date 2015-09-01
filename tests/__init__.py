@@ -9,5 +9,5 @@ try:
     Opts = json.loads(f.read())
 except Exception as e:
   Opts = {}
-  print('Sync Settings: Options file not exists')
-  print(e)
+  print ('\033[91m'+'Sync Settings: options.json file not exists'+'\033[0m')
+
