@@ -2,7 +2,7 @@
 
 import sys, os, json
 sys.path.append(os.path.abspath('..'))
-from sync_settings import gistapi, logger
+from sync_settings import gistapi, logger, helper
 
 try:
   with open(os.path.abspath('tests/options.json'), 'r') as f:
