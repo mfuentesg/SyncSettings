@@ -63,10 +63,10 @@ from unittest import TestCase
 
 class TestExample (TestCase):
   def test_upper (self):
-  self.assertEqual('foo'.upper(), 'FOO')
+    self.assertEqual('foo'.upper(), 'FOO')
 
   def test_<name> (self):
-  self.assertEqual('bar'.lower(), 'BAR')
+    self.assertEqual('bar'.lower(), 'BAR')
 ```
 
 ##Errors
