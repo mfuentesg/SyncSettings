@@ -19,9 +19,11 @@ class TestHelper (TestCase):
     self.assertEqual(homePath, helper.getHomePath(1234))
 
   def test_exists_path (self):
-    self.assertFalse(helper.existsPath(isFolder=True))
     self.assertFalse(helper.existsPath(optionsPath, True))
-    self.assertFalse(helper.existsPath())
+    with self.assertRaises(TypeError):
+      helper.existsPath()
+    with self.assertRaises(TypeError):
+      helper.existsPath(isFolder=True)
     self.assertFalse(helper.existsPath('tests'))
     self.assertTrue(helper.existsPath(optionsPath))
     self.assertTrue(helper.existsPath('tests', True))
@@ -34,7 +36,8 @@ class TestHelper (TestCase):
     self.assertIsNotNone(helper.joinPath(('123', '1234')))
 
   def test_get_files (self):
-    self.assertListEqual(helper.getFiles(), [])
+    with self.assertRaises(TypeError):
+      helper.getFiles()
     self.assertListEqual(helper.getFiles('t'), [])
     self.assertListEqual(helper.getFiles(1234), [])
     self.assertListEqual(helper.getFiles(1234), [])
