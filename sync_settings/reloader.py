@@ -30,7 +30,6 @@ mods_load_order = [
   ".commands.create_and_upload",
   ".commands.download",
   ".commands.upload",
-  ".commands.about"
   ".commands.open_logs"
 ]
 
