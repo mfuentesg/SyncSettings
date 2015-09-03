@@ -1,0 +1,6 @@
+Sync Settings
+=============
+
+This version executes each command as a thread, allowing that the application is not lock.
+
+* Added threading support
