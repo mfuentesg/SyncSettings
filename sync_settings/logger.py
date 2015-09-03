@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os, time
+from .helper import *
 
 class Logger:
   FILE_NAME = '.sync-settings.log'
@@ -17,21 +18,19 @@ class Logger:
 
   @staticmethod
   def getPath ():
-    return os.path.join(os.path.expanduser('~'), Logger.FILE_NAME)
+    return getHomePath(Logger.FILE_NAME)
 
   @staticmethod
   def createEmptyFile ():
-    try:
-      open(Logger.getPath(), 'a').close()
-    except Exception as e:
-      print(e)
+    try: open(Logger.getPath(), 'a').close()
+    except Exception as e: print(e)
 
   @staticmethod
   def write (message):
     fullTime = time.strftime("[%d/%m/%Y - %H:%M:%S] ")
     message = fullTime + message
     path = Logger.getPath()
-    action = 'a+' if os.path.exists(path) else 'w+'
+    action = 'a+' if existsPath(path) else 'w+'
 
     try:
       with open(path, action) as f:

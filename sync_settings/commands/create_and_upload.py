@@ -29,7 +29,8 @@ class SyncSettingsCreateAndUploadCommand (WindowCommand):
         try:
           result = Gist(Manager.settings('access_token')).create(data)
           Manager.showMessageAndLog('Gist created, id = ' + result.get('id'), False)
-          if sublime.yes_no_cancel_dialog('Sync Settings: \nYour gist was created successfully\nDo you want update the gist_id property in the config file?') == sublime.DIALOG_YES:
+          dialogMessage = 'Sync Settings: \nYour gist was created successfully\nDo you want update the gist_id property in the config file?'
+          if sublime.yes_no_cancel_dialog(dialogMessage) == sublime.DIALOG_YES:
             Manager.settings('gist_id', result.get('id'))
             sublime.save_settings(Manager.getSettingsFilename())
             Manager.showMessageAndLog('Gist id updated successfully!', False)

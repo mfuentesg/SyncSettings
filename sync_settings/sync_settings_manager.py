@@ -2,6 +2,7 @@
 
 import sublime, os
 from .logger import Logger
+from .helper import *
 
 class SyncSettingsManager:
   settingsFilename = 'SyncSettings.sublime-settings'
@@ -30,44 +31,31 @@ class SyncSettingsManager:
   @staticmethod
   def getFiles ():
     excludedFiles = SyncSettingsManager.settings('excluded_files')
-    return SyncSettingsManager.excludeValues(SyncSettingsManager.files, excludedFiles)
+    return getDifference(SyncSettingsManager.files, excludedFiles)
 
   @staticmethod
   def getContentFiles ():
     r = {}
     for f in SyncSettingsManager.getFiles():
       fullPath = SyncSettingsManager.getPackagesPath(f)
-      if os.path.isfile(fullPath) and os.path.exists(fullPath):
+      if existsPath(fullPath):
         try:
           content = open(fullPath, 'r').read()
-          r.update({
-            f: {
-              'content': content
-            }
-          })
+          r.update({f: {'content': content}})
         except Exception as e:
           Logger.log(str(e), Logger.MESSAGE_ERROR_TYPE)
     return r
 
   @staticmethod
   def getPackagesPath (filename = None):
-    path = os.path.join(sublime.packages_path(), 'User')
+    path = joinPath((sublime.packages_path(), 'User'))
     if not filename is None:
-      return os.path.join(path, filename)
+      return joinPath((path, filename))
     return path
 
   @staticmethod
   def getSettingsFilename ():
     return SyncSettingsManager.settingsFilename
-
-  @staticmethod
-  def excludeValues (l, e):
-    try:
-      for el in e:
-        if el in l: l.remove(el)
-    except Exception as ex:
-      Logger.log(str(ex), Logger.MESSAGE_ERROR_TYPE)
-    return l
 
   @staticmethod
   def showMessageAndLog (message, error = True):
