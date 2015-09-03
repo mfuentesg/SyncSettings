@@ -5,7 +5,8 @@ sys.path.append(os.path.abspath('..'))
 from sync_settings import gistapi, logger, helper
 
 try:
-  with open(os.path.abspath('tests/options.json'), 'r') as f:
+  optionsPath = os.path.abspath('tests/options.json')
+  with open(optionsPath, 'r') as f:
     Opts = json.loads(f.read())
 except Exception as e:
   Opts = {}
