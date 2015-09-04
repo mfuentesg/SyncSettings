@@ -13,3 +13,9 @@ This version has some bug fixes found
 * New commands added
 * Custom Exception Added
 * Fix minor errors
+
+#1.2.0
+
+This version executes each command as a thread, allowing that the application is not lock.
+
+* Added threading support
