@@ -2,7 +2,7 @@
 
 from unittest import TestCase
 from tests import *
-import os, shutil
+import os, shutil, re
 
 class TestHelper (TestCase):
   def test_difference (self):
@@ -56,3 +56,17 @@ class TestHelper (TestCase):
     self.assertListEqual(helper.getFiles(helper.joinPath(('tests', 'hello'))), allFiles)
     self.assertEqual(len(allFiles), 3)
     shutil.rmtree('tests/hello')
+
+  def test_filter_by_patterns (self):
+    files = [
+      '/path/to/file.txt',
+      'file.txt',
+      '/path/to/file/other_file.foo.txt',
+      '/SublimeLinter/some/other.py',
+      '/sublimelinter/file.py'
+    ]
+    patterns = ['.doc']
+    self.assertListEqual(helper.filterByPatterns(files, patterns), [])
+    self.assertListEqual(helper.filterByPatterns(files, ['.txt']), files)
+    files.append('/path/to/another/file/some.foo')
+    self.assertListEqual(helper.filterByPatterns(files, ['.foo']), ['/path/to/another/file/some.foo'])
