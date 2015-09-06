@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os, re
+from urllib import parse
 
 def getDifference (setA, setB):
   return list(filter(lambda el: el not in setB, setA))
@@ -42,14 +43,23 @@ def getFiles (path):
 def filterByPatterns (elements, patterns = []):
   isValidElements = isinstance(elements, list) and len(elements) > 0
   isValidPattern = isinstance(patterns, list) and len(patterns) > 0
-  if validElements and validPattern:
+  results = []
+
+  if isValidElements and isValidPattern:
     for element in elements:
       for pattern in patterns:
-        """
-          Verify if the pattern is a:
-          * extension file
-          * regex
-          * filename
-        """
-        pass
-  return list
+        extension = '.' + element.split(os.extsep)[-1]
+        if extension == pattern or element == pattern:
+          results.append(element)
+
+  return results
+
+def encodePaths(paths):
+  if isinstance(paths, list) and len(paths) > 0:
+    return [parse.quote(p) for p in paths]
+  return []
+
+def decodePaths(paths):
+  if isinstance(paths, list) and len(paths) > 0:
+    return [parse.unquote(p) for p in paths]
+  return []
