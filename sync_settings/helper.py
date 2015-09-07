@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os, re
+import os, re, glob
 from urllib import parse
 
 def getDifference (setA, setB):
@@ -49,7 +49,14 @@ def filterByPatterns (elements, patterns = []):
     for element in elements:
       for pattern in patterns:
         extension = '.' + element.split(os.extsep)[-1]
-        if extension == pattern or element == pattern:
+        if element.startswith(pattern) and existsPath(element, True):
+          print(element + ' added by folder ' +pattern)
+          results.append(element)
+        elif extension == pattern and existsPath(element):
+          print(element + ' added by extension ' +pattern)
+          results.append(element)
+        elif element == pattern and existsPath(element):
+          print(element + ' added by filename ' +pattern)
           results.append(element)
 
   return results

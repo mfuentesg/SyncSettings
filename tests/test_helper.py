@@ -24,9 +24,9 @@ class TestHelper (TestCase):
       helper.existsPath()
     with self.assertRaises(TypeError):
       helper.existsPath(isFolder=True)
-    self.assertFalse(helper.existsPath('tests'))
+    self.assertFalse(helper.existsPath(helper.joinPath((os.getcwd(), 'tests'))))
     self.assertTrue(helper.existsPath(optionsPath))
-    self.assertTrue(helper.existsPath('tests', True))
+    self.assertTrue(helper.existsPath(helper.joinPath((os.getcwd(), 'tests')), True))
 
   def test_join_path (self):
     self.assertIsNone(helper.joinPath(''))
@@ -41,32 +41,74 @@ class TestHelper (TestCase):
     self.assertListEqual(helper.getFiles('t'), [])
     self.assertListEqual(helper.getFiles(1234), [])
     self.assertListEqual(helper.getFiles(1234), [])
-    self.assertGreater(len(helper.getFiles('tests')), 0)
+    self.assertGreater(len(helper.getFiles(helper.joinPath((os.getcwd(), 'tests')))), 0)
 
     #Create a test folder structure
-    os.makedirs(helper.joinPath(('tests', 'hello', 'world')), exist_ok=True)
-    open(helper.joinPath(('tests', 'hello', 'foo.txt')), 'a').close()
-    open(helper.joinPath(('tests', 'hello', 'bar.txt')), 'a').close()
-    open(helper.joinPath(('tests', 'hello', 'world', 'foo.txt')), 'a').close()
+    os.makedirs(helper.joinPath((os.getcwd(), 'tests', 'hello', 'world')), exist_ok=True)
+    open(helper.joinPath((os.getcwd(), 'tests', 'hello', 'foo.txt')), 'a').close()
+    open(helper.joinPath((os.getcwd(), 'tests', 'hello', 'bar.txt')), 'a').close()
+    open(helper.joinPath((os.getcwd(), 'tests', 'hello', 'world', 'foo.txt')), 'a').close()
     allFiles = [
-      helper.joinPath(('tests', 'hello', 'bar.txt')),
-      helper.joinPath(('tests', 'hello', 'foo.txt')),
-      helper.joinPath(('tests', 'hello', 'world', 'foo.txt'))
+      helper.joinPath((os.getcwd(), 'tests', 'hello', 'bar.txt')),
+      helper.joinPath((os.getcwd(), 'tests', 'hello', 'foo.txt')),
+      helper.joinPath((os.getcwd(), 'tests', 'hello', 'world', 'foo.txt'))
     ]
-    self.assertListEqual(helper.getFiles(helper.joinPath(('tests', 'hello'))), allFiles)
-    self.assertEqual(len(allFiles), 3)
-    shutil.rmtree('tests/hello')
+    files = helper.getFiles(helper.joinPath((os.getcwd(), 'tests', 'hello')))
+    self.assertEqual(len(files), 3)
+    self.assertListEqual(files, allFiles)
+    shutil.rmtree(helper.joinPath((os.getcwd(), 'tests', 'hello')))
 
   def test_filter_by_patterns (self):
-    files = [
-      '/path/to/file.txt',
-      'file.txt',
-      '/path/to/file/other_file.foo.txt',
-      '/SublimeLinter/some/other.py',
-      '/sublimelinter/file.py'
-    ]
-    patterns = ['.doc']
-    self.assertListEqual(helper.filterByPatterns(files, patterns), [])
-    self.assertListEqual(helper.filterByPatterns(files, ['.txt']), files)
-    files.append('/path/to/another/file/some.foo')
-    self.assertListEqual(helper.filterByPatterns(files, ['.foo']), ['/path/to/another/file/some.foo'])
+    os.makedirs(helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar')), exist_ok=True)
+    open(helper.joinPath((os.getcwd(), 'tests', 'foo', 'foo.txt')), 'a').close()
+    open(helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar.txt')), 'a').close()
+    open(helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar', 'foo.txt')), 'a').close()
+    open(helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar', 'foo.py')), 'a').close()
+
+    files = helper.getFiles(helper.joinPath((os.getcwd(), 'tests', 'foo')))
+
+    #Wrong case
+    self.assertListEqual(helper.filterByPatterns(files, []), [])
+    self.assertListEqual(helper.filterByPatterns(files, ['.boo']), [])
+
+    # By extension
+    filteredFiles = helper.filterByPatterns(files, ['.txt'])
+    self.assertEqual(len(filteredFiles), 3)
+    self.assertListEqual(filteredFiles, [
+      helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar.txt')),
+      helper.joinPath((os.getcwd(), 'tests', 'foo', 'foo.txt')),
+      helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar', 'foo.txt'))
+    ])
+    filteredFiles = helper.filterByPatterns(files, ['.py'])
+    self.assertEqual(len(filteredFiles), 1)
+    self.assertListEqual(filteredFiles, [
+      helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar', 'foo.py'))
+    ])
+
+    # By Filename
+    filteredFiles = helper.filterByPatterns(files, [
+      helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar.txt'))
+    ])
+
+    self.assertEqual(len(filteredFiles), 1)
+    self.assertListEqual(filteredFiles, [
+      helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar.txt'))
+    ])
+
+    filteredFiles = helper.filterByPatterns(files, [
+      helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar.txt')),
+      helper.joinPath((os.getcwd(), 'tests', 'foo', 'foo.txt'))
+    ])
+
+    self.assertEqual(len(filteredFiles), 2)
+    self.assertListEqual(filteredFiles, [
+      helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar.txt')),
+      helper.joinPath((os.getcwd(), 'tests', 'foo', 'foo.txt'))
+    ])
+
+    # By folder
+    filteredFiles = helper.filterByPatterns(files, [
+      helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar'))
+    ])
+    # show files by folder
+    shutil.rmtree(helper.joinPath((os.getcwd(), 'tests', 'foo')))
