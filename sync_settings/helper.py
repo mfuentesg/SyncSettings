@@ -40,7 +40,7 @@ def getFiles (path):
   @param list patterns
   @return list
 """
-def filterByPatterns (elements, patterns = []):
+def excludeByPatterns (elements, patterns = []):
   isValidElements = isinstance(elements, list) and len(elements) > 0
   isValidPattern = isinstance(patterns, list) and len(patterns) > 0
   results = []
@@ -49,17 +49,15 @@ def filterByPatterns (elements, patterns = []):
     for element in elements:
       for pattern in patterns:
         extension = '.' + element.split(os.extsep)[-1]
-        if element.startswith(pattern) and existsPath(element, True):
-          print(element + ' added by folder ' +pattern)
-          results.append(element)
-        elif extension == pattern and existsPath(element):
-          print(element + ' added by extension ' +pattern)
-          results.append(element)
-        elif element == pattern and existsPath(element):
-          print(element + ' added by filename ' +pattern)
-          results.append(element)
+        filename = os.path.basename(element)
 
-  return results
+        if element.startswith(pattern) and existsPath(pattern, True) and existsPath(joinPath((pattern, filename))):
+          results.append(element)
+        elif (extension == pattern or element == pattern) and existsPath(element):
+          results.append(element)
+    return getDifference(elements, results)
+
+  return elements
 
 def encodePaths(paths):
   if isinstance(paths, list) and len(paths) > 0:
