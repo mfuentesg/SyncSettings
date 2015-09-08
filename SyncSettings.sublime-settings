@@ -1,6 +1,5 @@
 /**
-  Don't edit this file
-  use the one the User folder
+ * Don't edit this file use the one the User folder
  */
 
 {
@@ -20,8 +19,8 @@
     "Package Control.user-ca-bundle",
     "Package Control.system-ca-bundle"
   ],
-  /*
-    This option has the gist id for upload your configuration
+  /**
+   * This option has the gist id for upload your configuration
    */
   "gist_id": ""
 }
