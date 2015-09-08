@@ -49,12 +49,12 @@ def excludeByPatterns (elements, patterns = []):
     return getDifference(elements, results)
   return elements
 
-def encodePaths(paths):
-  if isinstance(paths, list) and len(paths) > 0:
-    return [parse.quote(p) for p in paths]
-  return []
+def encodePath(path):
+  if isinstance(path, str) and len(path) > 0:
+    return parse.quote(path)
+  return None
 
-def decodePaths(paths):
-  if isinstance(paths, list) and len(paths) > 0:
-    return [parse.unquote(p) for p in paths]
-  return []
+def decodePath(path):
+  if isinstance(path, str) and len(path) > 0:
+    return parse.unquote(path)
+  return None
