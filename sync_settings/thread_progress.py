@@ -40,7 +40,7 @@ class ThreadProgress():
       self.last_view = None
 
     if not self.thread.is_alive():
-      active_view.erase_status('_sync_settings')
+      active_view.set_status('_sync_settings', self.success_message)
       return
 
     before = i % self.size
