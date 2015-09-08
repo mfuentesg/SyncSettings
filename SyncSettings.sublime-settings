@@ -13,16 +13,6 @@
   "access_token": "",
   /**
     * This option has a list with the excluded files
-    * Files included: [
-    *   Package Control.last-run
-    *   Package Control.merged-ca-bundle
-    *   Package Control.user-ca-bundle
-    *   Package Control.system-ca-bundle
-    *   Preferences.sublime-settings
-    *   Package Control.sublime-settings
-    *   Default (OSX).sublime-keymap
-    *   Default (Windows).sublime-keymap
-    *   Default (Linux).sublime-keymap
    */
   "excluded_files": [
     "Package Control.last-run",
