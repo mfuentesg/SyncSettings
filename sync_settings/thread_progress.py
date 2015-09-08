@@ -18,7 +18,7 @@ class ThreadProgress():
       The message to display once the thread is complete
   """
 
-  def __init__(self, thread_target, message, success_message):
+  def __init__(self, thread_target, message, success_message = ''):
     self.message = message
     self.success_message = success_message
     self.addend = 1
