@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import sublime, threading
+import sublime
 from sublime_plugin import WindowCommand
 from ..sync_settings_manager import SyncSettingsManager as Manager
 from ..gistapi import Gist
+from ..thread_progress import ThreadProgress
 
 class SyncSettingsCreateAndUploadCommand (WindowCommand):
   def run (self):
@@ -29,7 +30,7 @@ class SyncSettingsCreateAndUploadCommand (WindowCommand):
         try:
           result = Gist(Manager.settings('access_token')).create(data)
           Manager.showMessageAndLog('Gist created, id = ' + result.get('id'), False)
-          dialogMessage = 'Sync Settings: \nYour gist was created successfully\nDo you want update the gist_id property in the config file?'
+          dialogMessage = 'Sync Settings: \nYour gist was created successfully\nDo you want update the gist_id property in the configuration file?'
           if sublime.yes_no_cancel_dialog(dialogMessage) == sublime.DIALOG_YES:
             Manager.settings('gist_id', result.get('id'))
             sublime.save_settings(Manager.getSettingsFilename())
@@ -39,5 +40,4 @@ class SyncSettingsCreateAndUploadCommand (WindowCommand):
       else:
         Manager.showMessageAndLog('There are not enough files to create the gist', False)
 
-    t = threading.Thread(target=lambda: processRequest())
-    sublime.set_timeout(lambda: t.start(), 100)
+    ThreadProgress(lambda: processRequest(), 'Sync Settings: Creating and uploading files')

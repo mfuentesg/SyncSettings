@@ -26,6 +26,7 @@ mods_load_order = [
   '.sync_settings_manager',
   '.logger',
   '.helper',
+  '.thread_progress',
 
   ".commands",
   ".commands.create_and_upload",
