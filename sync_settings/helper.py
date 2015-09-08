@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os, re, glob
+import os, re
 from urllib import parse
 
 def getDifference (setA, setB):
@@ -18,10 +18,6 @@ def existsPath(path, isFolder = False):
     if (not isFolder and opath.isfile(path)): return True
   return False
 
-"""
-  @param tuple pathTuple
-  @return str|None
-"""
 def joinPath (pathTuple):
   if isinstance(pathTuple, tuple) and len(pathTuple) > 1:
     return os.path.join(*pathTuple)
@@ -35,11 +31,6 @@ def getFiles (path):
     return f
   return []
 
-"""
-  @param list elements
-  @param list patterns
-  @return list
-"""
 def excludeByPatterns (elements, patterns = []):
   isValidElements = isinstance(elements, list) and len(elements) > 0
   isValidPattern = isinstance(patterns, list) and len(patterns) > 0
@@ -56,7 +47,6 @@ def excludeByPatterns (elements, patterns = []):
         elif (extension == pattern or element == pattern) and existsPath(element):
           results.append(element)
     return getDifference(elements, results)
-
   return elements
 
 def encodePaths(paths):
