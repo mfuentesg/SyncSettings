@@ -68,18 +68,18 @@ class TestHelper (TestCase):
     files = helper.getFiles(helper.joinPath((os.getcwd(), 'tests', 'foo')))
 
     #Unfiltered
-    self.assertListEqual(helper.excludeByPatterns(files, []), files)
-    self.assertListEqual(helper.excludeByPatterns(files, ['.boo']), files)
+    self.assertListEqual(helper.excludeFilesByPatterns(files, []), files)
+    self.assertListEqual(helper.excludeFilesByPatterns(files, ['.boo']), files)
 
     # By extension
-    filteredFiles = helper.excludeByPatterns(files, ['.txt'])
+    filteredFiles = helper.excludeFilesByPatterns(files, ['.txt'])
 
     self.assertEqual(len(filteredFiles), 1)
     self.assertListEqual(filteredFiles, [
       helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar', 'foo.py'))
     ])
 
-    filteredFiles = helper.excludeByPatterns(files, ['.py'])
+    filteredFiles = helper.excludeFilesByPatterns(files, ['.py'])
     self.assertEqual(len(filteredFiles), 3)
     self.assertListEqual(filteredFiles, [
       helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar.txt')),
@@ -88,7 +88,7 @@ class TestHelper (TestCase):
     ])
 
     # By Filename
-    filteredFiles = helper.excludeByPatterns(files, [
+    filteredFiles = helper.excludeFilesByPatterns(files, [
       helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar.txt'))
     ])
 
@@ -99,7 +99,7 @@ class TestHelper (TestCase):
       helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar', 'foo.txt'))
     ])
 
-    filteredFiles = helper.excludeByPatterns(files, [
+    filteredFiles = helper.excludeFilesByPatterns(files, [
       helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar.txt')),
       helper.joinPath((os.getcwd(), 'tests', 'foo', 'foo.txt'))
     ])
@@ -111,7 +111,7 @@ class TestHelper (TestCase):
     ])
 
     # By folder
-    filteredFiles = helper.excludeByPatterns(files, [
+    filteredFiles = helper.excludeFilesByPatterns(files, [
       helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar'))
     ])
     self.assertEqual(len(filteredFiles), 2)
