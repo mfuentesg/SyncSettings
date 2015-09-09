@@ -58,3 +58,6 @@ def decodePath(path):
   if isinstance(path, str) and len(path) > 0:
     return parse.unquote(path)
   return None
+
+def isWindows ():
+  return sys.platform.startswith('win')
