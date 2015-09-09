@@ -31,7 +31,7 @@ def getFiles (path):
     return f
   return []
 
-def excludeByPatterns (elements, patterns = []):
+def excludeFilesByPatterns (elements, patterns):
   isValidElements = isinstance(elements, list) and len(elements) > 0
   isValidPattern = isinstance(patterns, list) and len(patterns) > 0
   results = []
