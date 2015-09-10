@@ -33,13 +33,11 @@ def getFiles (path):
 
 def excludeFilesByPatterns (elements, patterns):
   def isFolderPattern (element, pattern):
-    filename = os.path.basename(element)
     if element.startswith(pattern) and existsPath(pattern, True):
       sub_path = element.replace(pattern, '')
       sub_path = sub_path[1:] if sub_path.startswith(('\\', '/')) else sub_path
       patternPath = joinPath((pattern, sub_path))
-      filePath = joinPath((pattern, filename))
-      if existsPath(patternPath) or existsPath(filePath):
+      if existsPath(patternPath):
         return True
 
       return False
