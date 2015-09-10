@@ -32,6 +32,18 @@ def getFiles (path):
   return []
 
 def excludeFilesByPatterns (elements, patterns):
+  def isFolderPattern (element, pattern):
+    filename = os.path.basename(element)
+    if element.startswith(pattern) and existsPath(pattern, True):
+      sub_path = element.replace(pattern, '')
+      sub_path = sub_path[1:] if sub_path.startswith(('\\', '/')) else sub_path
+      patternPath = joinPath((pattern, sub_path))
+      filePath = joinPath((pattern, filename))
+      if existsPath(patternPath) or existsPath(filePath):
+        return True
+
+      return False
+
   isValidElements = isinstance(elements, list) and len(elements) > 0
   isValidPattern = isinstance(patterns, list) and len(patterns) > 0
   results = []
@@ -40,9 +52,7 @@ def excludeFilesByPatterns (elements, patterns):
     for element in elements:
       for pattern in patterns:
         extension = '.' + element.split(os.extsep)[-1]
-        filename = os.path.basename(element)
-
-        if element.startswith(pattern) and existsPath(pattern, True) and existsPath(joinPath((pattern, filename))):
+        if isFolderPattern(element, pattern):
           results.append(element)
         elif (extension == pattern or element == pattern) and existsPath(element):
           results.append(element)
@@ -58,6 +68,3 @@ def decodePath(path):
   if isinstance(path, str) and len(path) > 0:
     return parse.unquote(path)
   return None
-
-def isWindows ():
-  return sys.platform.startswith('win')
