@@ -18,9 +18,8 @@ class ThreadProgress():
       The message to display once the thread is complete
   """
 
-  def __init__(self, thread_target, message, success_message = ''):
+  def __init__(self, thread_target, message):
     self.message = message
-    self.success_message = success_message
     self.addend = 1
     self.size = 8
 
@@ -30,9 +29,6 @@ class ThreadProgress():
 
   def run(self, i):
     if not self.thread.is_alive():
-      if self.success_message != "":
-        self.success_message = 'Sync Settings: %s' %(self.success_message)
-      sublime.status_message(self.success_message)
       return
 
     before = i % self.size
