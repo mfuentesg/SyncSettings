@@ -24,13 +24,18 @@ class SyncSettingsCreateAndUploadCommand(WindowCommand):
       files = Manager.get_files_content()
 
       if len(files) > 0:
-        data = { 'files': files}
+        data = {'files': files}
         if d != "": data.update({"description": d})
 
         try:
           result = Gist(Manager.settings('access_token')).create(data)
           Manager.show_message_and_log('Gist created, id = ' + result.get('id'), False)
-          dialog_message = 'Sync Settings: \nYour gist was created successfully\nDo you want update the gist_id property in the configuration file?'
+          dialog_message = ''.join([
+            'Sync Settings: \n',
+            'Your gist was created successfully\n',
+            'Do you want update the gist_id property in the configuration file?'
+          ])
+
           if sublime.yes_no_cancel_dialog(dialog_message) == sublime.DIALOG_YES:
             Manager.settings('gist_id', result.get('id'))
             sublime.save_settings(Manager.get_settings_filename())
