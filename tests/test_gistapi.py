@@ -3,10 +3,7 @@
 from tests import *
 from unittest import TestCase
 
-def getGist (access_token = ''):
-  return gistapi.Gist(access_token)
-
-api = gistapi.Gist(Opts.get('access_token'))
+api = gistapi.Gist(opts.get('access_token'))
 test_gist = api.create({
   'files': {
     'test_gist.txt': {
@@ -15,14 +12,14 @@ test_gist = api.create({
   }
 })
 
-class TestGistAPI (TestCase):
-  def test_access_token (self):
+class TestGistAPI(TestCase):
+  def test_access_token(self):
     with self.assertRaises(gistapi.GistException):
-      getGist()
+      gistapi.Gist('')
     self.assertIsInstance(api, gistapi.Gist)
     self.assertIsNotNone(api)
 
-  def test_create_gist (self):
+  def test_create_gist(self):
     data = {'description': 'test description'}
 
     # Try to create a gist with invalid data
@@ -61,18 +58,18 @@ class TestGistAPI (TestCase):
     # Get a list with all public gists
     gist_items = api.list()
 
-    # Check if the created isn't public
+    # Check if the created gist isn't public gist list
     for gist_item in gist_items:
       self.assertNotEqual(gist_item.get('id'), gist_id)
     # Delete test gist
     self.assertTrue(api.delete(gist_id))
 
-  def test_edit_gist (self):
+  def test_edit_gist(self):
     # Get possible errors
     # Passing wrong parameters
     test_gist_id = test_gist.get('id')
     with self.assertRaises(gistapi.GistException):
-      api.edit('someId', {})
+      api.edit('some_id', {})
     # With wrong files object
     with self.assertRaises(gistapi.GistException):
       api.edit(test_gist_id, {
@@ -100,7 +97,7 @@ class TestGistAPI (TestCase):
     self.assertIsNotNone(gist.get('id'))
     self.assertEqual(len(gist.get('files')), 1)
 
-  def test_get_gist (self):
+  def test_get_gist(self):
     test_gist_id = test_gist.get('id')
     # Getting errors
     with self.assertRaises(gistapi.GistException):

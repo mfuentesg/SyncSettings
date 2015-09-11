@@ -3,66 +3,66 @@
 import os
 from urllib import parse
 
-def getDifference (setA, setB):
-  return list(filter(lambda el: el not in setB, setA))
+def get_difference(seta, setb):
+  return list(filter(lambda el: el not in setb, seta))
 
-def getHomePath (fl = ""):
+def get_home_path(fl = ""):
   home_path = os.path.expanduser('~')
   if isinstance(fl, str) and fl != "":
-    return joinPath((home_path, fl))
+    return join_path((home_path, fl))
   return home_path
 
-def existsPath(path, isFolder = False):
+def exists_path(path, is_folder = False):
   opath = os.path
   if isinstance(path, str) and path != "" and opath.exists(path):
-    if (isFolder and opath.isdir(path)): return True
-    if (not isFolder and opath.isfile(path)): return True
+    if(is_folder and opath.isdir(path)): return True
+    if(not is_folder and opath.isfile(path)): return True
   return False
 
-def joinPath (pathTuple):
-  if isinstance(pathTuple, tuple) and len(pathTuple) > 1:
-    return os.path.join(*pathTuple)
+def join_path(path_tuple):
+  if isinstance(path_tuple, tuple) and len(path_tuple) > 1:
+    return os.path.join(*path_tuple)
   return None
 
-def getFiles (path):
-  if existsPath(path, True):
+def get_files(path):
+  if exists_path(path, True):
     f = []
     for root, dirs, files in os.walk(path):
-      f.extend([joinPath((root, file)) for file in files])
+      f.extend([join_path((root, file)) for file in files])
     return f
   return []
 
-def excludeFilesByPatterns (elements, patterns):
-  def isFolderPattern (element, pattern):
-    if element.startswith(pattern) and existsPath(pattern, True):
+def exclude_files_by_patterns(elements, patterns):
+  def is_folder_pattern(element, pattern):
+    if element.startswith(pattern) and exists_path(pattern, True):
       sub_path = element.replace(pattern, '')
       sub_path = sub_path[1:] if sub_path.startswith(('\\', '/')) else sub_path
-      patternPath = joinPath((pattern, sub_path))
-      return existsPath(patternPath)
+      pattern_path = join_path((pattern, sub_path))
+      return exists_path(pattern_path)
 
     return False
 
-  isValidElements = isinstance(elements, list) and len(elements) > 0
-  isValidPattern = isinstance(patterns, list) and len(patterns) > 0
+  are_valid_elements = isinstance(elements, list) and len(elements) > 0
+  are_valid_patterns = isinstance(patterns, list) and len(patterns) > 0
   results = []
 
-  if isValidElements and isValidPattern:
+  if are_valid_elements and are_valid_patterns:
     for element in elements:
       for pattern in patterns:
         extension = '.' + element.split(os.extsep)[-1]
-        if isFolderPattern(element, pattern):
+        if is_folder_pattern(element, pattern):
           results.append(element)
-        elif (extension == pattern or element == pattern) and existsPath(element):
+        elif(extension == pattern or element == pattern) and exists_path(element):
           results.append(element)
-    return getDifference(elements, results)
+    return get_difference(elements, results)
   return elements
 
-def encodePath(path):
+def encode_path(path):
   if isinstance(path, str) and len(path) > 0:
     return parse.quote(path, safe='')
   return None
 
-def decodePath(path):
+def decode_path(path):
   if isinstance(path, str) and len(path) > 0:
     return parse.unquote(path)
   return None

@@ -61,11 +61,11 @@ touch test_<name>.py #Create a new file
 
 from unittest import TestCase
 
-class TestExample (TestCase):
-  def test_upper (self):
+class TestExample(TestCase):
+  def test_upper(self):
     self.assertEqual('foo'.upper(), 'FOO')
 
-  def test_<name> (self):
+  def test_<name>(self):
     self.assertEqual('bar'.lower(), 'BAR')
 ```
 

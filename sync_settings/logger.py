@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import time
-from .helper import getHomePath, existsPath
+from .helper import get_home_path, exists_path
 
 class Logger:
   FILE_NAME = '.sync-settings.log'
@@ -9,7 +9,7 @@ class Logger:
   MESSAGE_ERROR_TYPE = 2
 
   @staticmethod
-  def log (message, type):
+  def log(message, type):
     if type == Logger.MESSAGE_ERROR_TYPE:
       message = 'ERROR: ' + message
     elif type == Logger.MESSAGE_INFO_TYPE:
@@ -17,20 +17,20 @@ class Logger:
     Logger.write(message)
 
   @staticmethod
-  def getPath ():
-    return getHomePath(Logger.FILE_NAME)
+  def get_path():
+    return get_home_path(Logger.FILE_NAME)
 
   @staticmethod
-  def createEmptyFile ():
-    try: open(Logger.getPath(), 'a').close()
+  def create_empty_file():
+    try: open(Logger.get_path(), 'a').close()
     except Exception as e: print(e)
 
   @staticmethod
-  def write (message):
-    fullTime = time.strftime("[%d/%m/%Y - %H:%M:%S] ")
-    message = fullTime + message
-    path = Logger.getPath()
-    action = 'a+' if existsPath(path) else 'w+'
+  def write(message):
+    full_time = time.strftime("[%d/%m/%Y - %H:%M:%S] ")
+    message = full_time + message
+    path = Logger.get_path()
+    action = 'a+' if exists_path(path) else 'w+'
 
     try:
       with open(path, action) as f:

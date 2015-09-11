@@ -2,28 +2,27 @@
 
 import requests, json, traceback, sys
 
-class GistException (Exception):
-  def toJSON (self):
-    jsonError = json.loads(json.dumps(self.args[0]))
+class GistException(Exception):
+  def to_json(self):
+    json_error = json.loads(json.dumps(self.args[0]))
     trace = traceback.extract_tb(sys.exc_info()[2])[-1]
-    jsonError.update({
+    json_error.update({
       'filename': str(trace[0]),
       'line': str(trace[1])
     })
-    return jsonError
+    return json_error
 
 class Gist:
   BASE_URL = 'https://api.github.com'
 
-  def __init__ (self, token):
+  def __init__(self, token):
     response = requests.get(self.BASE_URL + '/user?access_token=' + token)
     if response.status_code != 200:
-      raise GistException(Gist.__getResponseError('The entered token is invalid', response))
+      raise GistException(Gist.__get_response_error('The entered token is invalid', response))
     else:
-      self.__userData = response.json()
-      self.__accessToken = token
+      self.__user_data = response.json()
       self.__headers = {
-        'X-Github-Username': self.__userData.get('login'),
+        'X-Github-Username': self.__user_data.get('login'),
         'Content-Type': 'application/json',
         'Authorization': 'token %s' %token
       }
@@ -32,8 +31,8 @@ class Gist:
         'files': {}
       }
 
-  def create (self, gistData):
-    _data = json.dumps(dict(self.__defaults, **gistData))
+  def create(self, gist_data):
+    _data = json.dumps(dict(self.__defaults, **gist_data))
 
     response = requests.post(
       self.BASE_URL + '/gists',
@@ -44,58 +43,57 @@ class Gist:
     if response.status_code == 201:
       return response.json()
 
-    raise GistException(Gist.__getResponseError('Gist can\'t created', response))
+    raise GistException(Gist.__get_response_error('Gist can\'t created', response))
 
-  def edit (self, gistId, gistData):
+  def edit(self, gist_id, gist_data):
     self.__defaults.pop('description', None)
-    gistData = json.dumps(dict(self.__defaults, **gistData))
+    gist_data = json.dumps(dict(self.__defaults, **gist_data))
     response = requests.patch(
-      self.BASE_URL + '/gists/%s' %gistId,
-      data=gistData,
+      self.BASE_URL + '/gists/%s' %gist_id,
+      data=gist_data,
       headers=self.__headers
     )
 
     if response.status_code == 200:
       return response.json()
 
-    raise GistException(Gist.__getResponseError('Can\'t edit the gist', response))
+    raise GistException(Gist.__get_response_error('Can\'t edit the gist', response))
 
-  def list (self):
-    listUrl = (
+  def list(self):
+    response = requests.get(''.join((
       self.BASE_URL + '/users/',
-      self.__userData.get('login') + '/gists'
-    )
+      self.__user_data.get('login') + '/gists'
+    )))
 
-    response = requests.get(''.join(listUrl))
     if response.status_code == 200:
       return response.json()
 
-    raise GistException(Gist.__getResponseError('It is not possible to list files', reponse))
+    raise GistException(Gist.__get_response_error('It is not possible to list files', reponse))
 
-  def delete (self, gistId):
+  def delete(self, gist_id):
     response = requests.delete(
-      self.BASE_URL + '/gists/' + gistId,
+      self.BASE_URL + '/gists/' + gist_id,
       headers=self.__headers
     )
 
     if response.status_code == 204:
       return True
 
-    raise GistException(Gist.__getResponseError('The Gist can be deleted', response))
+    raise GistException(Gist.__get_response_error('The Gist can be deleted', response))
 
-  def get (self, gistId):
-    response = requests.get(self.BASE_URL + '/gists/' + gistId)
+  def get(self, gist_id):
+    response = requests.get(self.BASE_URL + '/gists/' + gist_id)
     if response.status_code == 200:
       return response.json()
 
-    raise GistException(Gist.__getResponseError('The gist not exist', response))
+    raise GistException(Gist.__get_response_error('The gist not exist', response))
 
   @staticmethod
-  def __getResponseError (message, response):
+  def __get_response_error(message, response):
     rjson = response.json()
-    errorDescription = "Code " + str(response.status_code) + " - " + rjson.get('message')
+    error_description = "Code " + str(response.status_code) + " - " + rjson.get('message')
     return {
       'app_message': message,
-      'error_description': errorDescription,
+      'error_description': error_description,
       'code': response.status_code
     }
