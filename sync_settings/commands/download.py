@@ -25,6 +25,11 @@ class SyncSettingsDownloadCommand(WindowCommand):
                 opened_file = open(Manager.get_packages_path(decode_path(f)), 'w+')
                 opened_file.write(file_json.get('content'))
                 opened_file.close()
+            success_message = ''.join([
+              'Files Downloaded Successfully. ',
+              'Please restart Sublime Text to install all dependencies!.'
+            ])
+            Manager.show_message_and_log(success_message, False)
           else:
             Manager.show_message_and_log('There are not enough files to create the gist', False)
         except Exception as e:
@@ -32,9 +37,4 @@ class SyncSettingsDownloadCommand(WindowCommand):
       else:
         Manager.show_message_and_log('Set the gist_id in the configuration file', False)
 
-    success_message = 'Files Downloaded Successfully. Please restart Sublime Text to install all dependencies!.'
-    ThreadProgress(
-      lambda: download_request(),
-      'Downloading files',
-      success_message
-    )
+    ThreadProgress(lambda: download_request(),'Downloading files')

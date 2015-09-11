@@ -45,7 +45,4 @@ class SyncSettingsCreateAndUploadCommand(WindowCommand):
       else:
         Manager.show_message_and_log('There are not enough files to create the gist', False)
 
-    ThreadProgress(
-      lambda: create_and_upload_request(),
-      'Creating and uploading files'
-    )
+    ThreadProgress(lambda: create_and_upload_request(),'Creating and uploading files')

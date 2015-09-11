@@ -17,14 +17,11 @@ class SyncSettingsUploadCommand(WindowCommand):
           if len(files) > 0:
             data = { 'files': files}
             api.edit(gist_id, data)
+            Manager.show_message_and_log('Your files was uploaded successfully!')
           else:
             Manager.show_message_and_log('There are not enough files to upload', False)
         except Exception as e:
           Manager.show_message_and_log(e)
       else:
         Manager.show_message_and_log('Set the gist_id in the configuration file', False)
-    ThreadProgress(
-      lambda: upload_request(),
-      'Uploading files',
-      'Your files was uploaded successfully!'
-    )
+    ThreadProgress(lambda: upload_request(), 'Uploading files')
