@@ -15,9 +15,9 @@ class SyncSettingsUploadCommand(WindowCommand):
           api = Gist(Manager.settings('access_token'))
           files = Manager.get_files_content()
           if len(files) > 0:
-            data = { 'files': files}
+            data = {'files': files}
             api.edit(gist_id, data)
-            Manager.show_message_and_log('Your files was uploaded successfully!')
+            Manager.show_message_and_log('Your files was uploaded successfully!', False)
           else:
             Manager.show_message_and_log('There are not enough files to upload', False)
         except Exception as e:
