@@ -99,10 +99,3 @@ class Gist:
       'error_description': errorDescription,
       'code': response.status_code
     }
-
-  @staticmethod
-  def getCurrentRelease ():
-    response = requests.get(Gist.BASE_URL + '/repos/mfuentesg/SyncSettings/releases/latest')
-    if response.status_code == 200:
-      return response.json()
-    raise GistException(Gist.__getResponseError('Repository troubles', response))
