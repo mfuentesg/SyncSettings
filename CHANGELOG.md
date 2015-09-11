@@ -14,8 +14,21 @@ This version has some bug fixes found
 * Custom Exception Added
 * Fix minor errors
 
-#1.2.0
+##1.2.0
 
 This version executes each command as a thread, allowing that the application is not lock.
 
 * Added threading support
+
+##2.0.0
+
+This version has some bug fixes found and new features
+
+* All files inside on User folder will be included
+* Enhancements on the excluded files list
+  - Exclude by filename
+  - Exclude by extension
+  - Exclude by folder
+* Show progress indicator on the status bar
+* Error messages more descriptive
+* Minor bug fixes
