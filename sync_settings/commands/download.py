@@ -29,5 +29,9 @@ class SyncSettingsDownloadCommand (WindowCommand):
           Manager.showMessageAndLog(e)
       else:
         Manager.showMessageAndLog('Set the gist_id in the configuration file', False)
-    success_message = 'Sync Settings: Files Downloaded Successfully. Please restart Sublime Text to install all dependencies!'
-    ThreadProgress(lambda: processDownloadRequest(), 'Sync Settings: Downloading files', success_message)
+    success_message = 'Files Downloaded Successfully. Please restart Sublime Text to install all dependencies!.'
+    ThreadProgress(
+      lambda: processDownloadRequest(),
+      'Downloading files',
+      success_message
+    )

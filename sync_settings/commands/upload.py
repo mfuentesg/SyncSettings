@@ -23,4 +23,8 @@ class SyncSettingsUploadCommand (WindowCommand):
           Manager.showMessageAndLog(e)
       else:
         Manager.showMessageAndLog('Set the gist_id in the configuration file', False)
-    ThreadProgress(lambda: processUploadRequest(), 'Sync Settings: Uploading files', 'Sync Settings: Your files was uploaded successfully!')
+    ThreadProgress(
+      lambda: processUploadRequest(),
+      'Uploading files',
+      'Your files was uploaded successfully!'
+    )
