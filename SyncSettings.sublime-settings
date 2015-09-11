@@ -6,7 +6,7 @@
   /**
     * This token allow to plugin do:
     * - Create a Gist
-    * - Edit a Gist
+    * - Download a Gist
     * - Upload a Gist
    */
   "access_token": "",
@@ -17,7 +17,15 @@
     "Package Control.last-run",
     "Package Control.merged-ca-bundle",
     "Package Control.user-ca-bundle",
-    "Package Control.system-ca-bundle"
+    "Package Control.system-ca-bundle",
+    "Package Control.cache",
+    ".DS_Store",
+    ".DS_Store?",
+    "._*",
+    ".Spotlight-V100",
+    ".Trashes",
+    "ehthumbs.db",
+    "Thumbs.db"
   ],
   /**
    * This option has the gist id for upload your configuration
