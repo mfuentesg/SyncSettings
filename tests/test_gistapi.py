@@ -111,7 +111,3 @@ class TestGistAPI (TestCase):
     self.assertIsNotNone(gist.get('id'))
     self.assertEqual(test_gist_id, gist.get('id'))
     self.assertTrue(api.delete(test_gist_id))
-
-  def test_current_release (self):
-    release = api.getCurrentRelease()
-    self.assertIsNotNone(release.get('id'))
