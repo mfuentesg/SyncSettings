@@ -59,7 +59,7 @@ def excludeFilesByPatterns (elements, patterns):
 
 def encodePath(path):
   if isinstance(path, str) and len(path) > 0:
-    return parse.quote(path)
+    return parse.quote(path, safe='')
   return None
 
 def decodePath(path):

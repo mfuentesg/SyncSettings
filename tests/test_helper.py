@@ -4,13 +4,13 @@ from unittest import TestCase
 from tests import *
 import os, shutil, re
 
-class TestHelper (TestCase):
-  def test_difference (self):
+class TestHelper(TestCase):
+  def test_difference(self):
     l = helper.getDifference([1, 2, 3, 4], [1, 2, 3])
     self.assertEqual(len(l), 1)
     self.assertEqual(l[0], 4)
 
-  def test_home_path (self):
+  def test_home_path(self):
     homePath = os.path.expanduser('~')
     self.assertEqual(helper.joinPath((homePath, 'foo')), helper.getHomePath('foo'))
     self.assertEqual(homePath, helper.getHomePath())
@@ -18,26 +18,23 @@ class TestHelper (TestCase):
     self.assertEqual(homePath, helper.getHomePath(None))
     self.assertEqual(homePath, helper.getHomePath(1234))
 
-  def test_exists_path (self):
+  def test_exists_path(self):
     self.assertFalse(helper.existsPath(optionsPath, True))
-    with self.assertRaises(TypeError):
-      helper.existsPath()
-    with self.assertRaises(TypeError):
-      helper.existsPath(isFolder=True)
+    with self.assertRaises(TypeError): helper.existsPath()
+    with self.assertRaises(TypeError): helper.existsPath(isFolder=True)
     self.assertFalse(helper.existsPath(helper.joinPath((os.getcwd(), 'tests'))))
     self.assertTrue(helper.existsPath(optionsPath))
     self.assertTrue(helper.existsPath(helper.joinPath((os.getcwd(), 'tests')), True))
 
-  def test_join_path (self):
+  def test_join_path(self):
     self.assertIsNone(helper.joinPath(''))
     self.assertIsNone(helper.joinPath([]))
     self.assertIsNone(helper.joinPath(1234))
     self.assertIsNone(helper.joinPath(('')))
     self.assertIsNotNone(helper.joinPath(('123', '1234')))
 
-  def test_get_files (self):
-    with self.assertRaises(TypeError):
-      helper.getFiles()
+  def test_get_files(self):
+    with self.assertRaises(TypeError): helper.getFiles()
     self.assertListEqual(helper.getFiles('t'), [])
     self.assertListEqual(helper.getFiles(1234), [])
     self.assertListEqual(helper.getFiles(1234), [])
@@ -58,7 +55,7 @@ class TestHelper (TestCase):
     self.assertListEqual(files, allFiles)
     shutil.rmtree(helper.joinPath((os.getcwd(), 'tests', 'hello')))
 
-  def test_filter_by_patterns (self):
+  def test_filter_by_patterns(self):
     os.makedirs(helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar')), exist_ok=True)
     open(helper.joinPath((os.getcwd(), 'tests', 'foo', 'foo.txt')), 'a').close()
     open(helper.joinPath((os.getcwd(), 'tests', 'foo', 'bar.txt')), 'a').close()
@@ -121,3 +118,15 @@ class TestHelper (TestCase):
     ])
 
     shutil.rmtree(helper.joinPath((os.getcwd(), 'tests', 'foo')))
+
+  def test_encode_decode(self):
+    self.assertIsNone(helper.encodePath(""))
+    self.assertIsNone(helper.decodePath(""))
+    with self.assertRaises(TypeError): helper.encodePath()
+    with self.assertRaises(TypeError): helper.decodePath()
+
+    path = '/some/path with spaces/to/file.txt'
+    encoded_path = '%2Fsome%2Fpath%20with%20spaces%2Fto%2Ffile.txt'
+    self.assertNotEqual(helper.encodePath(path), '/some/path%20with%20spaces/to/file.txt')
+    self.assertEqual(helper.encodePath(path), encoded_path)
+    self.assertEqual(helper.decodePath(encoded_path), path)
