@@ -91,9 +91,10 @@ class Gist:
   @staticmethod
   def __get_response_error(message, response):
     rjson = response.json()
-    error_description = "Code " + str(response.status_code) + " - " + rjson.get('message')
+    error_description = "Code %s - %s" %(str(response.status_code), rjson.get('message'))
+
     return {
-      'app_message': message,
-      'error_description': error_description,
+      'app_message': "%s - %s" % (error_description, message),
+      'error_description': "[%s] - %s" % (message, error_description),
       'code': response.status_code
     }
