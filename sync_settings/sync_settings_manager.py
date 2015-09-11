@@ -6,17 +6,6 @@ from .helper import *
 
 class SyncSettingsManager:
   settings_filename = 'SyncSettings.sublime-settings'
-  files = [
-    "Package Control.merged-ca-bundle",
-    "Package Control.system-ca-bundle",
-    "Package Control.user-ca-bundle",
-    "Package Control.sublime-settings",
-    "Preferences.sublime-settings",
-    "Package Control.last-run",
-    "Default (OSX).sublime-keymap",
-    "Default (Windows).sublime-keymap",
-    "Default (Linux).sublime-keymap"
-  ]
 
   @staticmethod
   def settings(key = None, new_value = None):
@@ -29,18 +18,32 @@ class SyncSettingsManager:
       return settings
 
   @staticmethod
-  def get_files():
-    excluded_files = SyncSettingsManager.settings('excluded_files')
-    return get_difference(SyncSettingsManager.files, excluded_files)
+  def get_filtered_files():
+    pp = SyncSettingsManager.get_packages_path
+    files = get_files(pp())
+    excluded_files = [pp(f) for f in SyncSettingsManager.settings('excluded_files')]
+    files = exclude_files_by_patterns(files, excluded_files)
+
+    return files
+
+  @staticmethod
+  def get_encoded_files():
+    pp = SyncSettingsManager.get_packages_path
+    encoded_files = SyncSettingsManager.get_filtered_files()
+    encoded_files = [encode_path(f.replace(pp(), '')) for f in encoded_files]
+
+    return encoded_files
 
   @staticmethod
   def get_files_content():
+    files = SyncSettingsManager.get_filtered_files()
     r = {}
-    for f in SyncSettingsManager.get_files():
-      full_path = SyncSettingsManager.get_packages_path(f)
-      if exists_path(full_path):
+
+    for f in files:
+      if exists_path(f):
         try:
-          content = open(full_path, 'r').read()
+          content = open(f, 'r').read()
+          f = encode_path(f.replace(SyncSettingsManager.get_packages_path(), ''))
           r.update({f: {'content': content}})
         except Exception as e:
           Logger.log(str(e), Logger.MESSAGE_ERROR_TYPE)
@@ -48,7 +51,7 @@ class SyncSettingsManager:
 
   @staticmethod
   def get_packages_path(filename = None):
-    path = join_path((sublime.packages_path(), 'User'))
+    path = join_path((sublime.packages_path(), 'User/'))
     if not filename is None:
       return join_path((path, filename))
     return path
