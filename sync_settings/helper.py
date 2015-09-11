@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 
-import os, re
+import os
 from urllib import parse
 
 def getDifference (setA, setB):
   return list(filter(lambda el: el not in setB, setA))
 
 def getHomePath (fl = ""):
+  home_path = os.path.expanduser('~')
   if isinstance(fl, str) and fl != "":
-    return joinPath((os.path.expanduser('~'), fl))
-  return os.path.expanduser('~')
+    return joinPath((home_path, fl))
+  return home_path
 
 def existsPath(path, isFolder = False):
   opath = os.path
@@ -37,10 +38,9 @@ def excludeFilesByPatterns (elements, patterns):
       sub_path = element.replace(pattern, '')
       sub_path = sub_path[1:] if sub_path.startswith(('\\', '/')) else sub_path
       patternPath = joinPath((pattern, sub_path))
-      if existsPath(patternPath):
-        return True
+      return existsPath(patternPath)
 
-      return False
+    return False
 
   isValidElements = isinstance(elements, list) and len(elements) > 0
   isValidPattern = isinstance(patterns, list) and len(patterns) > 0

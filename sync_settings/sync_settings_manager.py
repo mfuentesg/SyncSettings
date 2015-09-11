@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import sublime, os
+import sublime
 from .logger import Logger
 from .helper import *
 

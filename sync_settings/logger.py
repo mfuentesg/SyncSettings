@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import os, time
-from .helper import *
+import time
+from .helper import getHomePath, existsPath
 
 class Logger:
   FILE_NAME = '.sync-settings.log'
