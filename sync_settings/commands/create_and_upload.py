@@ -19,7 +19,7 @@ class SyncSettingsCreateAndUploadCommand (WindowCommand):
     )
 
   def onDone (self, description):
-    def processRequest ():
+    def create_and_upload_request ():
       d = description if description != "" else ""
       files = Manager.getContentFiles()
 
@@ -41,6 +41,6 @@ class SyncSettingsCreateAndUploadCommand (WindowCommand):
         Manager.showMessageAndLog('There are not enough files to create the gist', False)
 
     ThreadProgress(
-      lambda: processRequest(),
+      lambda: create_and_upload_request(),
       'Creating and uploading files'
     )

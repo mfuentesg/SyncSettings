@@ -8,7 +8,7 @@ from ..thread_progress import ThreadProgress
 
 class SyncSettingsDownloadCommand (WindowCommand):
   def run (self):
-    def processDownloadRequest ():
+    def download_request ():
       gistId = Manager.settings('gist_id')
       if gistId:
         try:
@@ -31,7 +31,7 @@ class SyncSettingsDownloadCommand (WindowCommand):
         Manager.showMessageAndLog('Set the gist_id in the configuration file', False)
     success_message = 'Files Downloaded Successfully. Please restart Sublime Text to install all dependencies!.'
     ThreadProgress(
-      lambda: processDownloadRequest(),
+      lambda: download_request(),
       'Downloading files',
       success_message
     )

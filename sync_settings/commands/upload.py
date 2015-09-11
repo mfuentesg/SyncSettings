@@ -8,7 +8,7 @@ from ..thread_progress import ThreadProgress
 
 class SyncSettingsUploadCommand (WindowCommand):
   def run (self):
-    def processUploadRequest ():
+    def upload_request ():
       gistId = Manager.settings('gist_id')
       if gistId:
         try:
@@ -24,7 +24,7 @@ class SyncSettingsUploadCommand (WindowCommand):
       else:
         Manager.showMessageAndLog('Set the gist_id in the configuration file', False)
     ThreadProgress(
-      lambda: processUploadRequest(),
+      lambda: upload_request(),
       'Uploading files',
       'Your files was uploaded successfully!'
     )
