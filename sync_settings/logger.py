@@ -9,10 +9,10 @@ class Logger:
   MESSAGE_ERROR_TYPE = 2
 
   @staticmethod
-  def log(message, type):
-    if type == Logger.MESSAGE_ERROR_TYPE:
+  def log(message, message_type):
+    if message_type == Logger.MESSAGE_ERROR_TYPE:
       message = 'ERROR: ' + message
-    elif type == Logger.MESSAGE_INFO_TYPE:
+    elif message_type == Logger.MESSAGE_INFO_TYPE:
       message = 'INFO: ' + message
     Logger.write(message)
 
