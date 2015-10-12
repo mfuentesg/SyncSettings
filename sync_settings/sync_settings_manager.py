@@ -51,7 +51,7 @@ class SyncSettingsManager:
 
   @staticmethod
   def get_packages_path(filename = None):
-    path = join_path((sublime.packages_path(), 'User/'))
+    path = join_path((sublime.packages_path(), 'User' + os_separator()))
     if not filename is None:
       return join_path((path, filename))
     return path
@@ -72,3 +72,19 @@ class SyncSettingsManager:
 
     sublime.status_message('Sync Settings: ' + m)
     Logger.log(l, Logger.MESSAGE_ERROR_TYPE if error else Logger.MESSAGE_INFO_TYPE)
+
+  @staticmethod
+  def update_from_remote_files(remote_files):
+    if isinstance(remote_files, dict):
+      decoded_files = [SyncSettingsManager.get_packages_path(decode_path(f)) for f in remote_files]
+      excluded_files = SyncSettingsManager.settings('excluded_files')
+      filtered_files = exclude_files_by_patterns(decoded_files, excluded_files)
+
+      for f in filtered_files:
+        encode_file = encode_path(f.replace(SyncSettingsManager.get_packages_path(), ''))
+        current_file = remote_files.get(encode_file)
+        try:
+          update_content_file(f, current_file.get('content'))
+        except Exception as e:
+          message = 'It has generated an error when to update or create the file %s'%(f)
+          Logger.log(message + str(e), Logger.MESSAGE_ERROR_TYPE)
