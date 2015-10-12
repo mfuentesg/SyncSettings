@@ -16,15 +16,9 @@ class SyncSettingsDownloadCommand(WindowCommand):
         try:
           api = Gist(Manager.settings('access_token'))
           remote_files = api.get(gist_id).get('files')
-          encoded_files = Manager.get_encoded_files()
 
-          if len(encoded_files) > 0:
-            for f in encoded_files:
-              file_json = remote_files.get(f)
-              if not file_json is None:
-                opened_file = open(Manager.get_packages_path(decode_path(f)), 'w+')
-                opened_file.write(file_json.get('content'))
-                opened_file.close()
+          if len(remote_files) > 0:
+            Manager.update_from_remote_files(remote_files)
             success_message = ''.join([
               'Files Downloaded Successfully. ',
               'Please restart Sublime Text to install all dependencies!.'
