@@ -129,4 +129,32 @@ class TestHelper(TestCase):
     encoded_path = '%2Fsome%2Fpath%20with%20spaces%2Fto%2Ffile.txt'
     self.assertNotEqual(helper.encode_path(path), '/some/path%20with%20spaces/to/file.txt')
     self.assertEqual(helper.encode_path(path), encoded_path)
-    self.assertEqual(helper.decode_path(encoded_path), path)
+    self.assertEqual(helper.decode_path(encoded_path), path.replace('/', helper.os_separator()))
+
+  def test_update_content_file(self):
+    os.makedirs(helper.join_path((os.getcwd(), 'tests', 'foo')), exist_ok=True)
+    file_path = helper.join_path((os.getcwd(), 'tests', 'foo', 'foo.txt'))
+    content = 'content file'
+    new_content = 'new content file'
+
+    with open(file_path, 'a') as f:
+      f.write(content)
+      f.close()
+    self.assertTrue(helper.exists_path(file_path))
+
+    with open(file_path) as f:
+      self.assertEqual(f.read(), content)
+    
+    #Wrong case
+    with self.assertRaises(Exception): helper.update_content_file('', new_content)
+
+    #Success case
+    helper.update_content_file(file_path, new_content)
+    with open(file_path) as f:
+      self.assertEqual(f.read(), new_content)
+    
+    shutil.rmtree(helper.join_path((os.getcwd(), 'tests', 'foo')))
+
+  def test_os_separator(self):
+    self.assertNotEqual(os.sep, '')
+    self.assertEqual(os.sep, helper.os_separator())

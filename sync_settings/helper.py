@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os
+import os, sys
 from urllib import parse
 
 def get_difference(seta, setb):
@@ -59,10 +59,23 @@ def exclude_files_by_patterns(elements, patterns):
 
 def encode_path(path):
   if isinstance(path, str) and len(path) > 0:
+    path = path.replace('\\', '/')
     return parse.quote(path, safe='')
   return None
 
 def decode_path(path):
   if isinstance(path, str) and len(path) > 0:
-    return parse.unquote(path)
+    return parse.unquote(path).replace('/', os_separator())
   return None
+
+def update_content_file(path, content):
+  if isinstance(path, str) and isinstance(content, str):
+    try:
+      with open(path, 'w+') as opened_file:
+        opened_file.write(content)
+        opened_file.close()
+    except Exception as e:
+      raise e
+
+def os_separator():
+  return '\\' if sys.platform.startswith('win') else '/'
