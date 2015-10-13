@@ -42,7 +42,7 @@ class SyncSettingsManager:
     for f in files:
       if exists_path(f):
         try:
-          content = open(f, 'r').read()
+          content = open(f, 'r', encoding = 'ISO-8859-1').read()
           f = encode_path(f.replace(SyncSettingsManager.get_packages_path(), ''))
           r.update({f: {'content': content}})
         except Exception as e:
