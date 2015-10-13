@@ -32,3 +32,11 @@ This version has some bug fixes found and new features
 * Show progress indicator on the status bar
 * Error messages more descriptive
 * Minor bug fixes
+
+##2.1.1
+
+This version has some bug fixes
+
+* Add base encoding to read the files
+* When a file not exists in other host this file is not created
+* Function enhancements
