@@ -1,7 +1,7 @@
 Sync Settings
 ===============
 
-**Sync Settings**, is a way of keeping the [Sublime Text](http://sublimetext.com/) synchronized between different operating systems, the synchronization to uses Github Gist allowing you to use all the technologies that this service provides for example to see the history of your configuration file.
+**Sync Settings**, is a way of keeping the [Sublime Text](http://sublimetext.com/) configuration synchronized between different operating systems, the synchronization to uses Github Gist allowing you to use all the technologies that this service provides for example to see the history of your configuration file.
 
 ##Support
 
