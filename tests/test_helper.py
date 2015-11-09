@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
-
+# # -*- coding: utf-8 -*-
+import os
+import shutil
+from sync_settings.libs import helper
+from tests import options_path
 from unittest import TestCase
-from tests import *
-import os, shutil
 
 class TestHelper(TestCase):
   def test_difference(self):
