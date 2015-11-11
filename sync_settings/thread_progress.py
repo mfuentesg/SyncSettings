@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #Credits to @wbond package_control
 
-import sublime, threading
+import sublime
+import threading
 
 class ThreadProgress():
 

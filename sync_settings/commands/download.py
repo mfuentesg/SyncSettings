@@ -3,9 +3,8 @@
 import sublime
 from sublime_plugin import WindowCommand
 from ..sync_settings_manager import SyncSettingsManager as Manager
-from ..gistapi import Gist
 from ..thread_progress import ThreadProgress
-from ..helper import decode_path
+from ..libs.gistapi import Gist
 
 class SyncSettingsDownloadCommand(WindowCommand):
   def run(self):
