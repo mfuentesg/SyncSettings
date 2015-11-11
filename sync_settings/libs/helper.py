@@ -32,15 +32,18 @@ def get_files(path):
     return f
   return []
 
-def exclude_files_by_patterns(elements, patterns):
-  def is_folder_pattern(element, pattern):
-    if element.startswith(pattern) and exists_path(pattern, True):
-      sub_path = element.replace(pattern, '')
-      sub_path = sub_path[1:] if sub_path.startswith(('\\', '/')) else sub_path
-      pattern_path = join_path((pattern, sub_path))
-      return exists_path(pattern_path)
+def is_folder_pattern(element, pattern):
+  if element.startswith(pattern) and exists_path(pattern, True):
+    sub_path = element.replace(pattern, '')
+    sub_path = sub_path[1:] if sub_path.startswith(('\\', '/')) else sub_path
+    pattern_path = join_path((pattern, sub_path))
+    return exists_path(pattern_path)
 
-    return False
+  return False
+
+def exclude_files_by_patterns(elements, patterns):  
+  elements = parse_to_os(elements)
+  patterns = parse_to_os(patterns)
 
   are_valid_elements = isinstance(elements, list) and len(elements) > 0
   are_valid_patterns = isinstance(patterns, list) and len(patterns) > 0
@@ -49,11 +52,15 @@ def exclude_files_by_patterns(elements, patterns):
   if are_valid_elements and are_valid_patterns:
     for element in elements:
       for pattern in patterns:
-        extension = '.' + element.split(os.extsep)[-1]
+        pextension = '.' + pattern.split(os.extsep)[-1]
+
         if is_folder_pattern(element, pattern):
           results.append(element)
-        elif(extension == pattern or element == pattern) and exists_path(element):
+        elif element == pattern and exists_path(element):
           results.append(element)
+        elif element.endswith(pextension) and not exists_path(pattern) and exists_path(element):
+          results.append(element)
+
     return get_difference(elements, results)
   return elements
 
@@ -78,4 +85,10 @@ def update_content_file(path, content):
       raise e
 
 def os_separator():
-  return '\\' if sys.platform.startswith('win') else '/'
+  separator = '\\' if sys.platform.startswith('win') else '/'
+  return separator
+
+def parse_to_os(paths):
+  if (isinstance(paths, list)):
+    return [p.replace('/', os_separator()).replace('\\', os_separator()) for p in paths]
+  return None
