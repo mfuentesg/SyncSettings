@@ -55,8 +55,11 @@ class TestHelper(TestCase):
     self.assertEqual(len(files), 3)
     self.assertListEqual(files, allFiles)
     shutil.rmtree(helper.join_path((os.getcwd(), 'tests', 'hello')))
+  
+  def test_is_folder_pattern(self):
+    pass
 
-  def test_filter_by_patterns(self):
+  def test_exclude_files_by_patterns(self):
     #Assuming <../tests/foo> is <../User/>
     
     os.makedirs(helper.join_path((os.getcwd(), 'tests', 'foo', 'bar')), exist_ok=True)
@@ -127,16 +130,21 @@ class TestHelper(TestCase):
 
     shutil.rmtree(helper.join_path((os.getcwd(), 'tests', 'foo')))
 
-  def test_encode_decode(self):
+  def test_encode_path(self):
     self.assertIsNone(helper.encode_path(""))
-    self.assertIsNone(helper.decode_path(""))
     with self.assertRaises(TypeError): helper.encode_path()
-    with self.assertRaises(TypeError): helper.decode_path()
 
     path = '/some/path with spaces/to/file.txt'
     encoded_path = '%2Fsome%2Fpath%20with%20spaces%2Fto%2Ffile.txt'
     self.assertNotEqual(helper.encode_path(path), '/some/path%20with%20spaces/to/file.txt')
     self.assertEqual(helper.encode_path(path), encoded_path)
+
+  def test_decode_path(self):
+    self.assertIsNone(helper.decode_path(""))
+    with self.assertRaises(TypeError): helper.decode_path()
+
+    path = '/some/path with spaces/to/file.txt'
+    encoded_path = '%2Fsome%2Fpath%20with%20spaces%2Fto%2Ffile.txt'
     self.assertEqual(helper.decode_path(encoded_path), path.replace('/', helper.os_separator()))
 
   def test_update_content_file(self):
@@ -167,5 +175,26 @@ class TestHelper(TestCase):
     self.assertNotEqual(os.sep, '')
     self.assertEqual(os.sep, helper.os_separator())
 
-  def test_is_folder_pattern(self):
-    pass
+  def test_parse_to_os(self):
+    paths = [
+      'something/path\\to/test',
+      'another\\something/path\\to/test'
+    ]
+
+    expected_paths = [
+      helper.join_path((
+        'something',
+        'path',
+        'to',
+        'test'
+      )),
+      helper.join_path((
+        'another',
+        'something',
+        'path',
+        'to',
+        'test'
+      ))
+    ]
+    result = helper.parse_to_os(paths)
+    self.assertEqual(result, expected_paths)
