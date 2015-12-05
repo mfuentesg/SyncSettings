@@ -14,11 +14,6 @@
     * This option has a list with the excluded files
    */
   "excluded_files": [
-    "Package Control.last-run",
-    "Package Control.merged-ca-bundle",
-    "Package Control.user-ca-bundle",
-    "Package Control.system-ca-bundle",
-    "Package Control.cache",
     ".DS_Store",
     ".DS_Store?",
     "._*",
