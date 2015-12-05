@@ -28,7 +28,7 @@ def get_files(path):
   if exists_path(path, True):
     f = []
     for root, dirs, files in os.walk(path):
-      f.extend([join_path((root, file)) for file in files])
+      f.extend([join_path((root, _file)) for _file in files])
     return f
   return []
 
