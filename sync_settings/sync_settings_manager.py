@@ -42,9 +42,10 @@ class SyncSettingsManager:
     for f in files:
       if helper.exists_path(f):
         try:
-          content = open(f, 'r', encoding = 'ISO-8859-1').read()
-          f = helper.encode_path(f.replace(SyncSettingsManager.get_packages_path(), ''))
-          r.update({f: {'content': content}})
+          content = open(f, 'r').read()
+          if content.strip() is not '':
+            f = helper.encode_path(f.replace(SyncSettingsManager.get_packages_path(), ''))
+            r.update({f: {'content': content}})
         except Exception as e:
           Logger.log(str(e), Logger.MESSAGE_ERROR_TYPE)
     return r
