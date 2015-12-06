@@ -46,12 +46,12 @@ class TestHelper(TestCase):
     open(helper.join_path((os.getcwd(), 'tests', 'hello', 'foo.txt')), 'a').close()
     open(helper.join_path((os.getcwd(), 'tests', 'hello', 'bar.txt')), 'a').close()
     open(helper.join_path((os.getcwd(), 'tests', 'hello', 'world', 'foo.txt')), 'a').close()
-    allFiles = [
+    allFiles = sorted([
       helper.join_path((os.getcwd(), 'tests', 'hello', 'bar.txt')),
       helper.join_path((os.getcwd(), 'tests', 'hello', 'foo.txt')),
       helper.join_path((os.getcwd(), 'tests', 'hello', 'world', 'foo.txt'))
-    ]
-    files = helper.get_files(helper.join_path((os.getcwd(), 'tests', 'hello')))
+    ])
+    files = sorted(helper.get_files(helper.join_path((os.getcwd(), 'tests', 'hello'))))
     self.assertEqual(len(files), 3)
     self.assertListEqual(files, allFiles)
     shutil.rmtree(helper.join_path((os.getcwd(), 'tests', 'hello')))
@@ -61,7 +61,6 @@ class TestHelper(TestCase):
 
   def test_exclude_files_by_patterns(self):
     #Assuming <../tests/foo> is <../User/>
-    
     os.makedirs(helper.join_path((os.getcwd(), 'tests', 'foo', 'bar')), exist_ok=True)
     open(helper.join_path((os.getcwd(), 'tests', 'foo', 'foo.txt')), 'a').close()
     open(helper.join_path((os.getcwd(), 'tests', 'foo', 'bar.txt')), 'a').close()
@@ -85,48 +84,48 @@ class TestHelper(TestCase):
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar', 'foo.py'))
     ])
 
-    filteredFiles = helper.exclude_files_by_patterns(files, [
+    filteredFiles = sorted(helper.exclude_files_by_patterns(files, [
       helper.join_path((os.getcwd(), 'tests', 'foo', '.py'))
-    ])
+    ]))
     self.assertEqual(len(filteredFiles), 3)
-    self.assertListEqual(filteredFiles, [
+    self.assertListEqual(filteredFiles, sorted([
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar.txt')),
       helper.join_path((os.getcwd(), 'tests', 'foo', 'foo.txt')),
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar', 'foo.txt'))
-    ])
+    ]))
 
     # By Filename
-    filteredFiles = helper.exclude_files_by_patterns(files, [
+    filteredFiles = sorted(helper.exclude_files_by_patterns(files, [
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar.txt'))
-    ])
+    ]))
 
     self.assertEqual(len(filteredFiles), 3)
-    self.assertListEqual(filteredFiles, [
+    self.assertListEqual(filteredFiles, sorted([
       helper.join_path((os.getcwd(), 'tests', 'foo', 'foo.txt')),
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar', 'foo.py')),
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar', 'foo.txt'))
-    ])
+    ]))
 
-    filteredFiles = helper.exclude_files_by_patterns(files, [
+    filteredFiles = sorted(helper.exclude_files_by_patterns(files, [
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar.txt')),
       helper.join_path((os.getcwd(), 'tests', 'foo', 'foo.txt'))
-    ])
+    ]))
 
     self.assertEqual(len(filteredFiles), 2)
-    self.assertListEqual(filteredFiles, [
+    self.assertListEqual(filteredFiles, sorted([
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar', 'foo.py')),
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar', 'foo.txt'))
-    ])
+    ]))
 
     # By folder
-    filteredFiles = helper.exclude_files_by_patterns(files, [
+    filteredFiles = sorted(helper.exclude_files_by_patterns(files, [
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar'))
-    ])
+    ]))
     self.assertEqual(len(filteredFiles), 2)
-    self.assertListEqual(filteredFiles, [
+    self.assertListEqual(filteredFiles, sorted([
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar.txt')),
       helper.join_path((os.getcwd(), 'tests', 'foo', 'foo.txt'))
-    ])
+    ]))
 
     shutil.rmtree(helper.join_path((os.getcwd(), 'tests', 'foo')))
 
