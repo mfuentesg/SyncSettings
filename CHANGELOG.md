@@ -40,3 +40,11 @@ This version has some bug fixes
 * Add base encoding to read the files
 * When a file not exists in other host this file is not created
 * Function enhancements
+
+##2.2.0
+
+This version has some bug fixes
+
+* Code 422 - Validation Failed
+* Re-order file structure
+* Enhance testing

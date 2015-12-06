@@ -4,5 +4,6 @@
   "v1.1.0" : "messages/v1.1.0.txt",
   "v1.2.0" : "messages/v1.2.0.txt",
   "v2.0.0" : "messages/v2.0.0.txt",
-  "v2.1.1" : "messages/v2.1.1.txt"
+  "v2.1.1" : "messages/v2.1.1.txt",
+  "v2.2.0" : "messages/v2.2.0.txt"
 }
