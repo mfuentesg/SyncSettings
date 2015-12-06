@@ -60,7 +60,7 @@ class Gist:
     if response.status_code == 200:
       return response.json()
 
-    raise GistException(Gist.__get_response_error('It is not possible to list files', reponse))
+    raise GistException(Gist.__get_response_error('It is not possible to list files', response))
 
   def delete(self, gist_id):
     response = requests.delete(
