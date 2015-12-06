@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
-
+# # -*- coding: utf-8 -*-
+import os
+import shutil
+from sync_settings.libs import helper
+from tests import options_path
 from unittest import TestCase
-from tests import *
-import os, shutil
 
 class TestHelper(TestCase):
   def test_difference(self):
@@ -45,17 +46,21 @@ class TestHelper(TestCase):
     open(helper.join_path((os.getcwd(), 'tests', 'hello', 'foo.txt')), 'a').close()
     open(helper.join_path((os.getcwd(), 'tests', 'hello', 'bar.txt')), 'a').close()
     open(helper.join_path((os.getcwd(), 'tests', 'hello', 'world', 'foo.txt')), 'a').close()
-    allFiles = [
+    allFiles = sorted([
       helper.join_path((os.getcwd(), 'tests', 'hello', 'bar.txt')),
       helper.join_path((os.getcwd(), 'tests', 'hello', 'foo.txt')),
       helper.join_path((os.getcwd(), 'tests', 'hello', 'world', 'foo.txt'))
-    ]
-    files = helper.get_files(helper.join_path((os.getcwd(), 'tests', 'hello')))
+    ])
+    files = sorted(helper.get_files(helper.join_path((os.getcwd(), 'tests', 'hello'))))
     self.assertEqual(len(files), 3)
     self.assertListEqual(files, allFiles)
     shutil.rmtree(helper.join_path((os.getcwd(), 'tests', 'hello')))
+  
+  def test_is_folder_pattern(self):
+    pass
 
-  def test_filter_by_patterns(self):
+  def test_exclude_files_by_patterns(self):
+    #Assuming <../tests/foo> is <../User/>
     os.makedirs(helper.join_path((os.getcwd(), 'tests', 'foo', 'bar')), exist_ok=True)
     open(helper.join_path((os.getcwd(), 'tests', 'foo', 'foo.txt')), 'a').close()
     open(helper.join_path((os.getcwd(), 'tests', 'foo', 'bar.txt')), 'a').close()
@@ -65,70 +70,80 @@ class TestHelper(TestCase):
     files = helper.get_files(helper.join_path((os.getcwd(), 'tests', 'foo')))
 
     #Unfiltered
+    self.assertEqual(len(files), 4)
     self.assertListEqual(helper.exclude_files_by_patterns(files, []), files)
     self.assertListEqual(helper.exclude_files_by_patterns(files, ['.boo']), files)
 
     # By extension
-    filteredFiles = helper.exclude_files_by_patterns(files, ['.txt'])
+    filteredFiles = helper.exclude_files_by_patterns(files, [
+      helper.join_path((os.getcwd(), 'tests', 'foo', '.txt'))
+    ])
 
     self.assertEqual(len(filteredFiles), 1)
     self.assertListEqual(filteredFiles, [
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar', 'foo.py'))
     ])
 
-    filteredFiles = helper.exclude_files_by_patterns(files, ['.py'])
+    filteredFiles = sorted(helper.exclude_files_by_patterns(files, [
+      helper.join_path((os.getcwd(), 'tests', 'foo', '.py'))
+    ]))
     self.assertEqual(len(filteredFiles), 3)
-    self.assertListEqual(filteredFiles, [
+    self.assertListEqual(filteredFiles, sorted([
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar.txt')),
       helper.join_path((os.getcwd(), 'tests', 'foo', 'foo.txt')),
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar', 'foo.txt'))
-    ])
+    ]))
 
     # By Filename
-    filteredFiles = helper.exclude_files_by_patterns(files, [
+    filteredFiles = sorted(helper.exclude_files_by_patterns(files, [
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar.txt'))
-    ])
+    ]))
 
     self.assertEqual(len(filteredFiles), 3)
-    self.assertListEqual(filteredFiles, [
+    self.assertListEqual(filteredFiles, sorted([
       helper.join_path((os.getcwd(), 'tests', 'foo', 'foo.txt')),
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar', 'foo.py')),
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar', 'foo.txt'))
-    ])
+    ]))
 
-    filteredFiles = helper.exclude_files_by_patterns(files, [
+    filteredFiles = sorted(helper.exclude_files_by_patterns(files, [
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar.txt')),
       helper.join_path((os.getcwd(), 'tests', 'foo', 'foo.txt'))
-    ])
+    ]))
 
     self.assertEqual(len(filteredFiles), 2)
-    self.assertListEqual(filteredFiles, [
+    self.assertListEqual(filteredFiles, sorted([
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar', 'foo.py')),
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar', 'foo.txt'))
-    ])
+    ]))
 
     # By folder
-    filteredFiles = helper.exclude_files_by_patterns(files, [
+    filteredFiles = sorted(helper.exclude_files_by_patterns(files, [
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar'))
-    ])
+    ]))
     self.assertEqual(len(filteredFiles), 2)
-    self.assertListEqual(filteredFiles, [
+    self.assertListEqual(filteredFiles, sorted([
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar.txt')),
       helper.join_path((os.getcwd(), 'tests', 'foo', 'foo.txt'))
-    ])
+    ]))
 
     shutil.rmtree(helper.join_path((os.getcwd(), 'tests', 'foo')))
 
-  def test_encode_decode(self):
+  def test_encode_path(self):
     self.assertIsNone(helper.encode_path(""))
-    self.assertIsNone(helper.decode_path(""))
     with self.assertRaises(TypeError): helper.encode_path()
-    with self.assertRaises(TypeError): helper.decode_path()
 
     path = '/some/path with spaces/to/file.txt'
     encoded_path = '%2Fsome%2Fpath%20with%20spaces%2Fto%2Ffile.txt'
     self.assertNotEqual(helper.encode_path(path), '/some/path%20with%20spaces/to/file.txt')
     self.assertEqual(helper.encode_path(path), encoded_path)
+
+  def test_decode_path(self):
+    self.assertIsNone(helper.decode_path(""))
+    with self.assertRaises(TypeError): helper.decode_path()
+
+    path = '/some/path with spaces/to/file.txt'
+    encoded_path = '%2Fsome%2Fpath%20with%20spaces%2Fto%2Ffile.txt'
     self.assertEqual(helper.decode_path(encoded_path), path.replace('/', helper.os_separator()))
 
   def test_update_content_file(self):
@@ -158,3 +173,27 @@ class TestHelper(TestCase):
   def test_os_separator(self):
     self.assertNotEqual(os.sep, '')
     self.assertEqual(os.sep, helper.os_separator())
+
+  def test_parse_to_os(self):
+    paths = [
+      'something/path\\to/test',
+      'another\\something/path\\to/test'
+    ]
+
+    expected_paths = [
+      helper.join_path((
+        'something',
+        'path',
+        'to',
+        'test'
+      )),
+      helper.join_path((
+        'another',
+        'something',
+        'path',
+        'to',
+        'test'
+      ))
+    ]
+    result = helper.parse_to_os(paths)
+    self.assertEqual(result, expected_paths)

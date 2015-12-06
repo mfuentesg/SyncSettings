@@ -2,8 +2,8 @@
 
 import sublime
 from sublime_plugin import WindowCommand
+from ..libs.gistapi import Gist
 from ..sync_settings_manager import SyncSettingsManager as Manager
-from ..gistapi import Gist
 from ..thread_progress import ThreadProgress
 
 class SyncSettingsUploadCommand(WindowCommand):

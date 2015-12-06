@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import sys, os, json
-sys.path.append(os.path.abspath('..'))
-from sync_settings import gistapi, logger, helper
+import os
+import json
 
 try:
   options_path = os.path.abspath('tests/options.json')
@@ -11,4 +10,3 @@ try:
 except Exception as e:
   opts = {}
   print('\033[91m'+'Sync Settings: options.json file not exists'+'\033[0m')
-

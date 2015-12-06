@@ -3,8 +3,8 @@
 import sublime
 from sublime_plugin import WindowCommand
 from ..sync_settings_manager import SyncSettingsManager as Manager
-from ..gistapi import Gist
 from ..thread_progress import ThreadProgress
+from ..libs.gistapi import Gist
 
 class SyncSettingsCreateAndUploadCommand(WindowCommand):
   def run(self):

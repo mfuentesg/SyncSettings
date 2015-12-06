@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import sublime
-from .logger import Logger
-from .helper import *
+from .libs.logger import Logger
+from .libs import helper
 
 class SyncSettingsManager:
   settings_filename = 'SyncSettings.sublime-settings'
@@ -20,17 +20,17 @@ class SyncSettingsManager:
   @staticmethod
   def get_filtered_files():
     pp = SyncSettingsManager.get_packages_path
-    files = get_files(pp())
+    files = helper.get_files(pp())
     excluded_files = [pp(f) for f in SyncSettingsManager.settings('excluded_files')]
-    files = exclude_files_by_patterns(files, excluded_files)
+    resulting_files = helper.exclude_files_by_patterns(files, excluded_files)
 
-    return files
+    return resulting_files
 
   @staticmethod
   def get_encoded_files():
     pp = SyncSettingsManager.get_packages_path
     encoded_files = SyncSettingsManager.get_filtered_files()
-    encoded_files = [encode_path(f.replace(pp(), '')) for f in encoded_files]
+    encoded_files = [helper.encode_path(f.replace(pp(), '')) for f in encoded_files]
 
     return encoded_files
 
@@ -40,20 +40,21 @@ class SyncSettingsManager:
     r = {}
 
     for f in files:
-      if exists_path(f):
+      if helper.exists_path(f):
         try:
-          content = open(f, 'r', encoding = 'ISO-8859-1').read()
-          f = encode_path(f.replace(SyncSettingsManager.get_packages_path(), ''))
-          r.update({f: {'content': content}})
+          content = open(f, 'r').read()
+          if content.strip() is not '':
+            f = helper.encode_path(f.replace(SyncSettingsManager.get_packages_path(), ''))
+            r.update({f: {'content': content}})
         except Exception as e:
           Logger.log(str(e), Logger.MESSAGE_ERROR_TYPE)
     return r
 
   @staticmethod
   def get_packages_path(filename = None):
-    path = join_path((sublime.packages_path(), 'User' + os_separator()))
+    path = helper.join_path((sublime.packages_path(), 'User' + helper.os_separator()))
     if not filename is None:
-      return join_path((path, filename))
+      return helper.join_path((path, filename))
     return path
 
   @staticmethod
@@ -76,15 +77,15 @@ class SyncSettingsManager:
   @staticmethod
   def update_from_remote_files(remote_files):
     if isinstance(remote_files, dict):
-      decoded_files = [SyncSettingsManager.get_packages_path(decode_path(f)) for f in remote_files]
+      decoded_files = [SyncSettingsManager.get_packages_path(helper.decode_path(f)) for f in remote_files]
       excluded_files = SyncSettingsManager.settings('excluded_files')
-      filtered_files = exclude_files_by_patterns(decoded_files, excluded_files)
+      filtered_files = helper.exclude_files_by_patterns(decoded_files, excluded_files)
 
       for f in filtered_files:
-        encode_file = encode_path(f.replace(SyncSettingsManager.get_packages_path(), ''))
+        encode_file = helper.encode_path(f.replace(SyncSettingsManager.get_packages_path(), ''))
         current_file = remote_files.get(encode_file)
         try:
-          update_content_file(f, current_file.get('content'))
+          helper.update_content_file(f, current_file.get('content'))
         except Exception as e:
           message = 'It has generated an error when to update or create the file %s'%(f)
           Logger.log(message + str(e), Logger.MESSAGE_ERROR_TYPE)
