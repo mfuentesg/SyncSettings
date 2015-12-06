@@ -1,7 +1,13 @@
+[![Build Status](https://travis-ci.org/mfuentesg/SyncSettings.svg?branch=master)](https://travis-ci.org/mfuentesg/SyncSettings)
+
 Sync Settings
 ===============
 
-**Sync Settings**, is a way of keeping the [Sublime Text](http://sublimetext.com/) configuration synchronized between different operating systems, the synchronization to uses Github Gist allowing you to use all the technologies that this service provides for example to see the history of your configuration file.
+**Sync Settings**, is a cross-platform solution to keep the [Sublime Text](http://sublimetext.com/) configuration updated.
+
+##How works?
+
+**Sync Settings** uses Github-Gist allowing you to use all features that this service provides.
 
 ##Support
 
@@ -16,23 +22,20 @@ Sync Settings
 ##Configuration
 
 1. Creates an access [token in GitHub](https://github.com/settings/tokens)
-2. Paste this code into the plugin configuration file
-
-```Preferences > Packages Settings > Sync Settings > Settings - User```
+2. Paste token in configuration file `Preferences > Packages Settings > Sync Settings > Settings - User`
 
 ####Options
 
-* **access_token**: Refers to the access provided by GitHub token
-* **gist_id**: Identifies to the id of the gist that is to be used for synchronization
-* **excluded_files**: Are the files that are to be ignored at the time of synchronization, by default files that contain information with your editor license is found in this list.
+* **access_token**: Access token provided by GitHub
+* **gist_id**: Identifier of the gist that will be used for the synchronization
+* **excluded_files**: It is a list with all files that will be ignored by the plugin at the time of upload or download. You can exclude by folder name, file name and/or file extension..
 
 ##Commands
 
-1. **Create and Upload**: Creates a new gist and upload your settings after uploaded a message asking if you wish to set the id of the gist in the plugin configuration is displayed. If you accept the gist id appears on 
-`Preferences > Packages Settings > Sync Settings > Settings - User`.
+1. **Create and Upload**: Creates a new gist and upload your settings. The Gist identifier will be included in `Preferences > Packages Settings > Sync Settings > Settings - User` if you accept the prompt message. 
 2. **Upload**: Upload your settings files, excluding the files included in "excluded files" option.
-3. **Download**: Download your settings files, overwriting the existing files, after downloaded your files  [Sublime Text](http://www.sublimetext.com) need to be restarted.
-4. **Show Logs**: Open the log file in the active window.
+3. **Download**: Download your settings files, overwriting the existing files, after downloaded your files [Sublime Text](http://www.sublimetext.com) need to be restarted.
+4. **Show Logs**: Open a new view with the log file content.
 
 ##Tests
 
@@ -42,12 +45,17 @@ You can run and add new tests using the following instructions. For more informa
 For running the tests, you need install `requests` package, `pip install requests` and python 3.4+.
 
 ###Configuration
-1. Rename `/path/to/plugin/tests/options.sample.json` to `/path/to/plugin/tests/options.json`
-2. Set `access_token` to start the testing process
+
+To run the tests, it is necessary create an environment variable called `SYNC_ACCESS_TOKEN`.
+
+```bash
+export SYNC_ACCESS_TOKEN="<YOUR_ACCESS_TOKEN>"
+```
 
 ###Run tests
 
 ```bash
+#Run all tests
 cd /path/to/plugin
 python -m unittest discover -s ./tests
 
