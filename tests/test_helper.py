@@ -2,7 +2,7 @@
 import os
 import shutil
 from sync_settings.libs import helper
-from tests import options_path
+from tests import test_file_path
 from unittest import TestCase
 
 class TestHelper(TestCase):
@@ -20,11 +20,11 @@ class TestHelper(TestCase):
     self.assertEqual(home_path, helper.get_home_path(1234))
 
   def test_exists_path(self):
-    self.assertFalse(helper.exists_path(options_path, True))
+    self.assertFalse(helper.exists_path(test_file_path, True))
     with self.assertRaises(TypeError): helper.exists_path()
     with self.assertRaises(TypeError): helper.exists_path(isFolder=True)
     self.assertFalse(helper.exists_path(helper.join_path((os.getcwd(), 'tests'))))
-    self.assertTrue(helper.exists_path(options_path))
+    self.assertTrue(helper.exists_path(test_file_path))
     self.assertTrue(helper.exists_path(helper.join_path((os.getcwd(), 'tests')), True))
 
   def test_join_path(self):
