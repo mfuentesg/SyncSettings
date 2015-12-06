@@ -103,13 +103,7 @@ class TestGistAPI(TestCase):
     })
     self.assertIsNotNone(gist.get('id'))
     self.assertEqual(len(gist.get('files')), 2)
-
-    # Removing the created file
-    gist = self.api.edit(test_gist_id, {
-      'files': { 'other_file.txt': None}
-    })
-    self.assertIsNotNone(gist.get('id'))
-    self.assertEqual(len(gist.get('files')), 1)
+    
     self.assertTrue(self.api.delete(test_gist_id))
 
   def test_get_gist(self):
