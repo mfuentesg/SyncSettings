@@ -3,6 +3,9 @@ python:
 - '3.4'
 - '3.5'
 
+git:
+  depth: 150
+
 install:
   - 'pip install requests'
 
