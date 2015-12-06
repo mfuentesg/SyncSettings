@@ -9,11 +9,6 @@ class TestGistAPI(TestCase):
   def __init__(self, *args, **kwargs):
     super(TestGistAPI, self).__init__(*args, **kwargs)
     self.api = Gist(opts.get('access_token'))
-    self.test_gist = self.api.create({
-      'files': {
-        'test_gist.txt': { 'content': 'Gist test content' }
-      }
-    })
 
   def test_access_token(self):
     with self.assertRaises(GistException):
@@ -33,6 +28,17 @@ class TestGistAPI(TestCase):
       self.api.create({
         'description': 'some description',
         'files': 'some files'
+      })
+
+    # Create a gist with empty content
+    with self.assertRaises(GistException):
+      self.api.create({
+        'description': 'some description',
+        'files': {
+          'file_test.txt': {
+            'content': ''
+          }
+        }
       })
 
     # Create a gist without description
@@ -63,13 +69,19 @@ class TestGistAPI(TestCase):
     # Check if the created gist isn't public gist list
     for gist_item in gist_items:
       self.assertNotEqual(gist_item.get('id'), gist_id)
+    
     # Delete test gist
     self.assertTrue(self.api.delete(gist_id))
 
   def test_edit_gist(self):
+    test_gist = self.api.create({
+      'files': {
+        'test_gist.txt': { 'content': 'Gist test content' }
+      }
+    })
     # Get possible errors
     # Passing wrong parameters
-    test_gist_id = self.test_gist.get('id')
+    test_gist_id = test_gist.get('id')
     with self.assertRaises(GistException):
       self.api.edit('some_id', {})
     # With wrong files object
@@ -98,9 +110,15 @@ class TestGistAPI(TestCase):
     })
     self.assertIsNotNone(gist.get('id'))
     self.assertEqual(len(gist.get('files')), 1)
+    self.assertTrue(self.api.delete(test_gist_id))
 
   def test_get_gist(self):
-    test_gist_id = self.test_gist.get('id')
+    test_gist = self.api.create({
+      'files': {
+        'test_gist.txt': { 'content': 'Gist test content' }
+      }
+    })
+    test_gist_id = test_gist.get('id')
     # Getting errors
     with self.assertRaises(GistException):
       self.api.get('---')
