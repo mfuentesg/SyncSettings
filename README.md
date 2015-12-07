@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.org/mfuentesg/SyncSettings.svg?branch=master)](https://travis-ci.org/mfuentesg/SyncSettings)
-
 Sync Settings
 ===============
+
+[![Build Status](https://travis-ci.org/mfuentesg/SyncSettings.svg?branch=master)](https://travis-ci.org/mfuentesg/SyncSettings)
 
 **Sync Settings**, is a cross-platform solution to keep the [Sublime Text](http://sublimetext.com/) configuration updated.
 
