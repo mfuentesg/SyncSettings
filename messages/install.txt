@@ -1,6 +1,16 @@
 Thanks for install Sync Settings
 
-Sync Settings, is a way of keeping the Sublime Text synchronized between different operating systems, the synchronization to uses Github Gist allowing you to use all the technologies that this service provides for example to see the history of your configuration file.
+Sync Settings, is a cross-platform solution to keep the Sublime Text configuration updated.
+
+How works?
+Sync Settings uses Github-Gist allowing you to use all features that this service provides.
+
+Errors
+If you find errors in the plugin, you can to execute "Show Logs" command and report a new issue with the file content.
+
+Donate
+You are welcome support this project using Paypal 
+https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7XCNSKK5W7DKJ
 
 View on GitHub @mfuentesg
-https://github.com/mfuentesg/SublimeSyncSettings
+https://github.com/mfuentesg/SyncSettings
