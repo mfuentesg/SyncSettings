@@ -1,0 +1,4 @@
+This version has some bug fixes
+
+* Restore base encoding to read the files
+* Minor fixes

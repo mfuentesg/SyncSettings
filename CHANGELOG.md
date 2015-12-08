@@ -48,3 +48,10 @@ This version has some bug fixes
 * Code 422 - Validation Failed
 * Re-order file structure
 * Enhance testing
+
+##2.2.1
+
+This version has some bug fixes
+
+* Restore base encoding to read the files
+* Minor fixes
