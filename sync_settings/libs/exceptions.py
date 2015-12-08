@@ -9,7 +9,7 @@ class GistException(Exception):
     json_error = json.loads(json.dumps(self.args[0]))
     trace = traceback.extract_tb(sys.exc_info()[2])[-1]
 
-    return json_error.update({
+    return dict({
       'filename': str(trace[0]),
       'line': str(trace[1])
-    })
+    }, **json_error)
