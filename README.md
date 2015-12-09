@@ -21,7 +21,7 @@ Sync Settings
 
 ##Configuration
 
-1. Creates an access [token in GitHub](https://github.com/settings/tokens)
+1. Creates an access [token in GitHub](https://github.com/settings/tokens/new)
 2. Paste token in configuration file `Preferences > Packages Settings > Sync Settings > Settings - User`
 
 ####Options
