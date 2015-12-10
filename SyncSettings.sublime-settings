@@ -14,6 +14,7 @@
     * This option has a list with the excluded files
    */
   "excluded_files": [
+    "SyncSettings.sublime-settings",
     ".DS_Store",
     ".DS_Store?",
     "._*",
