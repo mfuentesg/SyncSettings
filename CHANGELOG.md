@@ -55,3 +55,7 @@ This version has some bug fixes
 
 * Restore base encoding to read the files
 * Minor fixes
+
+#2.2.2
+
+* Add Support to Python 2.7

@@ -1,0 +1,4 @@
+Sync Settings v2.2.2
+
+Enhancements:
+* Add Support to Python 2.7
