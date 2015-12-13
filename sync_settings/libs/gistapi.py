@@ -52,11 +52,16 @@ class Gist:
     raise GistException(Gist.__get_response_error('Can\'t edit the gist', response))
 
   def list(self, include_secret = False):
-    headers = {} if not include_secret else self.__headers
-    response = requests.get(''.join((
+    base_url = ''.join((
       self.BASE_URL + '/users/',
       self.__user_data.get('login') + '/gists',
-    )), headers=headers)
+    ))
+    response = None
+
+    if include_secret:
+      response = requests.get(base_url, headers=self.__headers)
+    else:
+      response = requests.get(base_url)
 
     if response.status_code == 200:
       return response.json()
