@@ -42,7 +42,7 @@ Sync Settings
 You can run and add new tests using the following instructions. For more information consulting the [framework documentation](https://docs.python.org/3/library/unittest.html#module-unittest).
 
 ###Requirements
-For running the tests, you need install `requests` package, `pip install requests` and python 3.4+.
+For running the tests, you need install `requests` package, `pip install requests` and python 2.7+.
 
 ###Configuration
 
