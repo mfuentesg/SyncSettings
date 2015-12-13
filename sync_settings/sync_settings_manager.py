@@ -5,11 +5,11 @@ from .libs.logger import Logger
 from .libs import helper
 
 class SyncSettingsManager:
-  settings_filename = 'SyncSettings.sublime-settings'
+  SETTINGS_FILENAME = 'SyncSettings.sublime-settings'
 
-  @staticmethod
-  def settings(key = None, new_value = None):
-    settings =  sublime.load_settings(SyncSettingsManager.settings_filename)
+  @classmethod
+  def settings(cls, key = None, new_value = None):
+    settings =  sublime.load_settings(cls.SETTINGS_FILENAME)
     if not key is None and not new_value is None:
       settings.set(key, new_value)
     elif not key is None and new_value is None:
@@ -17,26 +17,26 @@ class SyncSettingsManager:
     else:
       return settings
 
-  @staticmethod
-  def get_filtered_files():
-    pp = SyncSettingsManager.get_packages_path
+  @classmethod
+  def get_filtered_files(cls):
+    pp = cls.get_packages_path
     files = helper.get_files(pp())
-    excluded_files = [pp(f) for f in SyncSettingsManager.settings('excluded_files')]
+    excluded_files = [pp(f) for f in cls.settings('excluded_files')]
     resulting_files = helper.exclude_files_by_patterns(files, excluded_files)
 
     return resulting_files
 
-  @staticmethod
-  def get_encoded_files():
-    pp = SyncSettingsManager.get_packages_path
-    encoded_files = SyncSettingsManager.get_filtered_files()
+  @classmethod
+  def get_encoded_files(cls):
+    pp = cls.get_packages_path
+    encoded_files = cls.get_filtered_files()
     encoded_files = [helper.encode_path(f.replace(pp(), '')) for f in encoded_files]
 
     return encoded_files
 
-  @staticmethod
-  def get_files_content():
-    files = SyncSettingsManager.get_filtered_files()
+  @classmethod
+  def get_files_content(cls):
+    files = cls.get_filtered_files()
     r = {}
 
     for f in files:
@@ -44,25 +44,25 @@ class SyncSettingsManager:
         try:
           content = open(f, 'r', encoding = 'ISO-8859-1').read()
           if content.strip() is not '':
-            f = helper.encode_path(f.replace(SyncSettingsManager.get_packages_path(), ''))
+            f = helper.encode_path(f.replace(cls.get_packages_path(), ''))
             r.update({f: {'content': content}})
         except Exception as e:
           Logger.log(str(e), Logger.MESSAGE_ERROR_TYPE)
     return r
 
-  @staticmethod
-  def get_packages_path(filename = None):
+  @classmethod
+  def get_packages_path(cls, filename = None):
     path = helper.join_path((sublime.packages_path(), 'User' + helper.os_separator()))
     if not filename is None:
       return helper.join_path((path, filename))
     return path
 
-  @staticmethod
-  def get_settings_filename():
-    return SyncSettingsManager.settings_filename
+  @classmethod
+  def get_settings_filename(cls):
+    return cls.SETTINGS_FILENAME
 
-  @staticmethod
-  def show_message_and_log(message, error = True):
+  @classmethod
+  def show_message_and_log(cls, message, error = True):
     m = l = ''
     if isinstance(message, Exception):
       message = message.to_json()
@@ -74,15 +74,15 @@ class SyncSettingsManager:
     sublime.status_message('Sync Settings: ' + m)
     Logger.log(l, Logger.MESSAGE_ERROR_TYPE if error else Logger.MESSAGE_INFO_TYPE)
 
-  @staticmethod
-  def update_from_remote_files(remote_files):
+  @classmethod
+  def update_from_remote_files(cls, remote_files):
     if isinstance(remote_files, dict):
-      decoded_files = [SyncSettingsManager.get_packages_path(helper.decode_path(f)) for f in remote_files]
-      excluded_files = SyncSettingsManager.settings('excluded_files')
+      decoded_files = [cls.get_packages_path(helper.decode_path(f)) for f in remote_files]
+      excluded_files = cls.settings('excluded_files')
       filtered_files = helper.exclude_files_by_patterns(decoded_files, excluded_files)
 
       for f in filtered_files:
-        encode_file = helper.encode_path(f.replace(SyncSettingsManager.get_packages_path(), ''))
+        encode_file = helper.encode_path(f.replace(cls.get_packages_path(), ''))
         current_file = remote_files.get(encode_file)
         try:
           helper.update_content_file(f, current_file.get('content'))
