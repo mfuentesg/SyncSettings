@@ -42,7 +42,7 @@ class TestHelper(TestCase):
     self.assertGreater(len(helper.get_files(helper.join_path((os.getcwd(), 'tests')))), 0)
 
     #Create a test folder structure
-    os.makedirs(helper.join_path((os.getcwd(), 'tests', 'hello', 'world')), exist_ok=True)
+    os.makedirs(helper.join_path((os.getcwd(), 'tests', 'hello', 'world')))
     open(helper.join_path((os.getcwd(), 'tests', 'hello', 'foo.txt')), 'a').close()
     open(helper.join_path((os.getcwd(), 'tests', 'hello', 'bar.txt')), 'a').close()
     open(helper.join_path((os.getcwd(), 'tests', 'hello', 'world', 'foo.txt')), 'a').close()
@@ -55,13 +55,23 @@ class TestHelper(TestCase):
     self.assertEqual(len(files), 3)
     self.assertListEqual(files, allFiles)
     shutil.rmtree(helper.join_path((os.getcwd(), 'tests', 'hello')))
-  
+
   def test_is_folder_pattern(self):
-    pass
+    file_path = helper.join_path((os.getcwd(), 'tests', 'hello', 'foo.txt'))
+    folder_path = helper.join_path((os.getcwd(), 'tests', 'hello'))
+
+    os.makedirs(folder_path)
+    open(file_path, 'a').close()
+
+    self.assertFalse(helper.is_folder_pattern(file_path, file_path))
+    self.assertFalse(helper.is_folder_pattern(folder_path, folder_path))
+    self.assertTrue(helper.is_folder_pattern(file_path, folder_path))
+
+    shutil.rmtree(helper.join_path((os.getcwd(), 'tests', 'hello')))
 
   def test_exclude_files_by_patterns(self):
     #Assuming <../tests/foo> is <../User/>
-    os.makedirs(helper.join_path((os.getcwd(), 'tests', 'foo', 'bar')), exist_ok=True)
+    os.makedirs(helper.join_path((os.getcwd(), 'tests', 'foo', 'bar')))
     open(helper.join_path((os.getcwd(), 'tests', 'foo', 'foo.txt')), 'a').close()
     open(helper.join_path((os.getcwd(), 'tests', 'foo', 'bar.txt')), 'a').close()
     open(helper.join_path((os.getcwd(), 'tests', 'foo', 'bar', 'foo.txt')), 'a').close()
@@ -147,7 +157,7 @@ class TestHelper(TestCase):
     self.assertEqual(helper.decode_path(encoded_path), path.replace('/', helper.os_separator()))
 
   def test_update_content_file(self):
-    os.makedirs(helper.join_path((os.getcwd(), 'tests', 'foo')), exist_ok=True)
+    os.makedirs(helper.join_path((os.getcwd(), 'tests', 'foo')))
     file_path = helper.join_path((os.getcwd(), 'tests', 'foo', 'foo.txt'))
     content = 'content file'
     new_content = 'new content file'
@@ -159,7 +169,7 @@ class TestHelper(TestCase):
 
     with open(file_path) as f:
       self.assertEqual(f.read(), content)
-    
+
     #Wrong case
     with self.assertRaises(Exception): helper.update_content_file('', new_content)
 
@@ -167,7 +177,7 @@ class TestHelper(TestCase):
     helper.update_content_file(file_path, new_content)
     with open(file_path) as f:
       self.assertEqual(f.read(), new_content)
-    
+
     shutil.rmtree(helper.join_path((os.getcwd(), 'tests', 'foo')))
 
   def test_os_separator(self):
@@ -179,21 +189,31 @@ class TestHelper(TestCase):
       'something/path\\to/test',
       'another\\something/path\\to/test'
     ]
-
     expected_paths = [
-      helper.join_path((
-        'something',
-        'path',
-        'to',
-        'test'
-      )),
-      helper.join_path((
-        'another',
-        'something',
-        'path',
-        'to',
-        'test'
-      ))
+      helper.join_path(('something', 'path', 'to', 'test')),
+      helper.join_path(('another', 'something', 'path', 'to', 'test'))
     ]
+
     result = helper.parse_to_os(paths)
     self.assertEqual(result, expected_paths)
+
+  def test_create_empty_file(self):
+    test_path = 'empty_file.txt'
+    self.assertFalse(os.path.exists(test_path))
+    helper.create_empty_file(test_path)
+    self.assertTrue(os.path.exists(test_path))
+    self.assertEqual(os.path.getsize(test_path), 0)
+    os.remove(test_path)
+    self.assertFalse(os.path.exists(test_path))
+
+  def test_write_to_file(self):
+    test_path = 'empty_file.txt'
+    message = 'file content'
+
+    self.assertFalse(os.path.exists(test_path))
+    helper.write_to_file(test_path, message)
+    self.assertTrue(os.path.exists(test_path))
+    with open(test_path, 'r') as f:
+      self.assertEqual(f.read().find(message), 0)
+    os.remove(test_path)
+    self.assertFalse(os.path.exists(test_path))

@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import os, sys
-from urllib import parse
+try:
+  from urllib import parse
+except Exception as e:
+  import urllib as parse
+
 
 def get_difference(seta, setb):
   return list(filter(lambda el: el not in setb, seta))
@@ -41,7 +45,7 @@ def is_folder_pattern(element, pattern):
 
   return False
 
-def exclude_files_by_patterns(elements, patterns):  
+def exclude_files_by_patterns(elements, patterns):
   elements = parse_to_os(elements)
   patterns = parse_to_os(patterns)
 
@@ -92,3 +96,17 @@ def parse_to_os(paths):
   if (isinstance(paths, list)):
     return [p.replace('/', os_separator()).replace('\\', os_separator()) for p in paths]
   return None
+
+def create_empty_file(path):
+  try:
+    open(path, 'a').close()
+  except Exception as e:
+    print(e)
+
+def write_to_file(path, content, action = 'a+'):
+  try:
+    with open(path, action) as f:
+      f.write(content + '\n')
+      f.close()
+  except Exception as e:
+    print(e)
