@@ -67,12 +67,13 @@ class SyncSettingsManager:
     if isinstance(message, Exception):
       message = message.to_json()
       m = message.get('app_message')
-      l = message.get('error_description')+ ', File: ' + message.get('filename') +' - Line: ' + message.get('line')
+      l = '%s, File: %s - Line: %s' % (message.get('error_description'), message.get('filename'), message.get('line'))
     elif isinstance(message, str):
       m = l = message
 
     sublime.status_message('Sync Settings: ' + m)
-    Logger.log(l, Logger.MESSAGE_ERROR_TYPE if error else Logger.MESSAGE_INFO_TYPE)
+    error_type = Logger.MESSAGE_ERROR_TYPE if error else Logger.MESSAGE_INFO_TYPE
+    Logger.log(l, error_type)
 
   @classmethod
   def update_from_remote_files(cls, remote_files):
