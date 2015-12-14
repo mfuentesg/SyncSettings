@@ -57,10 +57,10 @@ export SYNC_ACCESS_TOKEN="<YOUR_ACCESS_TOKEN>"
 ```bash
 #Run all tests
 cd /path/to/plugin
-python -m unittest discover -s ./tests
+python -m unittest discover -s ./tests/libs
 
 #For run an specific test just execute the following command
-python -m unittest discover -s ./tests -p <test_name>.py
+python -m unittest discover -s ./tests/libs -p <test_name>.py
 ```
 
 ###Add Tests
