@@ -68,8 +68,9 @@ class TestGistAPI(TestCase):
 
     # Check if the created gist isn't public gist list
     for gist_item in gist_items:
-      self.assertNotEqual(gist_item.get('id'), gist_id)
-    
+      if gist_id == gist_item.get('id'):
+        self.assertFalse(gist_item.get('public'))
+
     # Delete test gist
     self.assertTrue(self.api.delete(gist_id))
 
@@ -103,7 +104,7 @@ class TestGistAPI(TestCase):
     })
     self.assertIsNotNone(gist.get('id'))
     self.assertEqual(len(gist.get('files')), 2)
-    
+
     self.assertTrue(self.api.delete(test_gist_id))
 
   def test_get_gist(self):
