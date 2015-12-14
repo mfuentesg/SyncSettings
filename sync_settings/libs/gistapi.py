@@ -77,7 +77,8 @@ class Gist:
     raise GistException(Gist.__get_response_error('The Gist can be deleted', response))
 
   def get(self, gist_id):
-    response = requests.get(self.BASE_URL + '/gists/' + gist_id)
+    base_url = self.BASE_URL + '/gists/' + gist_id
+    response = requests.get(base_url, headers=self.__headers)
     if response.status_code == 200:
       return response.json()
 
