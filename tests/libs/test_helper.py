@@ -85,18 +85,14 @@ class TestHelper(TestCase):
     self.assertListEqual(helper.exclude_files_by_patterns(files, ['.boo']), files)
 
     # By extension
-    filteredFiles = helper.exclude_files_by_patterns(files, [
-      helper.join_path((os.getcwd(), 'tests', 'foo', '.txt'))
-    ])
+    filteredFiles = helper.exclude_files_by_patterns(files, ['.txt'])
 
     self.assertEqual(len(filteredFiles), 1)
     self.assertListEqual(filteredFiles, [
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar', 'foo.py'))
     ])
 
-    filteredFiles = sorted(helper.exclude_files_by_patterns(files, [
-      helper.join_path((os.getcwd(), 'tests', 'foo', '.py'))
-    ]))
+    filteredFiles = sorted(helper.exclude_files_by_patterns(files, ['.py']))
     self.assertEqual(len(filteredFiles), 3)
     self.assertListEqual(filteredFiles, sorted([
       helper.join_path((os.getcwd(), 'tests', 'foo', 'bar.txt')),
