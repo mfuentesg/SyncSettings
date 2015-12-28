@@ -42,7 +42,7 @@ Sync Settings
 You can run and add new tests using the following instructions. For more information consulting the [framework documentation](https://docs.python.org/3/library/unittest.html#module-unittest).
 
 ###Requirements
-For running the tests, you need install `requests` package, `pip install requests` and python 2.7+.
+For running the tests, you need install the dependencies `pip install -r requirements.txt` and python 2.7+.
 
 ###Configuration
 
@@ -59,7 +59,7 @@ export SYNC_ACCESS_TOKEN="<YOUR_ACCESS_TOKEN>"
 cd /path/to/plugin
 python -m unittest discover -s ./tests/libs
 
-#For run an specific test just execute the following command
+#For run an specific test just add the `p` flag
 python -m unittest discover -s ./tests/libs -p <test_name>.py
 ```
 
