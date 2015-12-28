@@ -6,11 +6,11 @@ import sublime
 
 VERSION = int(sublime.version())
 
-mod_prefix = "sync_settings"
+mod_prefix = 'sync_settings'
 reload_mods = []
 
 if VERSION > 3000:
-  mod_prefix = "SyncSettings." + mod_prefix
+  mod_prefix = 'SyncSettings.' + mod_prefix
   from imp import reload
   for mod in sys.modules:
     if mod[0:15] == 'SyncSettings' and sys.modules[mod] is not None:
@@ -29,11 +29,11 @@ mods_load_order = [
   '.sync_settings_manager',
   '.thread_progress',
 
-  ".commands",
-  ".commands.create_and_upload",
-  ".commands.download",
-  ".commands.upload",
-  ".commands.open_logs"
+  '.commands',
+  '.commands.create_and_upload',
+  '.commands.download',
+  '.commands.upload',
+  '.commands.open_logs'
 ]
 
 for suffix in mods_load_order:
