@@ -152,30 +152,6 @@ class TestHelper(TestCase):
     encoded_path = '%2Fsome%2Fpath%20with%20spaces%2Fto%2Ffile.txt'
     self.assertEqual(helper.decode_path(encoded_path), path.replace('/', helper.os_separator()))
 
-  def test_update_content_file(self):
-    os.makedirs(helper.join_path((os.getcwd(), 'tests', 'foo')))
-    file_path = helper.join_path((os.getcwd(), 'tests', 'foo', 'foo.txt'))
-    content = 'content file'
-    new_content = 'new content file'
-
-    with open(file_path, 'a') as f:
-      f.write(content)
-      f.close()
-    self.assertTrue(helper.exists_path(file_path))
-
-    with open(file_path) as f:
-      self.assertEqual(f.read(), content)
-
-    #Wrong case
-    with self.assertRaises(Exception): helper.update_content_file('', new_content)
-
-    #Success case
-    helper.update_content_file(file_path, new_content)
-    with open(file_path) as f:
-      self.assertEqual(f.read(), new_content)
-
-    shutil.rmtree(helper.join_path((os.getcwd(), 'tests', 'foo')))
-
   def test_os_separator(self):
     self.assertNotEqual(os.sep, '')
     self.assertEqual(os.sep, helper.os_separator())
@@ -194,7 +170,7 @@ class TestHelper(TestCase):
     self.assertEqual(result, expected_paths)
 
   def test_create_empty_file(self):
-    test_path = 'empty_file.txt'
+    test_path = helper.join_path((os.getcwd(), 'empty_file.txt'))
     self.assertFalse(os.path.exists(test_path))
     helper.create_empty_file(test_path)
     self.assertTrue(os.path.exists(test_path))
@@ -203,13 +179,37 @@ class TestHelper(TestCase):
     self.assertFalse(os.path.exists(test_path))
 
   def test_write_to_file(self):
-    test_path = 'empty_file.txt'
+    test_filename = 'empty_file.txt'
     message = 'file content'
 
-    self.assertFalse(os.path.exists(test_path))
-    helper.write_to_file(test_path, message)
-    self.assertTrue(os.path.exists(test_path))
-    with open(test_path, 'r') as f:
+    file_path = helper.join_path((os.getcwd(), test_filename))
+    self.assertFalse(helper.exists_path(file_path))
+    helper.write_to_file(file_path, message)
+
+    self.assertTrue(os.path.exists(file_path))
+
+    with open(file_path, 'r') as f:
       self.assertEqual(f.read().find(message), 0)
-    os.remove(test_path)
-    self.assertFalse(os.path.exists(test_path))
+    os.remove(file_path)
+    self.assertFalse(os.path.exists(file_path))
+
+    file_path = helper.join_path((os.getcwd(), 'some_path', 'sub_path', test_filename))
+    helper.write_to_file(file_path, message)
+    self.assertTrue(os.path.exists(file_path))
+    with open(file_path, 'r') as f:
+      self.assertEqual(f.read().find(message), 0)
+    os.remove(file_path)
+    self.assertFalse(os.path.exists(file_path))
+    shutil.rmtree(helper.join_path((os.getcwd(), 'some_path')))
+
+    os.makedirs(helper.join_path((os.getcwd(), 'some_path')))
+
+    file_path = helper.join_path((os.getcwd(), 'some_path', 'sub_path', test_filename))
+    helper.write_to_file(file_path, message)
+    self.assertTrue(os.path.exists(file_path))
+    with open(file_path, 'r') as f:
+      self.assertEqual(f.read().find(message), 0)
+    os.remove(file_path)
+    self.assertFalse(os.path.exists(file_path))
+
+    shutil.rmtree(helper.join_path((os.getcwd(), 'some_path')))

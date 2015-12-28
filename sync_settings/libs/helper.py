@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import os, sys
+import os
+import sys
+import shutil
+
 try:
   from urllib import parse
 except Exception as e:
@@ -79,15 +82,6 @@ def decode_path(path):
     return parse.unquote(path).replace('/', os_separator())
   return None
 
-def update_content_file(path, content):
-  if isinstance(path, str) and isinstance(content, str):
-    try:
-      with open(path, 'w+') as opened_file:
-        opened_file.write(content)
-        opened_file.close()
-    except Exception as e:
-      raise e
-
 def os_separator():
   separator = '\\' if sys.platform.startswith('win') else '/'
   return separator
@@ -104,9 +98,16 @@ def create_empty_file(path):
     print(e)
 
 def write_to_file(path, content, action = 'a+'):
-  try:
-    with open(path, action) as f:
-      f.write(content + '\n')
-      f.close()
-  except Exception as e:
-    print(e)
+  if isinstance(path, str) and isinstance(content, str):
+    try:
+      dir_path = os.path.dirname(path)
+      if not exists_path(dir_path, True):
+        os.makedirs(dir_path)
+
+      with open(path, action) as f:
+        f.write(content + '\n')
+        f.close()
+    except Exception as e:
+      print(e)
+  else:
+    raise Exception('Invalid Parameters')

@@ -86,7 +86,7 @@ class SyncSettingsManager:
         encode_file = helper.encode_path(f.replace(cls.get_packages_path(), ''))
         current_file = remote_files.get(encode_file)
         try:
-          helper.update_content_file(f, current_file.get('content'))
+          helper.write_to_file(f, current_file.get('content'), 'w+')
         except Exception as e:
-          message = 'It has generated an error when to update or create the file %s'%(f)
+          message = 'It has generated an error when to update or create the file %s' % (f)
           Logger.log(message + str(e), Logger.MESSAGE_ERROR_TYPE)
