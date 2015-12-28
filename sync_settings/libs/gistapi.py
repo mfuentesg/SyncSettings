@@ -16,8 +16,7 @@ class Gist:
       self.__headers = {
         'X-Github-Username': self.__user_data.get('login'),
         'Content-Type': 'application/json',
-        'Authorization': 'token %s' %token,
-        'X-RateLimit-Limit': 5000
+        'Authorization': 'token %s' %token
       }
       self.__defaults = {
         'public': False,
