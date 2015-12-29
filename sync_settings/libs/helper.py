@@ -39,6 +39,10 @@ def get_files(path):
     return f
   return []
 
+def is_file_extension(ext):
+  regex = "^\.[^.]*$"
+  return __match_regex(regex, ext)
+
 def match_with_extension(element, pattern):
   regex = '([^.]*|^())\\%s$' % (pattern)
   return __match_regex(regex, element)

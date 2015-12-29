@@ -19,9 +19,16 @@ class SyncSettingsManager:
 
   @classmethod
   def get_filtered_files(cls):
+    excluded_files = []
     pp = cls.get_packages_path
     files = helper.get_files(pp())
-    excluded_files = [pp(f) for f in cls.settings('excluded_files')]
+
+    for f in cls.settings('excluded_files'):
+      if not helper.is_file_extension(f):
+        excluded_files.append(pp(f))
+        continue
+      excluded_files.append(f)
+
     resulting_files = helper.exclude_files_by_patterns(files, excluded_files)
 
     return resulting_files

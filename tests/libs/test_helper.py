@@ -128,6 +128,30 @@ class TestHelper(TestCase):
     for w in wrong_cases:
       self.assertFalse(helper.match_with_extension(w, pattern))
 
+  def test_is_file_extension(self):
+    success_cases = [
+      '.DStore',
+      '.DStore?',
+      '.jpg',
+      '.png',
+      '.txt',
+      '.Trashes'
+    ]
+
+    wrong_cases = [
+      'SublimeLinter',
+      'SublieCodeIntel',
+      'file.jpg',
+      'file.file.png',
+      '_.txt'
+    ]
+
+    for s in success_cases:
+      self.assertTrue(helper.is_file_extension(s))
+
+    for w in wrong_cases:
+      self.assertFalse(helper.is_file_extension(w))
+
   def test_exclude_files_by_patterns(self):
     #Assuming <../tests/foo> is <../User/>
     os.makedirs(helper.join_path((os.getcwd(), 'tests', 'foo', 'bar')))
