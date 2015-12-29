@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import os
+import re
 import sys
-import shutil
 
 try:
   from urllib import parse
@@ -39,14 +39,21 @@ def get_files(path):
     return f
   return []
 
-def is_folder_pattern(element, pattern):
-  if element.startswith(pattern) and exists_path(pattern, True):
-    sub_path = element.replace(pattern, '')
-    sub_path = sub_path[1:] if sub_path.startswith(('\\', '/')) else sub_path
-    pattern_path = join_path((pattern, sub_path))
-    return exists_path(pattern_path)
+def match_with_extension(element, pattern):
+  regex = '([^.]*|^())\\%s$' % (pattern)
+  return __match_regex(regex, element)
 
-  return False
+def match_with_filename(element, pattern):
+  regex = '([^.]*|^())%s$' % (pattern)
+  return __match_regex(regex, element)
+
+def match_with_folder(element, pattern):
+  regex = '^%s/(.*)$' % (pattern)
+  return __match_regex(regex, element)
+
+def __match_regex(reg, value):
+  regex = re.compile(reg)
+  return not regex.search(value) is None
 
 def exclude_files_by_patterns(elements, patterns):
   elements = parse_to_os(elements)
@@ -59,14 +66,10 @@ def exclude_files_by_patterns(elements, patterns):
   if are_valid_elements and are_valid_patterns:
     for element in elements:
       for pattern in patterns:
-        pextension = '.' + pattern.split(os.extsep)[-1]
-
-        if is_folder_pattern(element, pattern):
-          results.append(element)
-        elif element == pattern and exists_path(element):
-          results.append(element)
-        elif element.endswith(pextension) and not exists_path(pattern) and exists_path(element):
-          results.append(element)
+        if match_with_folder(element, pattern) or \
+           match_with_filename(element, pattern) or \
+           match_with_extension(element, pattern):
+            results.append(element)
 
     return get_difference(elements, results)
   return elements

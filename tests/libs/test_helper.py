@@ -6,6 +6,8 @@ from tests import test_file_path
 from unittest import TestCase
 
 class TestHelper(TestCase):
+  base_path = helper.join_path((os.getcwd(), 'tests', 'hello'))
+
   def test_difference(self):
     l = helper.get_difference([1, 2, 3, 4], [1, 2, 3])
     self.assertEqual(len(l), 1)
@@ -56,18 +58,75 @@ class TestHelper(TestCase):
     self.assertListEqual(files, allFiles)
     shutil.rmtree(helper.join_path((os.getcwd(), 'tests', 'hello')))
 
-  def test_is_folder_pattern(self):
-    file_path = helper.join_path((os.getcwd(), 'tests', 'hello', 'foo.txt'))
-    folder_path = helper.join_path((os.getcwd(), 'tests', 'hello'))
+  def test_match_with_folder(self):
+    success_cases = [
+      helper.join_path((self.base_path, 'foo.txt')),
+      helper.join_path((self.base_path, 'world', 'bar.txt')),
+      helper.join_path((self.base_path, 'world', 'anything.py')),
+      helper.join_path((self.base_path, '.txt')),
+      helper.join_path((self.base_path, '.py'))
+    ]
 
-    os.makedirs(folder_path)
-    open(file_path, 'a').close()
+    wrong_cases = [
+      helper.join_path((os.getcwd(), 'tests', 'hello2', 'foo.txt')),
+      helper.join_path((os.getcwd(), 'tests', 'hello2', 'world', 'bar.txt')),
+      helper.join_path((os.getcwd(), 'tests', 'hello2', 'world', 'anything.py')),
+      helper.join_path((os.getcwd(), 'tests', 'hello2', '.txt')),
+      helper.join_path((os.getcwd(), 'tests', 'hello2', '.py'))
+    ]
 
-    self.assertFalse(helper.is_folder_pattern(file_path, file_path))
-    self.assertFalse(helper.is_folder_pattern(folder_path, folder_path))
-    self.assertTrue(helper.is_folder_pattern(file_path, folder_path))
+    self.assertFalse(helper.match_with_folder(self.base_path, self.base_path))
 
-    shutil.rmtree(helper.join_path((os.getcwd(), 'tests', 'hello')))
+    for s in success_cases:
+      self.assertTrue(helper.match_with_folder(s, self.base_path))
+
+    for w in wrong_cases:
+      self.assertFalse(helper.match_with_folder(w, self.base_path))
+
+  def test_match_with_filename(self):
+    success_case = helper.join_path((self.base_path, 'world', 'file.foo'))
+    file_path = helper.join_path((self.base_path, 'world', 'file.foo'))
+
+    wrong_cases = [
+      helper.join_path((self.base_path, 'file.foo')),
+      helper.join_path((self.base_path, 'world', 'bar.txt')),
+      helper.join_path((self.base_path, '.txt')),
+      helper.join_path((self.base_path, 'any_name', 'file.foo')),
+      helper.join_path((self.base_path, 'world', 'file', '.foo'))
+    ]
+
+    self.assertTrue(helper.match_with_filename(success_case, file_path))
+
+    for w in wrong_cases:
+      self.assertFalse(helper.match_with_filename(w, file_path))
+
+  def test_match_with_extension(self):
+    pattern = '.py'
+
+    success_cases = [
+      helper.join_path((self.base_path, '____foo', 'other', '.py')),
+      helper.join_path((self.base_path, 'file.py')),
+      helper.join_path((self.base_path, '.py')),
+      helper.join_path((self.base_path, '...', 'another.python', 'file.py')),
+      helper.join_path((self.base_path, '_file.python.___.__.py')),
+      helper.join_path((self.base_path, 'other', 'folder', 'dot', 'py.py'))
+    ]
+
+    wrong_cases = [
+      helper.join_path((self.base_path, 'file.foo')),
+      helper.join_path((self.base_path, 'world', 'bar.txt')),
+      helper.join_path((self.base_path, '.txt')),
+      helper.join_path((self.base_path, 'file.pypy')),
+      helper.join_path((self.base_path, 'file.python')),
+      helper.join_path((self.base_path, 'file.otherpy')),
+      helper.join_path((self.base_path, '_.py', 'file.otherpy'))
+    ]
+
+    for s in success_cases:
+      self.assertTrue(helper.match_with_extension(s, pattern))
+
+    for w in wrong_cases:
+      self.assertFalse(helper.match_with_extension(w, pattern))
 
   def test_exclude_files_by_patterns(self):
     #Assuming <../tests/foo> is <../User/>
@@ -171,6 +230,7 @@ class TestHelper(TestCase):
 
   def test_create_empty_file(self):
     test_path = helper.join_path((os.getcwd(), 'empty_file.txt'))
+
     self.assertFalse(os.path.exists(test_path))
     helper.create_empty_file(test_path)
     self.assertTrue(os.path.exists(test_path))
@@ -181,8 +241,8 @@ class TestHelper(TestCase):
   def test_write_to_file(self):
     test_filename = 'empty_file.txt'
     message = 'file content'
-
     file_path = helper.join_path((os.getcwd(), test_filename))
+
     self.assertFalse(helper.exists_path(file_path))
     helper.write_to_file(file_path, message)
 
@@ -190,10 +250,12 @@ class TestHelper(TestCase):
 
     with open(file_path, 'r') as f:
       self.assertEqual(f.read().find(message), 0)
+
     os.remove(file_path)
     self.assertFalse(os.path.exists(file_path))
 
     file_path = helper.join_path((os.getcwd(), 'some_path', 'sub_path', test_filename))
+
     helper.write_to_file(file_path, message)
     self.assertTrue(os.path.exists(file_path))
     with open(file_path, 'r') as f:
@@ -205,6 +267,7 @@ class TestHelper(TestCase):
     os.makedirs(helper.join_path((os.getcwd(), 'some_path')))
 
     file_path = helper.join_path((os.getcwd(), 'some_path', 'sub_path', test_filename))
+
     helper.write_to_file(file_path, message)
     self.assertTrue(os.path.exists(file_path))
     with open(file_path, 'r') as f:
