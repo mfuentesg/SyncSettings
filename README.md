@@ -28,7 +28,22 @@ Sync Settings
 
 * **access_token**: Access token provided by GitHub
 * **gist_id**: Identifier of the gist that will be used for the synchronization
-* **excluded_files**: It is a list with all files that will be ignored by the plugin at the time of upload or download. You can exclude by folder name, file name and/or file extension..
+* **excluded_files**: It is a list with all files that will be ignored by the plugin at the time of upload or download. You can exclude by folder name, file name and/or file extension.
+```json
+/**
+ * Excluded files example:
+ * Note: Considers that each excluded item will begin with /Path/to/Sublime Text/Packages/User/
+ */
+
+{
+  "excluded_files": [
+    ".txt", 
+    "SublimeLinter", 
+    "awesome_file.py", 
+    "path/to/other/awesome/file.py"
+  ]
+}
+```
 
 ##Commands
 
