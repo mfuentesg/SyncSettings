@@ -19,19 +19,22 @@ class SyncSettingsManager:
 
   @classmethod
   def get_filtered_files(cls):
-    excluded_files = []
-    pp = cls.get_packages_path
-    files = helper.get_files(pp())
+    excluded_files = cls.parse_patterns('excluded_files')
+    files = helper.get_files(cls.get_packages_path())
 
-    for f in cls.settings('excluded_files'):
+    return helper.exclude_files_by_patterns(files, excluded_files)
+
+  @classmethod
+  def parse_patterns(cls, setting_key):
+    result_list = []
+
+    for f in cls.settings(setting_key):
       if not helper.is_file_extension(f):
-        excluded_files.append(pp(f))
+        result_list.append(cls.get_packages_path(f))
         continue
-      excluded_files.append(f)
+      result_list.append(f)
 
-    resulting_files = helper.exclude_files_by_patterns(files, excluded_files)
-
-    return resulting_files
+    return result_list
 
   @classmethod
   def get_encoded_files(cls):

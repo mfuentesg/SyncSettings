@@ -3,7 +3,7 @@
 import json
 import sys
 import traceback
-from helper import merge_objects
+from .helper import merge_objects
 
 class GistException(Exception):
   def to_json(self):
