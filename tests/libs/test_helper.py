@@ -8,6 +8,22 @@ from unittest import TestCase
 class TestHelper(TestCase):
   base_path = helper.join_path((os.getcwd(), 'tests', 'hello'))
 
+  def test_merge_objects(self):
+    base_object = {'a': 'b', 'b': 'a'}
+    update_object = {'a': 'a', 'b': 'b', 'c': 'c'}
+
+    result = helper.merge_objects({}, {})
+    self.assertDictEqual(result, {})
+
+    result = helper.merge_objects(base_object, {})
+    self.assertDictEqual(result, base_object)
+
+    result = helper.merge_objects({}, base_object)
+    self.assertDictEqual(result, base_object)
+
+    result = helper.merge_objects(base_object, update_object)
+    self.assertDictEqual(result, update_object)
+
   def test_difference(self):
     l = helper.get_difference([1, 2, 3, 4], [1, 2, 3])
     self.assertEqual(len(l), 1)

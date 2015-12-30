@@ -9,6 +9,8 @@ try:
 except Exception as e:
   import urllib as parse
 
+def merge_objects(base, update):
+  return dict(base, **update)
 
 def get_difference(seta, setb):
   return list(filter(lambda el: el not in setb, seta))
