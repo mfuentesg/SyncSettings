@@ -16,7 +16,7 @@
     "command": "sync_settings_upload"
   },
   {
-    "caption": "SyncSettings: Delete",
+    "caption": "Sync Settings: Delete",
     "command": "sync_settings_delete_and_create",
     "args": {"create": false}
   },
