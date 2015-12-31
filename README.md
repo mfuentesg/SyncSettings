@@ -48,40 +48,34 @@ Sync Settings
 ##Commands
 
 1. **Create and Upload**: Creates a new gist and upload your settings. The Gist identifier will be included in `Preferences > Packages Settings > Sync Settings > Settings - User` if you accept the prompt message. 
-2. **Upload**: Upload your settings files, excluding the files included in "excluded files" option.
-3. **Download**: Download your settings files, overwriting the existing files, after downloaded your files [Sublime Text](http://www.sublimetext.com) need to be restarted.
-4. **Show Logs**: Open a new view with the log file content.
+2. **Delete and Create**: Deletes the current gist and create a new with your settings.
+3. **Upload**: Upload your settings files, excluding the files included in "excluded files" option.
+4. **Download**: Download your settings files, overwriting the existing files, after downloaded your files [Sublime Text](http://www.sublimetext.com) need to be restarted.
+5. **Delete**: Deletes the current gist.
+6. **Show Logs**: Open a new view with the log file content.
 
 ##Tests
 
 You can run and add new tests using the following instructions. For more information consulting the [framework documentation](https://docs.python.org/3/library/unittest.html#module-unittest).
 
 ###Requirements
-For running the tests, you need install the dependencies `pip install -r requirements.txt` and python 2.7+.
-
-###Configuration
-
-To run the tests, it is necessary create an environment variable called `SYNC_ACCESS_TOKEN`.
-
-```bash
-export SYNC_ACCESS_TOKEN="<YOUR_ACCESS_TOKEN>"
-```
+For running the tests, you need install the dependencies `pip install -r requirements.txt` and python 2.7+. Also, it is necessary create an environment variable called `SYNC_ACCESS_TOKEN`.
 
 ###Run tests
 
 ```bash
 #Run all tests
-cd /path/to/plugin
+export SYNC_ACCESS_TOKEN="<YOUR_ACCESS_TOKEN>"
 python -m unittest discover -s ./tests/libs
 
 #For run an specific test just add the `p` flag
-python -m unittest discover -s ./tests/libs -p <test_name>.py
+export SYNC_ACCESS_TOKEN="<YOUR_ACCESS_TOKEN>"
+python -m unittest discover -s ./tests/libs -p test_<name>.py
 ```
 
 ###Add Tests
 
 ```bash
-cd /path/to/plugin/tests
 touch test_<name>.py #Create a new file
 ```
 
@@ -95,7 +89,7 @@ class TestExample(TestCase):
     self.assertEqual('foo'.upper(), 'FOO')
 
   def test_<name>(self):
-    self.assertEqual('bar'.lower(), 'BAR')
+    self.assertFalse('bar'.lower(), 'BAR')
 ```
 
 ##Errors
@@ -103,7 +97,9 @@ class TestExample(TestCase):
 If you find errors in the plugin, you can to execute "Show Logs" command and report a new [issue](https://github.com/mfuentesg/SyncSettings/issues/new) with the file content.
 
 ##Changelog
+
 You can check the changes to this plugin [here](CHANGELOG.md)
 
 ##Donate
+
 You are welcome support this project using [Paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7XCNSKK5W7DKJ)
