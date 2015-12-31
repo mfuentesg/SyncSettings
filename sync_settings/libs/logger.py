@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import time
-from .helper import get_home_path, exists_path, write_to_file
+from .helper import Helper
 
 class Logger:
   FILE_NAME = '.sync-settings.log'
@@ -18,13 +18,13 @@ class Logger:
 
   @staticmethod
   def get_path():
-    return get_home_path(Logger.FILE_NAME)
+    return Helper.get_home_path(Logger.FILE_NAME)
 
   @staticmethod
   def write(message):
     full_time = time.strftime("[%d/%m/%Y - %H:%M:%S] ")
     message = full_time + message
     path = Logger.get_path()
-    action = 'a+' if exists_path(path) else 'w+'
+    action = 'a+' if Helper.exists_path(path) else 'w+'
 
-    write_to_file(path, message, action)
+    Helper.write_to_file(path, message, action)
