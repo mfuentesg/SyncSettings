@@ -74,7 +74,7 @@ class Gist:
     if response.status_code == 204:
       return True
 
-    raise GistException(Gist.__get_response_error('The Gist can be deleted', response))
+    raise GistException(Gist.__get_response_error('The Gist can`t be deleted', response))
 
   def get(self, gist_id):
     base_url = self.BASE_URL + '/gists/' + gist_id
