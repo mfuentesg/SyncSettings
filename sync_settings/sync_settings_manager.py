@@ -2,7 +2,7 @@
 
 import sublime
 from .libs.logger import Logger
-from .libs import helper
+from .libs.helper import Helper
 from .libs.gistapi import Gist
 
 class SyncSettingsManager:
@@ -21,16 +21,16 @@ class SyncSettingsManager:
   @classmethod
   def get_filtered_files(cls):
     excluded_files = cls.parse_patterns('excluded_files')
-    files = helper.get_files(cls.get_packages_path())
+    files = Helper.get_files(cls.get_packages_path())
 
-    return helper.exclude_files_by_patterns(files, excluded_files)
+    return Helper.exclude_files_by_patterns(files, excluded_files)
 
   @classmethod
   def parse_patterns(cls, setting_key):
     result_list = []
 
     for f in cls.settings(setting_key):
-      if not helper.is_file_extension(f):
+      if not Helper.is_file_extension(f):
         result_list.append(cls.get_packages_path(f))
         continue
       result_list.append(f)
@@ -41,7 +41,7 @@ class SyncSettingsManager:
   def get_encoded_files(cls):
     pp = cls.get_packages_path
     encoded_files = cls.get_filtered_files()
-    encoded_files = [helper.encode_path(f.replace(pp(), '')) for f in encoded_files]
+    encoded_files = [Helper.encode_path(f.replace(pp(), '')) for f in encoded_files]
 
     return encoded_files
 
@@ -51,11 +51,11 @@ class SyncSettingsManager:
     r = {}
 
     for f in files:
-      if helper.exists_path(f):
+      if Helper.exists_path(f):
         try:
           content = open(f, 'r', encoding = 'ISO-8859-1').read()
           if content.strip() is not '':
-            f = helper.encode_path(f.replace(cls.get_packages_path(), ''))
+            f = Helper.encode_path(f.replace(cls.get_packages_path(), ''))
             r.update({f: {'content': content}})
         except Exception as e:
           Logger.log(str(e), Logger.MESSAGE_ERROR_TYPE)
@@ -63,9 +63,9 @@ class SyncSettingsManager:
 
   @classmethod
   def get_packages_path(cls, filename = None):
-    path = helper.join_path((sublime.packages_path(), 'User' + helper.os_separator()))
+    path = Helper.join_path((sublime.packages_path(), 'User' + Helper.os_separator()))
     if not filename is None:
-      return helper.join_path((path, filename))
+      return Helper.join_path((path, filename))
     return path
 
   @classmethod
@@ -89,15 +89,15 @@ class SyncSettingsManager:
   @classmethod
   def update_from_remote_files(cls, remote_files):
     if isinstance(remote_files, dict):
-      decoded_files = [cls.get_packages_path(helper.decode_path(f)) for f in remote_files]
+      decoded_files = [cls.get_packages_path(Helper.decode_path(f)) for f in remote_files]
       excluded_files = cls.settings('excluded_files')
-      filtered_files = helper.exclude_files_by_patterns(decoded_files, excluded_files)
+      filtered_files = Helper.exclude_files_by_patterns(decoded_files, excluded_files)
 
       for f in filtered_files:
-        encode_file = helper.encode_path(f.replace(cls.get_packages_path(), ''))
+        encode_file = Helper.encode_path(f.replace(cls.get_packages_path(), ''))
         current_file = remote_files.get(encode_file)
         try:
-          helper.write_to_file(f, current_file.get('content'), 'w+')
+          Helper.write_to_file(f, current_file.get('content'), 'w+')
         except Exception as e:
           message = 'It has generated an error when to update or create the file %s' % (f)
           Logger.log(message + str(e), Logger.MESSAGE_ERROR_TYPE)

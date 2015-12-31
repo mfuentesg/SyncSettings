@@ -3,7 +3,7 @@
 import requests
 import json
 from .exceptions import GistException
-from .helper import merge_objects
+from .helper import Helper
 
 class Gist:
   BASE_URL = 'https://api.github.com'
@@ -25,7 +25,7 @@ class Gist:
       }
 
   def create(self, gist_data):
-    _data = json.dumps(merge_objects(self.__defaults, gist_data))
+    _data = json.dumps(Helper.merge_objects(self.__defaults, gist_data))
 
     response = requests.post(
       self.BASE_URL + '/gists',
@@ -40,7 +40,7 @@ class Gist:
 
   def edit(self, gist_id, gist_data):
     self.__defaults.pop('description', None)
-    gist_data = json.dumps(merge_objects(self.__defaults, gist_data))
+    gist_data = json.dumps(Helper.merge_objects(self.__defaults, gist_data))
     response = requests.patch(
       self.BASE_URL + '/gists/%s' %gist_id,
       data=gist_data,
