@@ -3,6 +3,7 @@
 import sublime
 from .libs.logger import Logger
 from .libs import helper
+from .libs.gistapi import Gist
 
 class SyncSettingsManager:
   SETTINGS_FILENAME = 'SyncSettings.sublime-settings'
@@ -97,3 +98,12 @@ class SyncSettingsManager:
         except Exception as e:
           message = 'It has generated an error when to update or create the file %s' % (f)
           Logger.log(message + str(e), Logger.MESSAGE_ERROR_TYPE)
+
+  @classmethod
+  def gist_api(cls):
+    try:
+      return Gist(cls.settings('access_token'))
+    except Exception as e:
+      cls.show_message_and_log(e)
+
+    return None

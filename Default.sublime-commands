@@ -4,12 +4,21 @@
     "command": "sync_settings_create_and_upload"
   },
   {
+    "caption": "Sync Settings: Delete and Create",
+    "command": "sync_settings_delete_and_create"
+  },
+  {
     "caption": "Sync Settings: Download",
     "command": "sync_settings_download"
   },
   {
     "caption": "Sync Settings: Upload",
     "command": "sync_settings_upload"
+  },
+  {
+    "caption": "SyncSettings: Delete",
+    "command": "sync_settings_delete_and_create",
+    "args": {"create": false}
   },
   {
     "caption": "Sync Settings: Show Logs",
