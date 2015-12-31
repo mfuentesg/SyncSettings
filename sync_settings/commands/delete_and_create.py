@@ -7,7 +7,6 @@ from ..thread_progress import ThreadProgress
 
 class SyncSettingsDeleteAndCreateCommand(WindowCommand):
   def run(self, create = True):
-    print(create)
     if not (Manager.settings('access_token') and Manager.settings('gist_id')):
       error_msg = 'You need set the `access_token` and `gist_id` properties'
       Manager.show_message_and_log(error_msg, False)

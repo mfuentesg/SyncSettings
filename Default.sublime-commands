@@ -23,5 +23,5 @@
   {
     "caption": "Sync Settings: Show Logs",
     "command": "sync_settings_open_logs"
-  },
+  }
 ]
