@@ -59,3 +59,11 @@ This version has some bug fixes
 #2.2.2
 
 * Add Support to Python 2.7
+
+#2.2.4
+
+* Add Delete and Create Command
+* Add Delete Command
+* Enhancement on Excluded files filter
+* Refactoring
+* Minor Fixes
