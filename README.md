@@ -64,12 +64,17 @@ For running the tests, you need install the dependencies `pip install -r require
 ###Run tests
 
 ```bash
-#Run all tests
+# Linux/OSX
 export SYNC_ACCESS_TOKEN="<YOUR_ACCESS_TOKEN>"
+
+# Windows (Run as Administrator)
+setx SYNC_ACCESS_TOKEN "<YOUR_ACCESS_TOKEN>" -m
+
+
+#Run all tests
 python -m unittest discover -s ./tests/libs
 
 #For run an specific test just add the `p` flag
-export SYNC_ACCESS_TOKEN="<YOUR_ACCESS_TOKEN>"
 python -m unittest discover -s ./tests/libs -p test_<name>.py
 ```
 
