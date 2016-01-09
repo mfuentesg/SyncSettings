@@ -52,23 +52,25 @@ class Helper:
 
   @classmethod
   def is_file_extension(cls, ext):
-    regex = "^\.[^.]*$"
+    regex = '^\\.[^.]*$'
     return cls.__match_regex(regex, ext)
 
   @classmethod
   def match_with_extension(cls, element, pattern):
+    pattern = pattern.replace('\\', '\\\\')
     regex = '([^.]*|^())\\%s$' % (pattern)
     return cls.__match_regex(regex, element)
 
   @classmethod
   def match_with_filename(cls, element, pattern):
+    pattern = pattern.replace('\\', '\\\\')
     regex = '([^.]*|^())%s$' % (pattern)
     return cls.__match_regex(regex, element)
 
   @classmethod
   def match_with_folder(cls, element, pattern):
-    regex = '^%s/(.*)$' % (pattern)
-    return cls.__match_regex(regex, element)
+    regex = '^%s%s(.*)$' % (pattern, cls.os_separator())
+    return cls.__match_regex(regex.replace('\\', '\\\\'), element)
 
   @classmethod
   def __match_regex(cls, reg, value):
