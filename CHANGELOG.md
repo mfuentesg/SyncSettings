@@ -67,3 +67,7 @@ This version has some bug fixes
 * Enhancement on Excluded files filter
 * Refactoring
 * Minor Fixes
+
+#2.2.5
+
+* Minor Fixes
