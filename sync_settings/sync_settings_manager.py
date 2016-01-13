@@ -78,7 +78,11 @@ class SyncSettingsManager:
     if isinstance(message, Exception):
       message = message.to_json()
       m = message.get('app_message')
-      l = '%s, File: %s - Line: %s' % (message.get('error_description'), message.get('filename'), message.get('line'))
+      l = '%s, File: %s - Line: %s' % (
+        message.get('error_description'),
+        message.get('filename'),
+        message.get('line')
+      )
     elif isinstance(message, str):
       m = l = message
 
