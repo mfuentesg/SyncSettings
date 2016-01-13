@@ -1,0 +1,7 @@
+Sync Settings v2.2.4
+
+* Add Delete and Create Command
+* Add Delete Command
+* Enhancement on Excluded files filter
+* Refactoring
+* Minor Fixes

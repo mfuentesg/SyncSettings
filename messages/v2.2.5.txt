@@ -1,0 +1,3 @@
+Sync Settings v2.2.5
+
+* Minor Fixes
