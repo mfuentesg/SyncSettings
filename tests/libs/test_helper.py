@@ -31,13 +31,13 @@ class TestHelper(TestCase):
     result = Helper.merge_lists([], [])
     self.assertListEqual(result, [])
 
-    result = Helper.merge_lists(base_list, [])
-    self.assertListEqual(result, base_list)
+    result = Helper.merge_lists(sorted(base_list), [])
+    self.assertListEqual(sorted(result), sorted(base_list))
 
-    result = Helper.merge_lists([], base_list)
-    self.assertListEqual(result, base_list)
+    result = Helper.merge_lists([], sorted(base_list))
+    self.assertListEqual(sorted(result), sorted(base_list))
 
-    result = Helper.merge_lists(base_list, update_list)
+    result = Helper.merge_lists(sorted(base_list), sorted(update_list))
     self.assertListEqual(sorted(result), ['a', 'b', 'c'])
 
   def test_difference(self):
