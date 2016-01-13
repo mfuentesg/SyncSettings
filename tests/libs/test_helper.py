@@ -24,6 +24,22 @@ class TestHelper(TestCase):
     result = Helper.merge_objects(base_object, update_object)
     self.assertDictEqual(result, update_object)
 
+  def test_merge_objects(self):
+    base_list = ['a', 'b']
+    update_list = ['b', 'c']
+
+    result = Helper.merge_lists([], [])
+    self.assertListEqual(result, [])
+
+    result = Helper.merge_lists(base_list, [])
+    self.assertListEqual(result, base_list)
+
+    result = Helper.merge_lists([], base_list)
+    self.assertListEqual(result, base_list)
+
+    result = Helper.merge_lists(base_list, update_list)
+    self.assertListEqual(sorted(result), ['a', 'b', 'c'])
+
   def test_difference(self):
     l = Helper.get_difference([1, 2, 3, 4], [1, 2, 3])
     self.assertEqual(len(l), 1)

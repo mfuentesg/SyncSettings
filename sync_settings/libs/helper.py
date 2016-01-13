@@ -17,6 +17,10 @@ class Helper:
     return dict(base, **update)
 
   @classmethod
+  def merge_lists(cls, base, update):
+    return list(set(base + update))
+
+  @classmethod
   def get_difference(cls, seta, setb):
     return list(filter(lambda el: el not in setb, seta))
 
