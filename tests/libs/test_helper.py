@@ -24,7 +24,7 @@ class TestHelper(TestCase):
     result = Helper.merge_objects(base_object, update_object)
     self.assertDictEqual(result, update_object)
 
-  def test_merge_objects(self):
+  def test_merge_lists(self):
     base_list = ['a', 'b']
     update_list = ['b', 'c']
 
@@ -336,3 +336,51 @@ class TestHelper(TestCase):
     self.assertFalse(os.path.exists(file_path))
 
     shutil.rmtree(Helper.join_path((os.getcwd(), 'some_path')))
+
+  def test_parse_patterns(self):
+    patterns = ['.txt', '.py', 'foo', 'bar.py']
+    expected = sorted([
+      '.txt',
+      '.py',
+      Helper.join_path((self.base_path, 'foo')),
+      Helper.join_path((self.base_path, 'bar.py'))
+    ])
+
+    result = sorted(Helper.parse_patterns(patterns, self.base_path))
+    self.assertListEqual(result, expected)
+
+    patterns = sorted(['.foo', '.DStore', '.file.name'])
+    expected = sorted(['.foo', '.DStore', Helper.join_path((self.base_path, '.file.name'))])
+    result = sorted(Helper.parse_patterns(patterns, self.base_path))
+    self.assertListEqual(result, expected)
+
+  def test_filter_files_by_patterns(self):
+    #Assuming <../tests/foo> is <../User/>
+    base_path = Helper.join_path((self.base_path, 'foo'))
+
+    os.makedirs(Helper.join_path((self.base_path, 'foo', 'bar')))
+    open(Helper.join_path((base_path, 'foo.txt')), 'a').close()
+    open(Helper.join_path((base_path, 'bar.rb')), 'a').close()
+    open(Helper.join_path((base_path, 'bar', 'foo.txt')), 'a').close()
+    open(Helper.join_path((base_path, 'bar', 'foo.py')), 'a').close()
+
+
+    files = Helper.get_files(base_path)
+    patterns = Helper.parse_patterns(['.rb', '.py'], base_path)
+    expected = sorted([
+      Helper.join_path((base_path, 'bar.rb')),
+      Helper.join_path((base_path, 'bar', 'foo.py'))
+    ])
+    filtered_files = sorted(Helper.filter_files_by_patterns(files, patterns))
+
+    self.assertEqual(len(filtered_files), 2)
+    self.assertListEqual(filtered_files, expected)
+
+    patterns = Helper.parse_patterns(['bar/foo.txt'], base_path)
+    expected = [Helper.join_path((base_path, 'bar', 'foo.txt'))]
+    filtered_files = sorted(Helper.filter_files_by_patterns(files, patterns))
+
+    self.assertEqual(len(filtered_files), 1)
+    self.assertListEqual(filtered_files, expected)
+
+    shutil.rmtree(Helper.join_path((self.base_path, 'foo')))
