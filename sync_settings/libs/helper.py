@@ -83,23 +83,32 @@ class Helper:
 
   @classmethod
   def exclude_files_by_patterns(cls, elements, patterns):
+    are_valid_elements = isinstance(elements, list)
+    are_valid_patterns = isinstance(patterns, list)
     elements = cls.parse_to_os(elements)
-    patterns = cls.parse_to_os(patterns)
-
-    are_valid_elements = isinstance(elements, list) and len(elements) > 0
-    are_valid_patterns = isinstance(patterns, list) and len(patterns) > 0
-    results = []
 
     if are_valid_elements and are_valid_patterns:
-      for element in elements:
-        for pattern in patterns:
-          if cls.match_with_folder(element, pattern) or \
-             cls.match_with_filename(element, pattern) or \
-             cls.match_with_extension(element, pattern):
-              results.append(element)
+      return cls.get_difference(
+        elements,
+        cls.filter_files_by_patterns(elements, patterns)
+      )
 
-      return cls.get_difference(elements, results)
     return elements
+
+  @classmethod
+  def filter_files_by_patterns(cls, elements, patterns):
+    elements = cls.parse_to_os(elements)
+    patterns = cls.parse_to_os(patterns)
+    results = []
+
+    for element in elements:
+      for pattern in patterns:
+        if cls.match_with_folder(element, pattern) or \
+           cls.match_with_filename(element, pattern) or \
+           cls.match_with_extension(element, pattern):
+            results.append(element)
+
+    return results
 
   @classmethod
   def encode_path(cls, path):
@@ -147,3 +156,14 @@ class Helper:
         print(e)
     else:
       raise Exception('Invalid Parameters')
+
+  @classmethod
+  def parse_patterns(cls, files, base_path):
+    result_list = []
+    for f in files:
+      if not cls.is_file_extension(f):
+        result_list.append(cls.join_path((base_path, f)))
+        continue
+      result_list.append(f)
+
+    return result_list
