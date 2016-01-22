@@ -20,30 +20,28 @@ class SyncSettingsManager:
 
   @classmethod
   def get_filtered_files(cls):
-    excluded_files = cls.parse_patterns('excluded_files')
+    excluded_patterns = cls.parse_patterns('excluded_files')
+    included_patterns = cls.parse_patterns('included_files')
     files = Helper.get_files(cls.get_packages_path())
 
-    return Helper.exclude_files_by_patterns(files, excluded_files)
+    return Helper.merge_lists(
+      Helper.exclude_files_by_patterns(files, excluded_patterns),
+      Helper.filter_files_by_patterns(files, included_patterns)
+    )
 
   @classmethod
   def parse_patterns(cls, setting_key):
     result_list = []
+    patterns = cls.settings(setting_key)
+    base_path = cls.get_packages_path()
 
-    for f in cls.settings(setting_key):
-      if not Helper.is_file_extension(f):
-        result_list.append(cls.get_packages_path(f))
-        continue
-      result_list.append(f)
-
-    return result_list
+    return Helper.parse_patterns(patterns, base_path)
 
   @classmethod
   def get_encoded_files(cls):
     pp = cls.get_packages_path
     encoded_files = cls.get_filtered_files()
-    encoded_files = [Helper.encode_path(f.replace(pp(), '')) for f in encoded_files]
-
-    return encoded_files
+    return [Helper.encode_path(f.replace(pp(), '')) for f in encoded_files]
 
   @classmethod
   def get_files_content(cls):
@@ -94,8 +92,13 @@ class SyncSettingsManager:
   def update_from_remote_files(cls, remote_files):
     if isinstance(remote_files, dict):
       decoded_files = [cls.get_packages_path(Helper.decode_path(f)) for f in remote_files]
-      excluded_files = cls.settings('excluded_files')
-      filtered_files = Helper.exclude_files_by_patterns(decoded_files, excluded_files)
+      excluded_patterns = Helper.parse_patterns('excluded_files')
+      included_patterns = Helper.parse_patterns('included_files')
+
+      filtered_files = Helper.merge_lists(
+        Helper.exclude_files_by_patterns(decoded_files, excluded_patterns),
+        Helper.filter_files_by_patterns(decoded_files, included_patterns),
+      )
 
       for f in filtered_files:
         encode_file = Helper.encode_path(f.replace(cls.get_packages_path(), ''))
