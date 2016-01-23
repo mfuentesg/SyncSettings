@@ -1,0 +1,4 @@
+Sync Settings v2.2.6
+
+* included_files option was added
+* Minor Fixes

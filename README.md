@@ -37,9 +37,25 @@ Sync Settings
 
 {
   "excluded_files": [
-    ".txt", 
-    "SublimeLinter", 
-    "awesome_file.py", 
+    ".txt",
+    "SublimeLinter",
+    "awesome_file.py",
+    "path/to/other/awesome/file.py"
+  ]
+}
+```
+* **included_files**: It is a list with all files what will be included by the plugin at the time of upload or download. You can include by folder name, file name and/or file extension.
+```json
+/**
+ * Included files example:
+ * Note: Considers that each include item will begin with /Path/to/Sublime Text/Packages/User/
+ */
+
+{
+  "included_files": [
+    ".txt",
+    "SublimeLinter/some_file.py",
+    "awesome_file.py",
     "path/to/other/awesome/file.py"
   ]
 }
