@@ -67,9 +67,7 @@ class Helper:
 
   @classmethod
   def match_with_filename(cls, element, pattern):
-    pattern = pattern.replace('\\', '\\\\')
-    regex = '([^.]*|^())%s$' % (pattern)
-    return cls.__match_regex(regex, element)
+    return element == pattern
 
   @classmethod
   def match_with_folder(cls, element, pattern):
