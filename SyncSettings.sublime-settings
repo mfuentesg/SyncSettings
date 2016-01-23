@@ -6,25 +6,33 @@
     * - Upload a Gist
    */
   "access_token": "",
+
   /**
     * This option has a list with the excluded files
    */
   "excluded_files": [
-    "SyncSettings.sublime-settings",
-    "Package Control.last-run",
-    "Package Control.merged-ca-bundle",
-    "Package Control.user-ca-bundle",
-    "Package Control.system-ca-bundle",
-    "Package Control.cache",
+    ".dmg",
     ".DS_Store",
     ".DS_Store?",
+    ".exe",
     ".Spotlight-V100",
     ".Trashes",
     "ehthumbs.db",
-    "Thumbs.db",
-    ".exe",
-    ".dmg"
+    "Package Control.cache",
+    "Package Control.last-run",
+    "Package Control.merged-ca-bundle",
+    "Package Control.system-ca-bundle",
+    "Package Control.user-ca-bundle",
+    "SyncSettings.sublime-settings",
+    "Thumbs.db"
   ],
+
+  /**
+   * Files that always should be included
+   * Note: The files included here, overwrite the rule `excluded_files`
+   */
+  "included_files": [],
+
   /**
    * This option has the gist id for upload your configuration
    */

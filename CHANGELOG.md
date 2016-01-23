@@ -71,3 +71,8 @@ This version has some bug fixes
 #2.2.5
 
 * Minor Fixes
+
+#2.2.6
+
+* included_files option was added
+* Minor Fixes
