@@ -92,8 +92,8 @@ class SyncSettingsManager:
   def update_from_remote_files(cls, remote_files):
     if isinstance(remote_files, dict):
       decoded_files = [cls.get_packages_path(Helper.decode_path(f)) for f in remote_files]
-      excluded_patterns = Helper.parse_patterns('excluded_files')
-      included_patterns = Helper.parse_patterns('included_files')
+      excluded_patterns = cls.parse_patterns('excluded_files')
+      included_patterns = cls.parse_patterns('included_files')
 
       filtered_files = Helper.merge_lists(
         Helper.exclude_files_by_patterns(decoded_files, excluded_patterns),
