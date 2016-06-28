@@ -7,6 +7,10 @@ python:
 git:
   depth: 150
 
+branches:
+  only:
+    - master
+
 install:
   - 'pip install -r requirements.txt'
 
