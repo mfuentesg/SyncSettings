@@ -2,6 +2,7 @@
 
 import sublime
 import sys
+import threading
 
 VERSION = int(sublime.version())
 
@@ -18,6 +19,13 @@ if reloader in sys.modules:
 if VERSION > 3000:
   from .sync_settings import reloader
   from .sync_settings.commands import *
+  from .sync_settings.sync_settings_manager import SyncSettingsManager
 else:
   from sync_settings import reloader
   from sync_settings.commands import *
+  from sync_settings.sync_settings_manager import SyncSettingsManager
+
+
+def plugin_loaded():
+  thread = threading.Thread(target=SyncSettingsManager.load)
+  thread.start()
