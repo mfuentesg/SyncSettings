@@ -19,16 +19,16 @@ if reloader in sys.modules:
 if VERSION > 3000:
   from .sync_settings import reloader
   from .sync_settings.commands import *
-  from .sync_settings.version_manager import VersionManager
+  from .sync_settings.sync_version import SyncVersion
 else:
   from sync_settings import reloader
   from sync_settings.commands import *
-  from sync_settings.version_manager import VersionManager
+  from sync_settings.sync_version import SyncVersion
 
 
 def plugin_loaded():
   threading.Thread(
-    target=VersionManager.check_version
+    target=SyncVersion.check_version
   ).start()
 
 """

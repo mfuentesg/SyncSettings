@@ -27,7 +27,8 @@ mods_load_order = [
   '.libs.logger',
   '.libs.utils',
   '.sync_manager',
-  '.version_manager',
+  '.sync_logger',
+  '.sync_version',
   '.thread_progress',
 
   '.commands',
