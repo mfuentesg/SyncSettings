@@ -26,6 +26,7 @@ mods_load_order = [
   '.libs.gist_api',
   '.libs.logger',
   '.libs.utils',
+
   '.sync_manager',
   '.sync_logger',
   '.sync_version',

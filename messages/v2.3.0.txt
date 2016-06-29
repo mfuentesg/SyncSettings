@@ -1,0 +1,14 @@
+Sync Settings v2.3.0
+
+I am very excited to announce the new version of `Sync Settings`.
+This version checks automagically if your ST has the latest version of your settings on startup.
+You can set the `auto_upgrade` property to `true` and your settings will be upgraded on each startup.
+
+* Check if your settings are up to date on startup
+* Add PopUp support to ST Build 3070 or higher
+* Auto upgrade your Settings if the auto_upgrade option is enabled
+* auto_upgrade option was added
+* Minor Enhancements
+* MIT license was added
+
+Marcelo Fuentes <marceloe.fuentes@gmail.com>
