@@ -75,6 +75,8 @@ Sync Settings
 5. **Delete**: Deletes the current gist.
 6. **Show Logs**: Open a new view with the log file content.
 
+🤓 - See it in action ![SyncSettings in action!](http://g.recordit.co/I9UXWEHRHp.gif)
+
 ##Tests
 
 You can run and add new tests using the following instructions. For more information consulting the [framework documentation](https://docs.python.org/3/library/unittest.html#module-unittest).
