@@ -338,6 +338,14 @@ class TestUtils(TestCase):
     os.remove(file_path)
     self.assertFalse(os.path.exists(file_path))
 
+    Utils.write_to_file(file_path, {"some": "content"}, as_json=True)
+    self.assertTrue(os.path.exists(file_path))
+    with open(file_path, 'r') as f:
+      self.assertEqual(f.read(), '{"some": "content"}')
+
+    os.remove(file_path)
+    self.assertFalse(os.path.exists(file_path))
+
     shutil.rmtree(Utils.join_path(os.getcwd(), 'some_path'))
 
   def test_parse_patterns(self):
@@ -387,3 +395,15 @@ class TestUtils(TestCase):
     self.assertListEqual(filtered_files, expected)
 
     shutil.rmtree(Utils.join_path(self.base_path, 'foo'))
+
+  def test_get_file_content(self):
+    test_path = Utils.join_path(os.getcwd(), 'empty_file.json')
+
+    Utils.create_empty_file(test_path)
+    Utils.write_to_file(test_path,'Some content')
+    file_content = Utils.get_file_content(test_path)
+
+    self.assertEqual(file_content, 'Some content\n')
+
+    os.remove(test_path)
+    self.assertFalse(os.path.exists(test_path))

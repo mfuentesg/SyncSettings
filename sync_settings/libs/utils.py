@@ -377,8 +377,10 @@ class Utils:
     """
 
     try:
-      file_content = open(file_path, 'r', encoding = 'ISO-8859-1').read()
-
+      f = open(file_path, 'r')
+      file_content = f.read()
+      f.close()
       return json.loads(file_content) if as_json else file_content
+
     except Exception as e:
       print(e)
