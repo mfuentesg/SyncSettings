@@ -74,11 +74,11 @@ class SyncLogger:
     """
 
     if (type == cls.LOG_LEVEL_WARNING):
-      message = '<div class = "warning">👉 - %s</div>' % (message)
+      message = '<div class = "warning">💩 %s</div>' % (message)
     elif (type == cls.LOG_LEVEL_ERROR):
-      message = '<div class = "error">💩 - %s</div>' % (message)
+      message = '<div class = "error">😨 %s</div>' % (message)
     elif (type == cls.LOG_LEVEL_SUCCESS):
-      message = '<div class = "success">⚡️ - %s</div>' % (message)
+      message = '<div class = "success">⚡️ %s</div>' % (message)
 
     return '''
       <style>

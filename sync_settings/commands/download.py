@@ -18,33 +18,29 @@ class SyncSettingsDownloadCommand(WindowCommand):
 
         if api is not None:
           gist_content = api.get(gist_id)
-          gist_history = gist_content.get('history')[0]
           remote_files = gist_content.get('files')
 
           if len(remote_files):
             SyncManager.update_from_remote_files(remote_files)
             success_message = ''.join([
-              'Files Downloaded Successfully. ',
-              'Please restart Sublime Text to install all dependencies!.'
+              'Your settings were upgraded correctly, ',
+              'restart ST to complete the upgrade.',
             ])
             SyncLogger.log(success_message, SyncLogger.LOG_LEVEL_SUCCESS)
-
-            SyncVersion.clear_cache({
-              'revision_date': gist_history.get('committed_at'),
-              'revision_hash': gist_history.get('version')
-            })
+            SyncVersion.upgrade(gist_content)
           else:
             SyncLogger.log(
-              'There are not enough files to create the gist',
+              'There are not enough files to create the backup.',
               SyncLogger.LOG_LEVEL_WARNING
             )
       except Exception as e:
+        SyncManager.settings('gist_id', '').save_settings()
         SyncLogger.log(e, SyncLogger.LOG_LEVEL_ERROR)
     else:
       SyncLogger.log(
-        'Set `gist_id property on the configuration file',
+        'Set `gist_id` property on the configuration file',
         SyncLogger.LOG_LEVEL_WARNING
       )
 
   def run(self):
-    ThreadProgress(lambda: self.__download_request(), 'Downloading files')
+    ThreadProgress(lambda: self.__download_request(), 'Downloading the latest version')

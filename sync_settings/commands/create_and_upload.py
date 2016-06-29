@@ -19,7 +19,7 @@ class SyncSettingsCreateAndUploadCommand(WindowCommand):
 
   def show_input_panel(self):
     self.window.show_input_panel(
-      caption='Sync Settings: Input Gist description',
+      caption='Sync Settings: Enter description',
       initial_text='',
       on_done=self.on_done,
       on_change=None,
@@ -39,32 +39,21 @@ class SyncSettingsCreateAndUploadCommand(WindowCommand):
         if api is not None:
           gist_data = api.create(data)
           dialog_message = ''.join([
-            'Sync Settings:\n',
-            'Your Gist was created successfully\n',
-            'Do you want update the current `gist_id` property?'
+            'Sync Settings:\n\n',
+            'Do you want overwrite the current `gist_id` property?'
           ])
-          success_message = 'Your Gist was created successfully'
 
           if sublime.yes_no_cancel_dialog(dialog_message) == sublime.DIALOG_YES:
-            SyncManager.settings('gist_id', gist_data.get('id'))
-            sublime.save_settings(SyncManager.get_settings_filename())
+            SyncManager.settings('gist_id', gist_data.get('id')).save_settings()
+            SyncVersion.upgrade(gist_data)
 
-            gist_history = gist_data.get('history')[0]
-
-            SyncVersion.clear_cache({
-              'revision_date': gist_history.get('committed_at'),
-              'revision_hash': gist_history.get('version')
-            })
-
-            success_message = 'Your Gist was created and updated successfully'
-
-          SyncLogger.log(success_message, SyncLogger.LOG_LEVEL_SUCCESS)
+          SyncLogger.log('Your settings were correctly backed', SyncLogger.LOG_LEVEL_SUCCESS)
 
       except Exception as e:
         SyncLogger.log(e, SyncLogger.LOG_LEVEL_ERROR)
     else:
       SyncLogger.log(
-        'There are not enough files to create the gist',
+        'There are not enough files to create a backup',
         SyncLogger.LOG_LEVEL_WARNING
       )
 

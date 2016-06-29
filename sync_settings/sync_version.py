@@ -25,15 +25,14 @@ class SyncVersion:
           gist_history = gist_content.get('history')[0]
 
           if (not cls.its_updated(gist_content)):
-            Utils.write_to_file(cls.__get_cache_path(), {
-              'revision_date': gist_history.get('committed_at'),
-              'revision_hash': gist_history.get('version')
-            }, 'w', True)
-            SyncLogger.log(outdate_message, SyncLogger.LOG_LEVEL_WARNING)
+            if SyncManager.settings('auto_upgrade'):
+              sublime.active_window().run_command('sync_settings_download')
+            else:
+              SyncLogger.log(outdate_message, SyncLogger.LOG_LEVEL_WARNING)
 
         except Exception as e:
           SyncLogger.log(e, SyncLogger.LOG_LEVEL_ERROR)
-      else:
+      elif(settings.get('gist_id')):
         SyncLogger.log(outdate_message, SyncLogger.LOG_LEVEL_WARNING)
 
   @classmethod
@@ -61,7 +60,7 @@ class SyncVersion:
     cache = cls.get_cache()
 
     same_version = gist_history.get('version') == cache.get('revision_hash')
-    updated_hash = cache.get('revision_date') < gist_history.get('committed_at')
+    updated_hash = cache.get('revision_date') <= gist_history.get('committed_at')
 
     return updated_hash and same_version
 
@@ -98,3 +97,17 @@ class SyncVersion:
     """Removes all content in the cache file"""
 
     Utils.write_to_file(cls.__get_cache_path(), new_data, 'w', True)
+
+  @classmethod
+  def upgrade(cls, gist_content):
+    """Update cache file with the last gist data
+
+    Arguments:
+      gist_content {dict}: Gist info
+    """
+
+    gist_history = gist_content.get('history')[0]
+    cls.clear_cache({
+      'revision_date': gist_history.get('committed_at'),
+      'revision_hash': gist_history.get('version')
+    })

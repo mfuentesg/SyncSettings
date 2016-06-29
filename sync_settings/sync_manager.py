@@ -18,16 +18,21 @@ class SyncManager:
       new_value {string}: New value for the specified setting
 
     Returns:
-      [dict]
+      [dict|SyncManager]
     """
 
     settings =  sublime.load_settings(cls.SETTINGS_FILENAME)
     if not key is None and not new_value is None:
       settings.set(key, new_value)
+      return cls
     elif not key is None and new_value is None:
       return settings.get(key)
     else:
       return settings
+
+  @classmethod
+  def save_settings(cls):
+    sublime.save_settings(cls.get_settings_filename())
 
   @classmethod
   def get_filtered_files(cls):

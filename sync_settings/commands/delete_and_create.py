@@ -17,12 +17,12 @@ class SyncSettingsDeleteAndCreateCommand(WindowCommand):
     else:
       dialog_message = ''.join([
         'Sync Settings:\n',
-        'Your Gist will be deleted, are you sure?\n',
+        'Your backup will be deleted, are you sure?\n\n',
         'Warning: This action is irreversible'
       ])
 
       if sublime.yes_no_cancel_dialog(dialog_message) == sublime.DIALOG_YES:
-        ThreadProgress(lambda: self.__delete_and_create_gist(create), 'Deleting gist')
+        ThreadProgress(lambda: self.__delete_and_create_gist(create), 'Deleting backup')
 
   def __delete_and_create_gist(self, create):
     gist_id = SyncManager.settings('gist_id')
@@ -34,9 +34,9 @@ class SyncSettingsDeleteAndCreateCommand(WindowCommand):
         if api is not None:
           api.delete(gist_id)
 
-          SyncManager.settings('gist_id', '')
+          SyncManager.settings('gist_id', '').save_settings()
           SyncLogger.log(
-            'Your Gist was deleted successfully',
+            'Your backup was deleted correctly',
             SyncLogger.LOG_LEVEL_SUCCESS
           )
 
@@ -46,6 +46,7 @@ class SyncSettingsDeleteAndCreateCommand(WindowCommand):
             self.window.run_command('sync_settings_create_and_upload')
 
       except Exception as e:
+        SyncManager.settings('gist_id', '').save_settings()
         SyncLogger.log(e, SyncLogger.LOG_LEVEL_ERROR)
     else:
       SyncLogger.log(
