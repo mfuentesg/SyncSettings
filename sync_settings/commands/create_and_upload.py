@@ -37,26 +37,28 @@ class SyncSettingsCreateAndUploadCommand(WindowCommand):
 
         if d != '': data.update({'description': d})
         if api is not None:
-          result = api.create(data)
+          gist_data = api.create(data)
           dialog_message = ''.join([
             'Sync Settings:\n',
             'Your Gist was created successfully\n',
             'Do you want update the current `gist_id` property?'
           ])
-
-          SyncLogger.log(
-            'Gist created, id = ' + result.get('id'),
-            SyncLogger.LOG_LEVEL_SUCCESS
-          )
+          success_message = 'Your Gist was created successfully'
 
           if sublime.yes_no_cancel_dialog(dialog_message) == sublime.DIALOG_YES:
-            SyncManager.settings('gist_id', result.get('id'))
+            SyncManager.settings('gist_id', gist_data.get('id'))
             sublime.save_settings(SyncManager.get_settings_filename())
 
-            SyncLogger.log(
-              'Gist id updated successfully!',
-              SyncLogger.LOG_LEVEL_SUCCESS
-            )
+            gist_history = gist_data.get('history')[0]
+
+            SyncVersion.clear_cache({
+              'revision_date': gist_history.get('committed_at'),
+              'revision_hash': gist_history.get('version')
+            })
+
+            success_message = 'Your Gist was created and updated successfully'
+
+          SyncLogger.log(success_message, SyncLogger.LOG_LEVEL_SUCCESS)
 
       except Exception as e:
         SyncLogger.log(e, SyncLogger.LOG_LEVEL_ERROR)

@@ -4,6 +4,7 @@ import sublime
 from sublime_plugin import WindowCommand
 from ..sync_manager import SyncManager
 from ..sync_logger import SyncLogger
+from ..sync_version import SyncVersion
 from ..thread_progress import ThreadProgress
 
 class SyncSettingsDownloadCommand(WindowCommand):
@@ -16,7 +17,9 @@ class SyncSettingsDownloadCommand(WindowCommand):
         api = SyncManager.gist_api()
 
         if api is not None:
-          remote_files = api.get(gist_id).get('files')
+          gist_content = api.get(gist_id)
+          gist_history = gist_content.get('history')[0]
+          remote_files = gist_content.get('files')
 
           if len(remote_files):
             SyncManager.update_from_remote_files(remote_files)
@@ -25,6 +28,11 @@ class SyncSettingsDownloadCommand(WindowCommand):
               'Please restart Sublime Text to install all dependencies!.'
             ])
             SyncLogger.log(success_message, SyncLogger.LOG_LEVEL_SUCCESS)
+
+            SyncVersion.clear_cache({
+              'revision_date': gist_history.get('committed_at'),
+              'revision_hash': gist_history.get('version')
+            })
           else:
             SyncLogger.log(
               'There are not enough files to create the gist',

@@ -4,6 +4,7 @@ import sublime
 from sublime_plugin import WindowCommand
 from ..sync_manager import SyncManager
 from ..sync_logger import SyncLogger
+from ..sync_version import SyncVersion
 from ..thread_progress import ThreadProgress
 
 class SyncSettingsDeleteAndCreateCommand(WindowCommand):
@@ -35,9 +36,11 @@ class SyncSettingsDeleteAndCreateCommand(WindowCommand):
 
           SyncManager.settings('gist_id', '')
           SyncLogger.log(
-            'Gist deleted successfully, id = %s' % (gist_id),
+            'Your Gist was deleted successfully',
             SyncLogger.LOG_LEVEL_SUCCESS
           )
+
+          SyncVersion.clear_cache()
 
           if create:
             self.window.run_command('sync_settings_create_and_upload')
