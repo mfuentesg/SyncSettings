@@ -2,12 +2,10 @@
 
 import sublime
 from .libs.logger import Logger
-from .libs.helper import Helper
-from .libs.gistapi import Gist
+from .libs.utils import Utils
+from .libs.gist_api import Gist
 
-import os
-
-class SyncSettingsManager:
+class SyncManager:
   SETTINGS_FILENAME = 'SyncSettings.sublime-settings'
 
   @classmethod
@@ -40,11 +38,11 @@ class SyncSettingsManager:
 
     excluded_patterns = cls.parse_patterns('excluded_files')
     included_patterns = cls.parse_patterns('included_files')
-    files = Helper.get_files(cls.get_packages_path())
+    files = Utils.get_files(cls.get_packages_path())
 
-    return Helper.merge_lists(
-      Helper.exclude_files_by_patterns(files, excluded_patterns),
-      Helper.filter_files_by_patterns(files, included_patterns)
+    return Utils.merge_lists(
+      Utils.exclude_files_by_patterns(files, excluded_patterns),
+      Utils.filter_files_by_patterns(files, included_patterns)
     )
 
   @classmethod
@@ -62,7 +60,7 @@ class SyncSettingsManager:
     patterns = cls.settings(setting_key)
     base_path = cls.get_packages_path()
 
-    return Helper.parse_patterns(patterns, base_path)
+    return Utils.parse_patterns(patterns, base_path)
 
   @classmethod
   def get_encoded_files(cls):
@@ -74,7 +72,7 @@ class SyncSettingsManager:
 
     pp = cls.get_packages_path
     encoded_files = cls.get_filtered_files()
-    return [Helper.encode_path(f.replace(pp(), '')) for f in encoded_files]
+    return [Utils.encode_path(f.replace(pp(), '')) for f in encoded_files]
 
   @classmethod
   def get_files_content(cls):
@@ -88,11 +86,11 @@ class SyncSettingsManager:
     r = {}
 
     for f in files:
-      if Helper.exists_path(f):
+      if Utils.exists_path(f):
         try:
           content = open(f, 'r', encoding = 'ISO-8859-1').read()
           if content.strip() is not '':
-            f = Helper.encode_path(f.replace(cls.get_packages_path(), ''))
+            f = Utils.encode_path(f.replace(cls.get_packages_path(), ''))
             r.update({f: {'content': content}})
         except Exception as e:
           Logger.log(str(e), Logger.MESSAGE_ERROR_TYPE)
@@ -107,9 +105,9 @@ class SyncSettingsManager:
       filename {string}: If is specified the file is append to the final path
     """
 
-    path = Helper.join_path(sublime.packages_path(), 'User' + Helper.os_separator())
+    path = Utils.join_path(sublime.packages_path(), 'User' + Utils.os_separator())
     if not filename is None:
-      return Helper.join_path(path, filename)
+      return Utils.join_path(path, filename)
     return path
 
   @classmethod
@@ -157,20 +155,20 @@ class SyncSettingsManager:
     """
 
     if isinstance(remote_files, dict):
-      decoded_files = [cls.get_packages_path(Helper.decode_path(f)) for f in remote_files]
+      decoded_files = [cls.get_packages_path(Utils.decode_path(f)) for f in remote_files]
       excluded_patterns = cls.parse_patterns('excluded_files')
       included_patterns = cls.parse_patterns('included_files')
 
-      filtered_files = Helper.merge_lists(
-        Helper.exclude_files_by_patterns(decoded_files, excluded_patterns),
-        Helper.filter_files_by_patterns(decoded_files, included_patterns),
+      filtered_files = Utils.merge_lists(
+        Utils.exclude_files_by_patterns(decoded_files, excluded_patterns),
+        Utils.filter_files_by_patterns(decoded_files, included_patterns),
       )
 
       for f in filtered_files:
-        encode_file = Helper.encode_path(f.replace(cls.get_packages_path(), ''))
+        encode_file = Utils.encode_path(f.replace(cls.get_packages_path(), ''))
         current_file = remote_files.get(encode_file)
         try:
-          Helper.write_to_file(f, current_file.get('content'), 'w+')
+          Utils.write_to_file(f, current_file.get('content'), 'w+')
         except Exception as e:
           message = 'It has generated an error when to update or create the file %s' % (f)
           Logger.log(message + str(e), Logger.MESSAGE_ERROR_TYPE)
@@ -189,100 +187,3 @@ class SyncSettingsManager:
       cls.show_message_and_log(e)
 
     return None
-
-  @classmethod
-  def load(cls):
-    cache = cls.get_cache()
-    settings = cls.settings()
-
-    if (settings.get('access_token') and settings.get('gist_id')):
-      api = cls.gist_api()
-      cache_path = cls.get_cache_path()
-
-      if (api is not None):
-        gist_content = api.get(settings.get('gist_id'))
-        gist_history = gist_content.get('history')[0]
-
-        if (not cache.get('revision_hash')):
-          content = {
-            'revision_date': gist_history.get('committed_at'),
-            'revision_hash': gist_history.get('version')
-          }
-
-          Helper.write_to_file(cache_path, content, 'w', True)
-
-        content = '''
-          Your settings is out to date.
-          <a href = "#download">Download the latest version</a>
-        '''
-
-        cls.show_popup(content)
-
-  @classmethod
-  def get_cache_path(cls):
-    parent_dir = os.path.abspath(__file__ + "/../../")
-    return Helper.join_path(parent_dir, '.sync_settings_cache')
-
-  @classmethod
-  def get_cache(cls):
-    cache_path = cls.get_cache_path()
-
-    if (not Helper.exists_path(cache_path)):
-      Helper.create_empty_file(cache_path)
-      Helper.write_to_file(cache_path, '{}')
-
-    return Helper.get_file_content(cache_path, True)
-
-  @classmethod
-  def show_popup(cls, content):
-    current_view = sublime.active_window().active_view()
-    message = cls.get_message_template(content, 'error')
-
-    current_view.show_popup(message, on_navigate=cls.on_nav)
-
-  @classmethod
-  def on_nav(cls, url):
-    current_window = sublime.active_window()
-    current_view = current_window.active_view()
-
-    current_window.run_command('sync_settings_download')
-    current_view.hide_popup()
-
-  @classmethod
-  def get_message_template(cls, message, type):
-    if (type == 'warning'):
-      message = '<div class = "warning">👉 - %s</div>' % (message)
-    elif (type == 'error'):
-      message = '<div class = "error">💩 - %s</div>' % (message)
-    else:
-      message = '<div class = "success">⚡️ - %s</div>' % (message)
-
-    return '''
-      <style>
-        body {
-          margin: 0;
-          font-size: 16px;
-        }
-
-        div {
-          padding: 10px 15px;
-        }
-
-        div.success {
-          color: #43783b;
-          background-color: #ace1ae;
-        }
-
-        div.warning {
-          color: #9c9759;
-          background-color: #f6f0a6;
-        }
-
-        div.error {
-          background-color: #f89d9d;
-          color: #751414;
-        }
-      </style>
-
-      %s
-    ''' % (message)

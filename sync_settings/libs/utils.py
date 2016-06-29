@@ -7,10 +7,11 @@ import json
 
 try:
   from urllib import parse
+  from functools import reduce
 except Exception as e:
   import urllib as parse
 
-class Helper:
+class Utils:
 
   @classmethod
   def merge_objects(cls, base, *update):

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from sync_settings.libs.gistapi import Gist
+from sync_settings.libs.gist_api import Gist
 from sync_settings.libs.exceptions import GistException
 from tests import *
 from unittest import TestCase

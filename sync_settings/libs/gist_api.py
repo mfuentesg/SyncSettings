@@ -3,7 +3,7 @@
 import requests
 import json
 from .exceptions import GistException
-from .helper import Helper
+from .utils import Utils
 
 class Gist:
   BASE_URL = 'https://api.github.com'
@@ -38,7 +38,7 @@ class Gist:
       GistException: The Gist cannot be created
     """
 
-    _data = json.dumps(Helper.merge_objects(self.__defaults, gist_data))
+    _data = json.dumps(Utils.merge_objects(self.__defaults, gist_data))
 
     response = requests.post(
       self.BASE_URL + '/gists',
@@ -65,7 +65,7 @@ class Gist:
     """
 
     self.__defaults.pop('description', None)
-    gist_data = json.dumps(Helper.merge_objects(self.__defaults, gist_data))
+    gist_data = json.dumps(Utils.merge_objects(self.__defaults, gist_data))
 
     response = requests.patch(
       self.BASE_URL + '/gists/%s' %gist_id,
