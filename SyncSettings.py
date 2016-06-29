@@ -19,13 +19,20 @@ if reloader in sys.modules:
 if VERSION > 3000:
   from .sync_settings import reloader
   from .sync_settings.commands import *
-  from .sync_settings.sync_settings_manager import SyncSettingsManager
+  from .sync_settings.version_manager import VersionManager
 else:
   from sync_settings import reloader
   from sync_settings.commands import *
-  from sync_settings.sync_settings_manager import SyncSettingsManager
+  from sync_settings.version_manager import VersionManager
 
 
 def plugin_loaded():
-  thread = threading.Thread(target=SyncSettingsManager.load)
-  thread.start()
+  threading.Thread(
+    target=VersionManager.check_version
+  ).start()
+
+"""
+  Sublime Text 2 Compatibility
+"""
+if sys.version_info < (3,):
+  plugin_loaded()
