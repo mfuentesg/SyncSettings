@@ -23,10 +23,13 @@ else:
 mods_load_order = [
   '',
   '.libs',
-  '.libs.gistapi',
+  '.libs.gist_api',
   '.libs.logger',
-  '.libs.helper',
-  '.sync_settings_manager',
+  '.libs.utils',
+
+  '.sync_manager',
+  '.sync_logger',
+  '.sync_version',
   '.thread_progress',
 
   '.commands',

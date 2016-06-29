@@ -76,3 +76,12 @@ This version has some bug fixes
 
 * included_files option was added
 * Minor Fixes
+
+#2.3.0
+
+* Check if your settings are up to date on startup
+* Add PopUp support to ST Build 3070 or higher
+* Auto upgrade your Settings if the auto_upgrade option is enabled
+* auto_upgrade option was added
+* Minor Enhancements
+* MIT license was added

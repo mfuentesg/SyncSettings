@@ -4,6 +4,7 @@
     * - Create a Gist
     * - Download a Gist
     * - Upload a Gist
+    * - Delete a Gist
    */
   "access_token": "",
 
@@ -34,7 +35,12 @@
   "included_files": [],
 
   /**
-   * This option has the gist id for upload your configuration
+   * Gist identifier for upload your configuration
    */
-  "gist_id": ""
+  "gist_id": "",
+
+  /**
+   * Download automagically the new version on ST startup
+   */
+  "auto_upgrade": false
 }

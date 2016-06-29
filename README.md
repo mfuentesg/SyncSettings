@@ -1,7 +1,11 @@
 Sync Settings
 ===============
 
+[![SyncSettings](https://img.shields.io/packagecontrol/dt/Sync%20Settings.svg?maxAge=2592000)](https://packagecontrol.io/packages/Sync%20Settings)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://raw.githubusercontent.com/mfuentesg/SyncSettings/master/LICENSE.md)
+[![SyncSettings release](https://img.shields.io/github/release/mfuentesg/SyncSettings.svg?maxAge=2592000)]()
 [![Build Status](https://travis-ci.org/mfuentesg/SyncSettings.svg?branch=master)](https://travis-ci.org/mfuentesg/SyncSettings)
+
 
 **Sync Settings**, is a cross-platform solution to keep the [Sublime Text](http://sublimetext.com/) configuration updated.
 
@@ -28,6 +32,7 @@ Sync Settings
 
 * **access_token**: Access token provided by GitHub
 * **gist_id**: Identifier of the gist that will be used for the synchronization
+* **auto_upgrade**: If it is activated, your settings will be upgraded on startup
 * **excluded_files**: It is a list with all files that will be ignored by the plugin at the time of upload or download. You can exclude by folder name, file name and/or file extension.
 ```json
 /**
@@ -113,7 +118,7 @@ class TestExample(TestCase):
     self.assertFalse('bar'.lower(), 'BAR')
 ```
 
-##Errors
+##Issues?
 
 If you find errors in the plugin, you can to execute "Show Logs" command and report a new [issue](https://github.com/mfuentesg/SyncSettings/issues/new) with the file content.
 

@@ -10,3 +10,4 @@ Thumbs.db
 __pycache__
 **/__pycache__
 tests/options.json
+.sync_settings_cache

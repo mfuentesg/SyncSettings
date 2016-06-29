@@ -2,6 +2,7 @@
 
 import sublime
 import sys
+import threading
 
 VERSION = int(sublime.version())
 
@@ -18,6 +19,20 @@ if reloader in sys.modules:
 if VERSION > 3000:
   from .sync_settings import reloader
   from .sync_settings.commands import *
+  from .sync_settings.sync_version import SyncVersion
 else:
   from sync_settings import reloader
   from sync_settings.commands import *
+  from sync_settings.sync_version import SyncVersion
+
+
+def plugin_loaded():
+  threading.Thread(
+    target=SyncVersion.check_version
+  ).start()
+
+"""
+  Sublime Text 2 Compatibility
+"""
+if sys.version_info < (3,):
+  plugin_loaded()

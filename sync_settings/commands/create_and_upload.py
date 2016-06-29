@@ -2,48 +2,63 @@
 
 import sublime
 from sublime_plugin import WindowCommand
-from ..sync_settings_manager import SyncSettingsManager as Manager
+from ..sync_manager import SyncManager
+from ..sync_logger import SyncLogger
+from ..sync_version import SyncVersion
 from ..thread_progress import ThreadProgress
 
 class SyncSettingsCreateAndUploadCommand(WindowCommand):
   def run(self):
-    if Manager.settings('access_token'):
+    if SyncManager.settings('access_token'):
       return sublime.set_timeout(self.show_input_panel, 10)
     else:
-      Manager.show_message_and_log('You need set the access token', False)
+      SyncLogger.log(
+        'Your `access_token` property it is not configured',
+        SyncLogger.LOG_LEVEL_WARNING
+      )
 
   def show_input_panel(self):
     self.window.show_input_panel(
-      'Sync Settings: Input Gist description', '', self.on_done, None, None
+      caption='Sync Settings: Enter description',
+      initial_text='',
+      on_done=self.on_done,
+      on_change=None,
+      on_cancel=None
     )
 
+  def __create_and_upload_request(self, description):
+    d = description if description != '' else ''
+    files = SyncManager.get_files_content()
+
+    if len(files):
+      try:
+        data = {'files': files}
+        api = SyncManager.gist_api()
+
+        if d != '': data.update({'description': d})
+        if api is not None:
+          gist_data = api.create(data)
+          dialog_message = ''.join([
+            'Sync Settings:\n\n',
+            'Do you want overwrite the current `gist_id` property?'
+          ])
+
+          if sublime.yes_no_cancel_dialog(dialog_message) == sublime.DIALOG_YES:
+            SyncManager.settings('gist_id', gist_data.get('id')).save_settings()
+            SyncVersion.upgrade(gist_data)
+
+          SyncLogger.log('Your settings were correctly backed', SyncLogger.LOG_LEVEL_SUCCESS)
+
+      except Exception as e:
+        SyncLogger.log(e, SyncLogger.LOG_LEVEL_ERROR)
+    else:
+      SyncLogger.log(
+        'There are not enough files to create a backup',
+        SyncLogger.LOG_LEVEL_WARNING
+      )
+
   def on_done(self, description):
-    def create_and_upload_request():
-      d = description if description != '' else ''
-      files = Manager.get_files_content()
-
-      if len(files) > 0:
-        try:
-          data = {'files': files}
-          api = Manager.gist_api()
-
-          if d != '': data.update({'description': d})
-          if api is not None:
-            result = api.create(data)
-            dialog_message = ''.join([
-              'Sync Settings: \n',
-              'Your gist was created successfully\n',
-              'Do you want update the gist_id property in the configuration file?'
-            ])
-
-            Manager.show_message_and_log('Gist created, id = ' + result.get('id'), False)
-            if sublime.yes_no_cancel_dialog(dialog_message) == sublime.DIALOG_YES:
-              Manager.settings('gist_id', result.get('id'))
-              sublime.save_settings(Manager.get_settings_filename())
-              Manager.show_message_and_log('Gist id updated successfully!', False)
-        except Exception as e:
-          Manager.show_message_and_log(e)
-      else:
-        Manager.show_message_and_log('There are not enough files to create the gist', False)
-
-    ThreadProgress(lambda: create_and_upload_request(), 'Creating and uploading files')
+    ThreadProgress(
+      lambda: self.__create_and_upload_request(description),
+      'Creating and uploading files'
+    )
