@@ -16,7 +16,7 @@ class TestLogger(TestCase):
     self.assertEqual(Logger.get_path(), test_path)
 
   def test_log(self):
-    Logger.log('Some content', Logger.MESSAGE_ERROR_TYPE)
+    Logger.log('Some content', True)
     self.assertGreater(os.path.getsize(test_path), 0)
     os.remove(test_path)
     self.assertFalse(os.path.exists(test_path))

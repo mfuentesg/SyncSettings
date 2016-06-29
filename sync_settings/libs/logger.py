@@ -5,11 +5,9 @@ from .utils import Utils
 
 class Logger:
   FILE_NAME = '.sync-settings.log'
-  MESSAGE_INFO_TYPE = 1
-  MESSAGE_ERROR_TYPE = 2
 
   @staticmethod
-  def log(message, message_type):
+  def log(message, is_error = False):
     """Writes to the log file
 
     Arguments:
@@ -17,12 +15,7 @@ class Logger:
       message_type {int}: Type of the log
     """
 
-    if message_type == Logger.MESSAGE_ERROR_TYPE:
-      message = 'ERROR: ' + message
-    elif message_type == Logger.MESSAGE_INFO_TYPE:
-      message = 'INFO: ' + message
-
-    Logger.write(message)
+    Logger.write('ERROR: ' + message if is_error else 'INFO: ' + message)
 
   @staticmethod
   def get_path():

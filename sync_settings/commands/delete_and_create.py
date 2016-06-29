@@ -3,24 +3,27 @@
 import sublime
 from sublime_plugin import WindowCommand
 from ..sync_manager import SyncManager
+from ..sync_logger import SyncLogger
 from ..thread_progress import ThreadProgress
 
 class SyncSettingsDeleteAndCreateCommand(WindowCommand):
   def run(self, create = True):
     if not (SyncManager.settings('access_token') and SyncManager.settings('gist_id')):
-      error_msg = 'You need set the `access_token` and `gist_id` properties'
-      SyncManager.show_message_and_log(error_msg, False)
+      SyncLogger.log(
+        'You need set the `access_token` and `gist_id` properties',
+        SyncLogger.LOG_LEVEL_WARNING
+      )
     else:
       dialog_message = ''.join([
-        'Sync Settings: \n',
+        'Sync Settings:\n',
         'Your Gist will be deleted, are you sure?\n',
-        'This action is irreversible'
+        'Warning: This action is irreversible'
       ])
 
       if sublime.yes_no_cancel_dialog(dialog_message) == sublime.DIALOG_YES:
-        ThreadProgress(lambda: self.delete_and_create_gist(create), 'Deleting gist')
+        ThreadProgress(lambda: self.__delete_and_create_gist(create), 'Deleting gist')
 
-  def delete_and_create_gist(self, create):
+  def __delete_and_create_gist(self, create):
     gist_id = SyncManager.settings('gist_id')
 
     if gist_id:
@@ -29,11 +32,20 @@ class SyncSettingsDeleteAndCreateCommand(WindowCommand):
 
         if api is not None:
           api.delete(gist_id)
+
           SyncManager.settings('gist_id', '')
-          SyncManager.show_message_and_log('Gist deleted successfully, id = %s' % (gist_id), False)
+          SyncLogger.log(
+            'Gist deleted successfully, id = %s' % (gist_id),
+            SyncLogger.LOG_LEVEL_SUCCESS
+          )
+
           if create:
             self.window.run_command('sync_settings_create_and_upload')
+
       except Exception as e:
-        SyncManager.show_message_and_log(e)
+        SyncLogger.log(e, SyncLogger.LOG_LEVEL_ERROR)
     else:
-      SyncManager.show_message_and_log('Set gist_id property on the configuration file', False)
+      SyncLogger.log(
+        'Set `gist_id` property on the configuration file',
+        SyncLogger.LOG_LEVEL_WARNING
+      )

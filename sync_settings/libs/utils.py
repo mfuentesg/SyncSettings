@@ -254,7 +254,7 @@ class Utils:
       [string]: Encoded path
     """
 
-    if isinstance(path, str) and len(path) > 0:
+    if isinstance(path, str) and len(path):
       path = path.replace('\\', '/')
       return parse.quote(path, safe='')
     return None
@@ -270,7 +270,7 @@ class Utils:
       [string]: Decoded path
     """
 
-    if isinstance(path, str) and len(path) > 0:
+    if isinstance(path, str) and len(path):
       return parse.unquote(path).replace('/', cls.os_separator())
     return None
 
@@ -375,6 +375,7 @@ class Utils:
     Arguments:
       file_path {string}: File path
     """
+
     try:
       file_content = open(file_path, 'r', encoding = 'ISO-8859-1').read()
 

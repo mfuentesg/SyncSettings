@@ -9,6 +9,15 @@ class Gist:
   BASE_URL = 'https://api.github.com'
 
   def __init__(self, token):
+    """Instance and validates the authentication info
+
+    Arguments:
+      token {str}: GitHub access token
+
+    Raises:
+      GistException: The Access Token is not valid
+    """
+
     response = requests.get(self.BASE_URL + '/user?access_token=' + token)
 
     if response.status_code != 200:
@@ -121,7 +130,7 @@ class Gist:
     if response.status_code == 204:
       return True
 
-    raise GistException(Gist.__get_response_error('The Gist cannot be deleted', response))
+    raise GistException(Gist.__get_response_error('The Gist cannot be deleted or not exists', response))
 
   def get(self, gist_id):
     """Gets a specific Gist
@@ -157,7 +166,7 @@ class Gist:
     error_description = "Code %s - %s" %(str(response.status_code), rjson.get('message'))
 
     return {
-      'app_message': "%s - %s" % (error_description, message),
+      'app_message': "%s" % (message),
       'error_description': "[%s] - %s" % (message, error_description),
       'code': response.status_code
     }

@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import sublime
-from .libs.logger import Logger
+from .sync_logger import SyncLogger
 from .libs.utils import Utils
+from .libs.logger import Logger
 from .libs.gist_api import Gist
 
 class SyncManager:
@@ -93,7 +94,7 @@ class SyncManager:
             f = Utils.encode_path(f.replace(cls.get_packages_path(), ''))
             r.update({f: {'content': content}})
         except Exception as e:
-          Logger.log(str(e), Logger.MESSAGE_ERROR_TYPE)
+          Logger.log(str(e), True)
 
     return r
 
@@ -121,32 +122,6 @@ class SyncManager:
     return cls.SETTINGS_FILENAME
 
   @classmethod
-  def show_message_and_log(cls, message, error = True):
-    """Writes and show the log message to the user
-
-    Arguments:
-      message {dict}: The message to show
-      error {bool}: Indicates if the message is an Error
-    """
-
-    m = l = ''
-
-    if isinstance(message, Exception):
-      message = message.to_json()
-      m = message.get('app_message')
-      l = '%s, File: %s - Line: %s' % (
-        message.get('error_description'),
-        message.get('filename'),
-        message.get('line')
-      )
-    elif isinstance(message, str):
-      m = l = message
-
-    sublime.status_message('Sync Settings: ' + m)
-    error_type = Logger.MESSAGE_ERROR_TYPE if error else Logger.MESSAGE_INFO_TYPE
-    Logger.log(l, error_type)
-
-  @classmethod
   def update_from_remote_files(cls, remote_files):
     """Overwrite the local files content with the remote content
 
@@ -171,7 +146,7 @@ class SyncManager:
           Utils.write_to_file(f, current_file.get('content'), 'w+')
         except Exception as e:
           message = 'It has generated an error when to update or create the file %s' % (f)
-          Logger.log(message + str(e), Logger.MESSAGE_ERROR_TYPE)
+          Logger.log(message + str(e), True)
 
   @classmethod
   def gist_api(cls):
@@ -184,6 +159,6 @@ class SyncManager:
     try:
       return Gist(cls.settings('access_token'))
     except Exception as e:
-      cls.show_message_and_log(e)
+      SyncLogger.log(e, SyncLogger.LOG_LEVEL_ERROR)
 
     return None
