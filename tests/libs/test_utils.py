@@ -311,8 +311,8 @@ class TestUtils(TestCase):
 
     self.assertTrue(os.path.exists(file_path))
 
-    with open(file_path, 'r') as f:
-      self.assertEqual(f.read().find(message), 0)
+    with open(file_path, 'rb') as f:
+      self.assertEqual(f.read().decode('utf-8').find(message), 0)
 
     os.remove(file_path)
     self.assertFalse(os.path.exists(file_path))
@@ -321,8 +321,8 @@ class TestUtils(TestCase):
 
     Utils.write_to_file(file_path, message)
     self.assertTrue(os.path.exists(file_path))
-    with open(file_path, 'r') as f:
-      self.assertEqual(f.read().find(message), 0)
+    with open(file_path, 'rb') as f:
+      self.assertEqual(f.read().decode('utf-8').find(message), 0)
     os.remove(file_path)
     self.assertFalse(os.path.exists(file_path))
     shutil.rmtree(Utils.join_path(os.getcwd(), 'some_path'))
@@ -333,15 +333,15 @@ class TestUtils(TestCase):
 
     Utils.write_to_file(file_path, message)
     self.assertTrue(os.path.exists(file_path))
-    with open(file_path, 'r') as f:
-      self.assertEqual(f.read().find(message), 0)
+    with open(file_path, 'rb') as f:
+      self.assertEqual(f.read().decode('utf-8').find(message), 0)
     os.remove(file_path)
     self.assertFalse(os.path.exists(file_path))
 
-    Utils.write_to_file(file_path, {"some": "content"}, as_json=True)
+    Utils.write_to_file(file_path, {"some": "content"}, action='a+', as_json=True)
     self.assertTrue(os.path.exists(file_path))
-    with open(file_path, 'r') as f:
-      self.assertEqual(f.read(), '{"some": "content"}')
+    with open(file_path, 'rb') as f:
+      self.assertEqual(f.read().decode('utf-8'), '{"some": "content"}')
 
     os.remove(file_path)
     self.assertFalse(os.path.exists(file_path))

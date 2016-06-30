@@ -30,6 +30,7 @@ class ThreadProgress():
 
   def run(self, i):
     if not self.thread.is_alive():
+      sublime.status_message('Sync Settings: Task completed')
       return
 
     before = i % self.size

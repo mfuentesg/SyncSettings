@@ -88,7 +88,7 @@ class SyncVersion:
 
     if (not Utils.exists_path(cache_path)):
       Utils.create_empty_file(cache_path)
-      Utils.write_to_file(cache_path, '{}')
+      Utils.write_to_file(cache_path, '{}', 'a+')
 
     return Utils.get_file_content(cache_path, True)
 
