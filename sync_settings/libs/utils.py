@@ -316,10 +316,10 @@ class Utils:
     try:
       open(path, 'a').close()
     except Exception as e:
-      print(e)
+      print('Fail to create the file %s - %s' % (path, str(e)))
 
   @classmethod
-  def write_to_file(cls, path, content, action = 'a+', as_json = False):
+  def write_to_file(cls, path, content, action = 'ab+', as_json = False):
     """Writes the content in the specified file
 
     Arguments:
@@ -340,10 +340,10 @@ class Utils:
           if (as_json and isinstance(content, dict)):
             json.dump(content, f)
           else:
-            f.write(content + '\n')
+            f.write((content + '\n').encode("utf-8"))
           f.close()
       except Exception as e:
-        print(e)
+        print('An exception in file %s - %s: ' % (path, str(e)))
     else:
       raise Exception('Invalid Parameters')
 
@@ -377,10 +377,10 @@ class Utils:
     """
 
     try:
-      f = open(file_path, 'r')
-      file_content = f.read()
+      f = open(file_path, 'rb')
+      file_content = f.read().decode('utf-8')
       f.close()
       return json.loads(file_content) if as_json else file_content
 
     except Exception as e:
-      print(e)
+      print('Error in file %s - %s' % (file_path, str(e)))

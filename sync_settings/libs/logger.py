@@ -38,6 +38,6 @@ class Logger:
     full_time = time.strftime("[%d/%m/%Y - %H:%M:%S] ")
     message = full_time + message
     path = Logger.get_path()
-    action = 'a+' if Utils.exists_path(path) else 'w+'
+    action = 'ab+' if Utils.exists_path(path) else 'wb+'
 
     Utils.write_to_file(path, message, action)

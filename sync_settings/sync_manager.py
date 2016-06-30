@@ -94,10 +94,11 @@ class SyncManager:
     for f in files:
       if Utils.exists_path(f):
         try:
-          content = open(f, 'r', encoding = 'ISO-8859-1').read()
-          if content.strip() is not '':
-            f = Utils.encode_path(f.replace(cls.get_packages_path(), ''))
-            r.update({f: {'content': content}})
+          with open(f, 'rb') as fi:
+            content = fi.read().decode('utf-8')
+            if content.strip() is not '':
+              f = Utils.encode_path(f.replace(cls.get_packages_path(), ''))
+              r.update({f: {'content': content}})
         except Exception as e:
           Logger.log(str(e), True)
 
@@ -148,10 +149,10 @@ class SyncManager:
         encode_file = Utils.encode_path(f.replace(cls.get_packages_path(), ''))
         current_file = remote_files.get(encode_file)
         try:
-          Utils.write_to_file(f, current_file.get('content'), 'w+')
+          Utils.write_to_file(f, current_file.get('content'), 'wb+')
         except Exception as e:
-          message = 'It has generated an error when to update or create the file %s' % (f)
-          Logger.log(message + str(e), True)
+          message = "It has generated an error when to update or create the file %s - %s" % (f, str(e))
+          Logger.log(message, True)
 
   @classmethod
   def gist_api(cls):
