@@ -85,3 +85,8 @@ This version has some bug fixes
 * auto_upgrade option was added
 * Minor Enhancements
 * MIT license was added
+
+#2.3.1
+
+* Fix encoding bug
+* Allow special chars like 'ç'
