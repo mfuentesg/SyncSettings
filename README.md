@@ -32,7 +32,7 @@ Sync Settings
 
 * **access_token**: Access token provided by GitHub
 * **gist_id**: Identifier of the gist that will be used for the synchronization
-* **auto_upgrade**: If it is activated, your settings will be upgraded on startup
+* **auto_upgrade**: If it is activated, your settings will be upgraded on startup (Download command)
 * **excluded_files**: It is a list with all files that will be ignored by the plugin at the time of upload or download. You can exclude by folder name, file name and/or file extension.
 ```json
 /**
