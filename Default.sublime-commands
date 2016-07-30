@@ -23,5 +23,10 @@
   {
     "caption": "Sync Settings: Show Logs",
     "command": "sync_settings_open_logs"
+  },
+  {
+    "caption": "Sync Settings: Edit User Settings",
+    "command": "open_file",
+    "args": {"file": "${packages}/User/SyncSettings.sublime-settings"}
   }
 ]
