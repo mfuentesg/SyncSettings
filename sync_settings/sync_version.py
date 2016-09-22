@@ -7,6 +7,7 @@ from .sync_logger import SyncLogger
 from .libs.utils import Utils
 
 class SyncVersion:
+  FILE_NAME = '.sync_settings_cache'
 
   @classmethod
   def check_version(cls):
@@ -71,10 +72,8 @@ class SyncVersion:
     Returns:
       [str]
     """
-    parent_dir = path.dirname(path.abspath(__file__))
-    parent_dir = path.dirname(parent_dir)
 
-    return Utils.join_path(parent_dir, '.sync_settings_cache')
+    return Utils.get_home_path(SyncVersion.FILE_NAME)
 
   @classmethod
   def get_cache(cls):
