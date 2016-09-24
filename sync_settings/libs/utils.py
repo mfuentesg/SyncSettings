@@ -340,7 +340,7 @@ class Utils:
           if (as_json and isinstance(content, dict)):
             json.dump(content, f)
           else:
-            f.write((content + '\n').encode("utf-8"))
+            f.write(content.encode("utf-8"))
           f.close()
       except Exception as e:
         print('An exception in file %s - %s: ' % (path, str(e)))
