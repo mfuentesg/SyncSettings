@@ -403,7 +403,7 @@ class TestUtils(TestCase):
     Utils.write_to_file(test_path,'Some content')
     file_content = Utils.get_file_content(test_path)
 
-    self.assertEqual(file_content, 'Some content\n')
+    self.assertEqual(file_content, 'Some content')
 
     os.remove(test_path)
     self.assertFalse(os.path.exists(test_path))
