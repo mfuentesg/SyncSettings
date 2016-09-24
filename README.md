@@ -9,7 +9,7 @@ Sync Settings
 
 **Sync Settings**, is a cross-platform solution to keep the [Sublime Text](http://sublimetext.com/) configuration updated.
 
-##How works?
+##How it works?
 
 **Sync Settings** uses Github-Gist allowing you to use all features that this service provides.
 
@@ -25,7 +25,7 @@ Sync Settings
 
 ##Configuration
 
-1. Creates an access [token in GitHub](https://github.com/settings/tokens/new)
+1. Create an access [token in GitHub](https://github.com/settings/tokens/new)
 2. Paste token in configuration file `Preferences > Packages Settings > Sync Settings > Settings - User`
 
 ####Options
