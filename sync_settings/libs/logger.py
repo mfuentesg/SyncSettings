@@ -36,7 +36,7 @@ class Logger:
     """
 
     full_time = time.strftime("[%d/%m/%Y - %H:%M:%S] ")
-    message = full_time + message
+    message = full_time + message + '\n'
     path = Logger.get_path()
     action = 'ab+' if Utils.exists_path(path) else 'wb+'
 

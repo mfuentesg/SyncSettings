@@ -7,7 +7,7 @@ from .sync_logger import SyncLogger
 from .libs.utils import Utils
 
 class SyncVersion:
-  FILE_NAME = '.sync_settings_cache'
+  FILE_NAME = '.sync-settings.cache'
 
   @classmethod
   def check_version(cls):
@@ -87,7 +87,7 @@ class SyncVersion:
 
     if (not Utils.exists_path(cache_path)):
       Utils.create_empty_file(cache_path)
-      Utils.write_to_file(cache_path, '{}', 'a+')
+      Utils.write_to_file(cache_path, '{}', 'wb+')
 
     return Utils.get_file_content(cache_path, True)
 
