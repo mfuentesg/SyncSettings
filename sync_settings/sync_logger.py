@@ -3,7 +3,7 @@
 from .libs.logger import Logger
 from .libs.exceptions import GistException
 from requests.exceptions import ConnectionError
-import sublime
+import sublime, sys, traceback
 
 class SyncLogger:
 
@@ -34,7 +34,11 @@ class SyncLogger:
     elif isinstance(log_message, ConnectionError):
       m = 'Apparently you are having problems with the internet connection'
     elif isinstance(log_message, Exception):
-      m = str(log_message)
+      exc_type, exc_value, exc_traceback = sys.exc_info()
+      m = """Apparently something is wrong with the plugin.
+          Create a new issue with the log file content. Thanks!"""
+      Logger.log(str(traceback.format_exception(exc_type, exc_value, exc_traceback)), is_error)
+
     elif isinstance(log_message, str):
       m = log_message
 
