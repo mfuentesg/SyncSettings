@@ -44,10 +44,8 @@ class SyncSettingsDeleteAndCreateCommand(WindowCommand):
 
           if create:
             self.window.run_command('sync_settings_create_and_upload')
-
-      except Exception as e:
-        SyncManager.settings('gist_id', '').save_settings()
-        SyncLogger.log(e, SyncLogger.LOG_LEVEL_ERROR)
+      except Exception as ex:
+        SyncLogger.log(ex, SyncLogger.LOG_LEVEL_ERROR)
     else:
       SyncLogger.log(
         'Set `gist_id` property on the configuration file',
