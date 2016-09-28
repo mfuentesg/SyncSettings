@@ -89,4 +89,16 @@ This version has some bug fixes
 #2.3.1
 
 * Fix encoding bug
-* Allow special chars like 'ç'
+* Allow special chars like 'Ã§
+
+#2.4.0
+
+- Rename cache file from `.sync_settings_cache` to `.sync-settings.cache` (~/.sync_settings_cache)
+- New Command `Sync Settings: Edit User Settings` by @JohaWeber
+- Bug Logging was improved
+
+Issues:
+- Remove SyncSettings references from download process (https://github.com/mfuentesg/SyncSettings/issues/50)
+- Download doesn't work and clears Gist ID (https://github.com/mfuentesg/SyncSettings/issues/46)
+- downloading append a newline in configfile (https://github.com/mfuentesg/SyncSettings/issues/45)
+- sync_settings_cache links to wrong directory (https://github.com/mfuentesg/SyncSettings/issues/42)
