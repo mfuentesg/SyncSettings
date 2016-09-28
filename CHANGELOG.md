@@ -89,7 +89,7 @@ This version has some bug fixes
 #2.3.1
 
 * Fix encoding bug
-* Allow special chars like 'Ã§
+* Allow special chars like 'ç'
 
 #2.4.0
 
