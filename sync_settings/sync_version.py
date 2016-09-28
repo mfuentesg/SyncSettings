@@ -22,17 +22,18 @@ class SyncVersion:
       if (cls.has_cache()):
         try:
           api = SyncManager.gist_api()
-          gist_content = api.get(settings.get('gist_id'))
-          gist_history = gist_content.get('history')[0]
 
-          if (not cls.its_updated(gist_content)):
-            if SyncManager.settings('auto_upgrade'):
-              sublime.active_window().run_command('sync_settings_download')
-            else:
-              SyncLogger.log(outdate_message, SyncLogger.LOG_LEVEL_WARNING)
+          if (api is not None):
+            gist_content = api.get(settings.get('gist_id'))
+            gist_history = gist_content.get('history')[0]
 
-        except Exception as e:
-          SyncLogger.log(e, SyncLogger.LOG_LEVEL_ERROR)
+            if (not cls.its_updated(gist_content)):
+              if SyncManager.settings('auto_upgrade'):
+                sublime.active_window().run_command('sync_settings_download')
+              else:
+                SyncLogger.log(outdate_message, SyncLogger.LOG_LEVEL_WARNING)
+        except Exception as ex:
+          SyncLogger.log(ex, SyncLogger.LOG_LEVEL_ERROR)
       elif(settings.get('gist_id')):
         SyncLogger.log(outdate_message, SyncLogger.LOG_LEVEL_WARNING)
 

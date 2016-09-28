@@ -36,9 +36,9 @@ class SyncSettingsDownloadCommand(WindowCommand):
               'There are not enough files to create the backup.',
               SyncLogger.LOG_LEVEL_WARNING
             )
-      except Exception as e:
-        SyncManager.settings('gist_id', '').save_settings()
-        SyncLogger.log(e, SyncLogger.LOG_LEVEL_ERROR)
+      except Exception as ex:
+        SyncLogger.log(ex, SyncLogger.LOG_LEVEL_ERROR)
+
     else:
       SyncLogger.log(
         'Set `gist_id` property on the configuration file',

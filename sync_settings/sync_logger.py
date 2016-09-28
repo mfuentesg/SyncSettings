@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from .libs.logger import Logger
+from .libs.exceptions import GistException
+from requests.exceptions import ConnectionError
 import sublime
 
 class SyncLogger:
@@ -20,7 +22,7 @@ class SyncLogger:
     m = l = ''
     is_error = log_level == cls.LOG_LEVEL_ERROR
 
-    if isinstance(log_message, Exception):
+    if isinstance(log_message, GistException):
       log_message = log_message.to_json()
       m = log_message.get('app_message')
       l = '%s, File: %s - Line: %s' % (
@@ -29,6 +31,10 @@ class SyncLogger:
         log_message.get('line')
       )
       Logger.log(l, is_error)
+    elif isinstance(log_message, ConnectionError):
+      m = 'Apparently you are having problems with the internet connection'
+    elif isinstance(log_message, Exception):
+      m = str(log_message)
     elif isinstance(log_message, str):
       m = log_message
 
@@ -65,20 +71,20 @@ class SyncLogger:
     current_view.show_popup(content=message, max_width=400)
 
   @classmethod
-  def get_message_template(cls, message, type):
+  def get_message_template(cls, message, message_type):
     """Generates a template using HTML tags
 
     Arguments:
       message {string}: Message to render
-      type {int}: Log type
+      message_type {int}: Log type
     """
 
-    if (type == cls.LOG_LEVEL_WARNING):
-      message = '<div class = "warning">💩 %s</div>' % (message)
-    elif (type == cls.LOG_LEVEL_ERROR):
-      message = '<div class = "error">😨 %s</div>' % (message)
-    elif (type == cls.LOG_LEVEL_SUCCESS):
-      message = '<div class = "success">⚡️ %s</div>' % (message)
+    if (message_type == cls.LOG_LEVEL_WARNING):
+      message = '<div class="warning">%s</div>' % (message)
+    elif (message_type == cls.LOG_LEVEL_ERROR):
+      message = '<div class="error">%s</div>' % (message)
+    elif (message_type == cls.LOG_LEVEL_SUCCESS):
+      message = '<div class="success">%s</div>' % (message)
 
     return '''
       <style>
