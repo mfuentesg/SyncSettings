@@ -21,6 +21,9 @@ class SyncSettingsDownloadCommand(WindowCommand):
           remote_files = gist_content.get('files')
 
           if len(remote_files):
+            # Excluding SyncSettings.sublime-settings file
+            remote_files.pop(SyncManager.get_settings_filename())
+
             SyncManager.update_from_remote_files(remote_files)
             success_message = ''.join([
               'Your settings were upgraded correctly, ',
