@@ -338,7 +338,7 @@ class Utils:
 
         with open(path, action) as f:
           if (as_json and isinstance(content, dict)):
-            json.dump(content, f)
+            json.dump(content, f, sort_keys=True, indent=4)
           else:
             f.write(content.encode("utf-8"))
           f.close()

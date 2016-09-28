@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import sublime
+import sublime, json
 from .sync_logger import SyncLogger
 from .libs.utils import Utils
 from .libs.logger import Logger
@@ -146,13 +146,36 @@ class SyncManager:
       )
 
       for f in filtered_files:
-        encode_file = Utils.encode_path(f.replace(cls.get_packages_path(), ''))
-        current_file = remote_files.get(encode_file)
+        encoded_file = Utils.encode_path(f.replace(cls.get_packages_path(), ''))
+        current_file = remote_files.get(encoded_file)
         try:
+          if (Utils.decode_path(encoded_file) == 'Package Control.sublime-settings'):
+            current_file['content'] = cls.add_package('SyncSettings', current_file.get('content'))
+
           Utils.write_to_file(f, current_file.get('content'), 'wb+')
         except Exception as e:
           message = "It has generated an error when to update or create the file %s - %s" % (f, str(e))
           Logger.log(message, True)
+
+  @classmethod
+  def add_package(cls, package_name, file_content):
+    """Include a package to the `Package Control.sublime-settings` file
+    Arguments:
+      package_name {str}: Package to include
+      file_content: {str}: Content to evaluate
+
+    Returns:
+      [str]: Content updated
+    """
+
+    installed_key = 'installed_packages'
+    file_loaded = json.loads(file_content)
+    installed_packages = file_loaded.get(installed_key)
+
+    if (package_name not in installed_packages):
+      installed_packages.append('Sync Settings')
+
+    return json.dumps(file_loaded, sort_keys=True, indent=4)
 
   @classmethod
   def gist_api(cls):
