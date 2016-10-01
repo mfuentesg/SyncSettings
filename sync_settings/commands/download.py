@@ -19,10 +19,12 @@ class SyncSettingsDownloadCommand(WindowCommand):
         if api is not None:
           gist_content = api.get(gist_id)
           remote_files = gist_content.get('files')
+          settings_file = SyncManager.get_settings_filename()
 
           if len(remote_files):
             # Excluding SyncSettings.sublime-settings file
-            remote_files.pop(SyncManager.get_settings_filename())
+            if (settings_file in remote_files):
+              remote_files.pop(SyncManager.get_settings_filename())
 
             SyncManager.update_from_remote_files(remote_files)
             success_message = ''.join([
