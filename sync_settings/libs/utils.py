@@ -9,17 +9,8 @@ import json
 from functools import reduce
 
 if sys.version_info < (3,):
-    from urllib import unquote as urllib_unquote
+    from urllib import unquote
     from urllib import quote
-
-    def unquote(s):
-        """This is to deal with source files with non-ascii names
-         We get url-quoted UTF-8 from dbus; convert to url-quoted ascii
-         and then unquote. If you don't first convert ot ascii, it fails.
-         It's a bit magical, but it seems to work
-        """
-
-        return urllib_unquote(s.encode('ascii'))
 else:
     from urllib.parse import unquote
     from urllib.parse import quote
@@ -284,6 +275,7 @@ class Utils:
     """
 
     if isinstance(path, str) and len(path):
+      path = path.encode('ascii') if sys.version_info < (3,) else path
       return unquote(path).replace('/', cls.os_separator())
     return None
 

@@ -18,13 +18,15 @@ class SyncSettingsUploadCommand(WindowCommand):
 
         if api is not None:
           files = SyncManager.get_files_content()
+          # Excluding SyncSettings.sublime-settings
+          files.pop(SyncManager.get_settings_filename(), None)
 
           if len(files):
             data = {'files': files}
             gist_data = api.edit(gist_id, data)
 
             SyncLogger.log(
-              'Your files was uploaded correctly',
+              'Your files were uploaded correctly',
               SyncLogger.LOG_LEVEL_SUCCESS
             )
             SyncVersion.upgrade(gist_data)
