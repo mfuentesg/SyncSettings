@@ -123,9 +123,9 @@ class TestExample(TestCase):
 
 ## Contributors
 
-* Ferron H - @ferronrsmith
-* Johannes Weber - @JohaWeber
-* @tomahl
+* Ferron H - [@ferronrsmith](https://github.com/ferronrsmith)
+* Johannes Weber - [@JohaWeber](https://github.com/JohaWebert)
+* [@tomahl](https://github.com/tomahl)
 
 ##Issues?
 
