@@ -74,6 +74,7 @@ Sync Settings
 4. **Download**: Download your settings files, overwriting the existing files, after downloaded your files [Sublime Text](http://www.sublimetext.com) need to be restarted.
 5. **Delete**: Deletes the current gist.
 6. **Show Logs**: Open a new view with the log file content.
+6. **Edit user settings**: Open a new view with the user settings.
 
 🤓 - See it in action ![SyncSettings in action!](http://g.recordit.co/I9UXWEHRHp.gif)
 
@@ -120,6 +121,12 @@ class TestExample(TestCase):
     self.assertFalse('bar'.lower(), 'BAR')
 ```
 
+## Contributors
+
+* Ferron H - @ferronrsmith
+* Johannes Weber - @JohaWeber
+* @tomahl
+
 ##Issues?
 
 If you find errors in the plugin, you can to execute "Show Logs" command and report a new [issue](https://github.com/mfuentesg/SyncSettings/issues/new) with the file content.
@@ -131,3 +138,6 @@ You can check the changes to this plugin [here](CHANGELOG.md)
 ##Donate
 
 You are welcome support this project using [Paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7XCNSKK5W7DKJ)
+
+##License
+MIT License. © 2015-2016 Marcelo Fuentes
