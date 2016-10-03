@@ -5,11 +5,24 @@ import re
 import sys
 import json
 
-try:
-  from urllib import parse
-  from functools import reduce
-except Exception as e:
-  import urllib as parse
+
+from functools import reduce
+
+if sys.version_info < (3,):
+    from urllib import unquote as urllib_unquote
+    from urllib import quote
+
+    def unquote(s):
+        """This is to deal with source files with non-ascii names
+         We get url-quoted UTF-8 from dbus; convert to url-quoted ascii
+         and then unquote. If you don't first convert ot ascii, it fails.
+         It's a bit magical, but it seems to work
+        """
+
+        return urllib_unquote(s.encode('ascii'))
+else:
+    from urllib.parse import unquote
+    from urllib.parse import quote
 
 class Utils:
 
@@ -256,7 +269,7 @@ class Utils:
 
     if isinstance(path, str) and len(path):
       path = path.replace('\\', '/')
-      return parse.quote(path, safe='')
+      return quote(path, safe='')
     return None
 
   @classmethod
@@ -271,7 +284,7 @@ class Utils:
     """
 
     if isinstance(path, str) and len(path):
-      return parse.unquote(path).replace('/', cls.os_separator())
+      return unquote(path).replace('/', cls.os_separator())
     return None
 
   @classmethod
