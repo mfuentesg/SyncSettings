@@ -275,6 +275,12 @@ class Utils:
     """
 
     if isinstance(path, str) and len(path):
+     """
+        This is to deal with source files with non-ascii names
+        We get url-quoted UTF-8 from dbus; convert to url-quoted ascii
+        and then unquote. If you don't first convert ot ascii, it fails.
+        It's a bit magical, but it seems to work
+     """
       path = path.encode('ascii') if sys.version_info < (3,) else path
       return unquote(path).replace('/', cls.os_separator())
     return None
