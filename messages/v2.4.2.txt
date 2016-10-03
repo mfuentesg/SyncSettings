@@ -1,0 +1,4 @@
+Sync Settings v2.4.2
+
+Solved issues:
+- Fails with Dev Channel, Build 3125 (https://github.com/mfuentesg/SyncSettings/issues/63)

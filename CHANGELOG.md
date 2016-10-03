@@ -102,3 +102,8 @@ Issues:
 - Download doesn't work and clears Gist ID (https://github.com/mfuentesg/SyncSettings/issues/46)
 - downloading append a newline in configfile (https://github.com/mfuentesg/SyncSettings/issues/45)
 - sync_settings_cache links to wrong directory (https://github.com/mfuentesg/SyncSettings/issues/42)
+
+#2.4.2
+
+Solved issues:
+- Fails with Dev Channel, Build 3125 (https://github.com/mfuentesg/SyncSettings/issues/63)
