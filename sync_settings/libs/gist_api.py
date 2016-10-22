@@ -154,7 +154,7 @@ class Gist:
     raise GistException(Gist.__get_response_error('The Gist cannot be reached or not exists', response))
 
   def __get_raw_content(self, response):
-    """Get the raw content from the the truncated files
+    """Get the raw content from the truncated files
 
     Arguments:
       response {dict}: Response data
