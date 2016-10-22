@@ -149,9 +149,31 @@ class Gist:
 
     response = requests.get(base_url, headers=self.__headers)
     if response.status_code == 200:
-      return response.json()
+      return self.__get_raw_content(response.json())
 
     raise GistException(Gist.__get_response_error('The Gist cannot be reached or not exists', response))
+
+  def __get_raw_content(self, response):
+    """Get the raw content from the the truncated files
+
+    Arguments:
+      response {dict}: Response data
+
+    Returns:
+      [dict]: Response with raw data
+    """
+
+    files = response.get('files')
+
+    for f in files:
+      file_data = files.get(f)
+      if file_data.get('truncated'):
+        r = requests.get(file_data.get('raw_url'))
+        file_data.update({
+          'content': str(r.content, 'utf-8')
+        })
+
+    return response
 
   @staticmethod
   def __get_response_error(message, response):
