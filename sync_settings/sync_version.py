@@ -12,7 +12,6 @@ class SyncVersion:
   @classmethod
   def check_version(cls):
     """Verifies if the current Gist is up to date or exists"""
-
     settings = SyncManager.settings()
 
     if (settings.get('access_token') and settings.get('gist_id')):
@@ -44,8 +43,9 @@ class SyncVersion:
     Returns:
       [bool]
     """
-    return 'revision_hash' in cls.get_cache() and \
-           'revision_date' in cls.get_cache()
+    cache = cls.get_cache()
+    return cache and 'revision_hash' in cache and \
+           'revision_date' in cache
 
   @classmethod
   def its_updated(cls, gist_data):
