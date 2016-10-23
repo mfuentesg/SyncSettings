@@ -1,0 +1,4 @@
+Sync Settings v2.4.3
+
+Solved issues:
+- Syncing not works (https://github.com/mfuentesg/SyncSettings/issues/67)

@@ -107,3 +107,9 @@ Issues:
 
 Solved issues:
 - Fails with Dev Channel, Build 3125 (https://github.com/mfuentesg/SyncSettings/issues/63)
+
+
+#2.4.3
+
+Solved issues:
+- Syncing not works (https://github.com/mfuentesg/SyncSettings/issues/67)
