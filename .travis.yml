@@ -15,5 +15,7 @@ branches:
 install:
   - 'pip install -r requirements.txt'
 
+before_script:
+  - 'git clean -xfd'
 script:
  - 'python -m unittest discover -s ./tests/libs'
