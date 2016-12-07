@@ -8,6 +8,14 @@ from unittest import TestCase
 class TestUtils(TestCase):
   base_path = Utils.join_path(os.getcwd(), 'tests')
 
+  def create_folder(self, path):
+    self.delete_folder(path)
+    os.makedirs(path)
+
+  def delete_folder(self, path):
+    if os.path.exists(path):
+      shutil.rmtree(path)
+
   def test_merge_objects(self):
     base_object = {'a': 'b', 'b': 'a'}
     update_object = {'a': 'a', 'b': 'b', 'c': 'c'}
@@ -79,7 +87,7 @@ class TestUtils(TestCase):
     self.assertGreater(len(Utils.get_files(self.base_path)), 0)
 
     #Create a test folder structure
-    os.makedirs(Utils.join_path(self.base_path, 'hello', 'world'))
+    self.create_folder(Utils.join_path(self.base_path, 'hello', 'world'))
     open(Utils.join_path(self.base_path, 'hello', 'foo.txt'), 'a').close()
     open(Utils.join_path(self.base_path, 'hello', 'bar.txt'), 'a').close()
     open(Utils.join_path(self.base_path, 'hello', 'world', 'foo.txt'), 'a').close()
@@ -91,7 +99,7 @@ class TestUtils(TestCase):
     files = sorted(Utils.get_files(Utils.join_path(self.base_path, 'hello')))
     self.assertEqual(len(files), 3)
     self.assertListEqual(files, allFiles)
-    shutil.rmtree(Utils.join_path(self.base_path, 'hello'))
+    self.delete_folder(Utils.join_path(self.base_path, 'hello'))
 
   def test_match_with_folder(self):
     success_cases = [
@@ -138,6 +146,30 @@ class TestUtils(TestCase):
 
     for w in wrong_cases:
       self.assertFalse(Utils.match_with_filename(w, file_path))
+
+  def test_match_with_willcard(self):
+    pattern = Utils.join_path(self.base_path, 'packages', 'Package Control.cache*')
+    success_cases = [
+      Utils.join_path(self.base_path, 'packages', 'Package Control.cache123123'),
+      Utils.join_path(self.base_path, 'packages', 'Package Control.cache'),
+      Utils.join_path(self.base_path, 'packages', 'Package Control.cached'),
+      Utils.join_path(self.base_path, 'packages', 'Package Control.cache-any-pattern')
+    ]
+
+    wrong_cases = [
+      Utils.join_path(self.base_path, 'packages', 'Package Cntrol.cache123123'),
+      Utils.join_path(self.base_path, 'packages', 'Package Control.cach123123'),
+      Utils.join_path(self.base_path, 'packages', 'Package.cache'),
+      Utils.join_path(self.base_path, 'packages', 'Package', '.cache'),
+      Utils.join_path(self.base_path, 'packages', 'Package', ' Control', '.cache'),
+      Utils.join_path(self.base_path, 'packages', 'any', 'directory', 'Package Control.cache')
+    ]
+
+    for w in wrong_cases:
+      self.assertFalse(Utils.match_with_willcard(w, pattern))
+
+    for s in success_cases:
+      self.assertTrue(Utils.match_with_willcard(s, pattern))
 
   def test_match_with_extension(self):
     pattern = '.py'
@@ -193,33 +225,39 @@ class TestUtils(TestCase):
 
   def test_exclude_files_by_patterns(self):
     #Assuming <../tests/foo> is <../User/>
-    os.makedirs(Utils.join_path(self.base_path, 'foo', 'bar'))
+    self.create_folder(Utils.join_path(self.base_path, 'foo', 'bar'))
     open(Utils.join_path(self.base_path, 'foo', 'foo.txt'), 'a').close()
     open(Utils.join_path(self.base_path, 'foo', 'bar.txt'), 'a').close()
     open(Utils.join_path(self.base_path, 'foo', 'bar', 'foo.txt'), 'a').close()
     open(Utils.join_path(self.base_path, 'foo', 'bar', 'foo.py'), 'a').close()
+    open(Utils.join_path(self.base_path, 'foo', 'bar', 'file.go'), 'a').close()
+    open(Utils.join_path(self.base_path, 'foo', 'bar', 'new_file.go'), 'a').close()
 
-    files = Utils.get_files(Utils.join_path(self.base_path, 'foo'))
+    files = sorted(Utils.get_files(Utils.join_path(self.base_path, 'foo')))
 
     #Unfiltered
-    self.assertEqual(len(files), 4)
-    self.assertListEqual(Utils.exclude_files_by_patterns(files, []), files)
-    self.assertListEqual(Utils.exclude_files_by_patterns(files, ['.boo']), files)
+    self.assertEqual(len(files), 6)
+    self.assertListEqual(sorted(Utils.exclude_files_by_patterns(files, [])), files)
+    self.assertListEqual(sorted(Utils.exclude_files_by_patterns(files, ['.boo'])), files)
 
     # By extension
     filteredFiles = Utils.exclude_files_by_patterns(files, ['.txt'])
 
-    self.assertEqual(len(filteredFiles), 1)
-    self.assertListEqual(filteredFiles, [
-      Utils.join_path(self.base_path, 'foo', 'bar', 'foo.py')
-    ])
+    self.assertEqual(len(filteredFiles), 3)
+    self.assertListEqual(filteredFiles, sorted([
+      Utils.join_path(self.base_path, 'foo', 'bar', 'foo.py'),
+      Utils.join_path(self.base_path, 'foo', 'bar', 'file.go'),
+      Utils.join_path(self.base_path, 'foo', 'bar', 'new_file.go')
+    ]))
 
     filteredFiles = sorted(Utils.exclude_files_by_patterns(files, ['.py']))
-    self.assertEqual(len(filteredFiles), 3)
+    self.assertEqual(len(filteredFiles), 5)
     self.assertListEqual(filteredFiles, sorted([
       Utils.join_path(self.base_path, 'foo', 'bar.txt'),
       Utils.join_path(self.base_path, 'foo', 'foo.txt'),
-      Utils.join_path(self.base_path, 'foo', 'bar', 'foo.txt')
+      Utils.join_path(self.base_path, 'foo', 'bar', 'foo.txt'),
+      Utils.join_path(self.base_path, 'foo', 'bar', 'file.go'),
+      Utils.join_path(self.base_path, 'foo', 'bar', 'new_file.go')
     ]))
 
     # By Filename
@@ -227,11 +265,13 @@ class TestUtils(TestCase):
       Utils.join_path(self.base_path, 'foo', 'bar.txt')
     ]))
 
-    self.assertEqual(len(filteredFiles), 3)
+    self.assertEqual(len(filteredFiles), 5)
     self.assertListEqual(filteredFiles, sorted([
       Utils.join_path(self.base_path, 'foo', 'foo.txt'),
       Utils.join_path(self.base_path, 'foo', 'bar', 'foo.py'),
-      Utils.join_path(self.base_path, 'foo', 'bar', 'foo.txt')
+      Utils.join_path(self.base_path, 'foo', 'bar', 'foo.txt'),
+      Utils.join_path(self.base_path, 'foo', 'bar', 'file.go'),
+      Utils.join_path(self.base_path, 'foo', 'bar', 'new_file.go')
     ]))
 
     filteredFiles = sorted(Utils.exclude_files_by_patterns(files, [
@@ -239,10 +279,12 @@ class TestUtils(TestCase):
       Utils.join_path(self.base_path, 'foo', 'foo.txt')
     ]))
 
-    self.assertEqual(len(filteredFiles), 2)
+    self.assertEqual(len(filteredFiles), 4)
     self.assertListEqual(filteredFiles, sorted([
       Utils.join_path(self.base_path, 'foo', 'bar', 'foo.py'),
-      Utils.join_path(self.base_path, 'foo', 'bar', 'foo.txt')
+      Utils.join_path(self.base_path, 'foo', 'bar', 'foo.txt'),
+      Utils.join_path(self.base_path, 'foo', 'bar', 'file.go'),
+      Utils.join_path(self.base_path, 'foo', 'bar', 'new_file.go')
     ]))
 
     # By folder
@@ -252,10 +294,24 @@ class TestUtils(TestCase):
     self.assertEqual(len(filteredFiles), 2)
     self.assertListEqual(filteredFiles, sorted([
       Utils.join_path(self.base_path, 'foo', 'bar.txt'),
-      Utils.join_path(self.base_path, 'foo', 'foo.txt')
+      Utils.join_path(self.base_path, 'foo', 'foo.txt'),
     ]))
 
-    shutil.rmtree(Utils.join_path(self.base_path, 'foo'))
+    # By willcard
+    filteredFiles = sorted(Utils.exclude_files_by_patterns(files, [
+      Utils.join_path(self.base_path, 'foo', '**', '*.go')
+    ]))
+
+    self.assertEqual(len(filteredFiles), 4)
+    self.assertListEqual(filteredFiles, sorted([
+      Utils.join_path(self.base_path, 'foo', 'foo.txt'),
+      Utils.join_path(self.base_path, 'foo', 'bar.txt'),
+      Utils.join_path(self.base_path, 'foo', 'bar', 'foo.txt'),
+      Utils.join_path(self.base_path, 'foo', 'bar', 'foo.py')
+    ]))
+
+
+    self.delete_folder(Utils.join_path(self.base_path, 'foo'))
 
   def test_encode_path(self):
     self.assertIsNone(Utils.encode_path(""))
@@ -325,9 +381,8 @@ class TestUtils(TestCase):
       self.assertEqual(f.read().decode('utf-8').find(message), 0)
     os.remove(file_path)
     self.assertFalse(os.path.exists(file_path))
-    shutil.rmtree(Utils.join_path(os.getcwd(), 'some_path'))
 
-    os.makedirs(Utils.join_path(os.getcwd(), 'some_path'))
+    self.create_folder(Utils.join_path(os.getcwd(), 'some_path'))
 
     file_path = Utils.join_path(os.getcwd(), 'some_path', 'sub_path', test_filename)
 
@@ -346,22 +401,28 @@ class TestUtils(TestCase):
     os.remove(file_path)
     self.assertFalse(os.path.exists(file_path))
 
-    shutil.rmtree(Utils.join_path(os.getcwd(), 'some_path'))
+    self.delete_folder(Utils.join_path(os.getcwd(), 'some_path'))
 
   def test_parse_patterns(self):
-    patterns = ['.txt', '.py', 'foo', 'bar.py']
+    patterns = ['.txt', '.py', 'foo', 'bar.py', '*.go']
     expected = sorted([
       '.txt',
       '.py',
       Utils.join_path(self.base_path, 'foo'),
-      Utils.join_path(self.base_path, 'bar.py')
+      Utils.join_path(self.base_path, 'bar.py'),
+      Utils.join_path(self.base_path, '*.go')
     ])
 
     result = sorted(Utils.parse_patterns(patterns, self.base_path))
     self.assertListEqual(result, expected)
 
-    patterns = sorted(['.foo', '.DStore', '.file.name'])
-    expected = sorted(['.foo', '.DStore', Utils.join_path(self.base_path, '.file.name')])
+    patterns = sorted(['.foo', '.DStore', '.file.name', '**/*.txt'])
+    expected = sorted([
+      '.foo',
+      '.DStore',
+      Utils.join_path(self.base_path, '.file.name'),
+      Utils.join_path(self.base_path, '**/*.txt')
+    ])
     result = sorted(Utils.parse_patterns(patterns, self.base_path))
     self.assertListEqual(result, expected)
 
@@ -369,22 +430,31 @@ class TestUtils(TestCase):
     #Assuming <../tests/foo> is <../User/>
     base_path = Utils.join_path(self.base_path, 'foo')
 
-    os.makedirs(Utils.join_path(self.base_path, 'foo', 'bar'))
+    self.create_folder(Utils.join_path(self.base_path, 'foo', 'bar'))
     open(Utils.join_path(base_path, 'foo.txt'), 'a').close()
     open(Utils.join_path(base_path, 'bar.rb'), 'a').close()
     open(Utils.join_path(base_path, 'bar', 'foo.txt'), 'a').close()
     open(Utils.join_path(base_path, 'bar', 'foo.py'), 'a').close()
-
+    open(Utils.join_path(base_path, 'bar', 'main.go'), 'a').close()
+    open(Utils.join_path(base_path, 'bar', 'other.go'), 'a').close()
 
     files = Utils.get_files(base_path)
-    patterns = Utils.parse_patterns(['.rb', '.py'], base_path)
+    patterns = Utils.parse_patterns([
+      '.rb',
+      '.py',
+      Utils.join_path('bar', '*.go')
+    ], base_path)
+
     expected = sorted([
       Utils.join_path(base_path, 'bar.rb'),
-      Utils.join_path(base_path, 'bar', 'foo.py')
+      Utils.join_path(base_path, 'bar', 'foo.py'),
+      Utils.join_path(base_path, 'bar', 'main.go'),
+      Utils.join_path(base_path, 'bar', 'other.go')
     ])
+
     filtered_files = sorted(Utils.filter_files_by_patterns(files, patterns))
 
-    self.assertEqual(len(filtered_files), 2)
+    self.assertEqual(len(filtered_files), 4)
     self.assertListEqual(filtered_files, expected)
 
     patterns = Utils.parse_patterns(['bar/foo.txt'], base_path)
@@ -394,7 +464,7 @@ class TestUtils(TestCase):
     self.assertEqual(len(filtered_files), 1)
     self.assertListEqual(filtered_files, expected)
 
-    shutil.rmtree(Utils.join_path(self.base_path, 'foo'))
+    self.delete_folder(Utils.join_path(self.base_path, 'foo'))
 
   def test_get_file_content(self):
     test_path = Utils.join_path(os.getcwd(), 'empty_file.json')

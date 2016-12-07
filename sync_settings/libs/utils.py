@@ -4,7 +4,7 @@ import os
 import re
 import sys
 import json
-
+from fnmatch import fnmatch
 
 from functools import reduce
 
@@ -184,6 +184,20 @@ class Utils:
     return cls.__match_regex(regex.replace('\\', '\\\\'), element)
 
   @classmethod
+  def match_with_willcard(cls, element, pattern):
+    """Checks if the element is inside the specified folder
+
+    Arguments:
+      element {string}: String to validates
+      pattern {string}: Sought folder name
+
+    Returns:
+      [bool]
+    """
+
+    return fnmatch(element, pattern)
+
+  @classmethod
   def __match_regex(cls, reg, value):
     """Executes the specified regular expression
 
@@ -195,8 +209,11 @@ class Utils:
       [bool]
     """
 
-    regex = re.compile(reg)
-    return not regex.search(value) is None
+    try:
+      regex = re.compile(reg)
+      return not regex.search(value) is None
+    except:
+      return False
 
   @classmethod
   def exclude_files_by_patterns(cls, elements, patterns):
@@ -242,7 +259,8 @@ class Utils:
       for pattern in patterns:
         if cls.match_with_folder(element, pattern) or \
            cls.match_with_filename(element, pattern) or \
-           cls.match_with_extension(element, pattern):
+           cls.match_with_extension(element, pattern) or \
+           cls.match_with_willcard(element, pattern):
             results.append(element)
 
     return results
