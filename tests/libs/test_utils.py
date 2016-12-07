@@ -8,6 +8,14 @@ from unittest import TestCase
 class TestUtils(TestCase):
   base_path = Utils.join_path(os.getcwd(), 'tests')
 
+  def create_folder(self, path):
+    self.delete_folder(path)
+    os.makedirs(path)
+
+  def delete_folder(self, path):
+    if os.path.exists(path):
+      shutil.rmtree(path)
+
   def test_merge_objects(self):
     base_object = {'a': 'b', 'b': 'a'}
     update_object = {'a': 'a', 'b': 'b', 'c': 'c'}
@@ -79,7 +87,7 @@ class TestUtils(TestCase):
     self.assertGreater(len(Utils.get_files(self.base_path)), 0)
 
     #Create a test folder structure
-    os.makedirs(Utils.join_path(self.base_path, 'hello', 'world'))
+    self.create_folder(Utils.join_path(self.base_path, 'hello', 'world'))
     open(Utils.join_path(self.base_path, 'hello', 'foo.txt'), 'a').close()
     open(Utils.join_path(self.base_path, 'hello', 'bar.txt'), 'a').close()
     open(Utils.join_path(self.base_path, 'hello', 'world', 'foo.txt'), 'a').close()
@@ -91,7 +99,7 @@ class TestUtils(TestCase):
     files = sorted(Utils.get_files(Utils.join_path(self.base_path, 'hello')))
     self.assertEqual(len(files), 3)
     self.assertListEqual(files, allFiles)
-    shutil.rmtree(Utils.join_path(self.base_path, 'hello'))
+    self.delete_folder(Utils.join_path(self.base_path, 'hello'))
 
   def test_match_with_folder(self):
     success_cases = [
@@ -217,7 +225,7 @@ class TestUtils(TestCase):
 
   def test_exclude_files_by_patterns(self):
     #Assuming <../tests/foo> is <../User/>
-    os.makedirs(Utils.join_path(self.base_path, 'foo', 'bar'))
+    self.create_folder(Utils.join_path(self.base_path, 'foo', 'bar'))
     open(Utils.join_path(self.base_path, 'foo', 'foo.txt'), 'a').close()
     open(Utils.join_path(self.base_path, 'foo', 'bar.txt'), 'a').close()
     open(Utils.join_path(self.base_path, 'foo', 'bar', 'foo.txt'), 'a').close()
@@ -303,7 +311,7 @@ class TestUtils(TestCase):
     ]))
 
 
-    shutil.rmtree(Utils.join_path(self.base_path, 'foo'))
+    self.delete_folder(Utils.join_path(self.base_path, 'foo'))
 
   def test_encode_path(self):
     self.assertIsNone(Utils.encode_path(""))
@@ -373,9 +381,8 @@ class TestUtils(TestCase):
       self.assertEqual(f.read().decode('utf-8').find(message), 0)
     os.remove(file_path)
     self.assertFalse(os.path.exists(file_path))
-    shutil.rmtree(Utils.join_path(os.getcwd(), 'some_path'))
 
-    os.makedirs(Utils.join_path(os.getcwd(), 'some_path'))
+    self.create_folder(Utils.join_path(os.getcwd(), 'some_path'))
 
     file_path = Utils.join_path(os.getcwd(), 'some_path', 'sub_path', test_filename)
 
@@ -394,7 +401,7 @@ class TestUtils(TestCase):
     os.remove(file_path)
     self.assertFalse(os.path.exists(file_path))
 
-    shutil.rmtree(Utils.join_path(os.getcwd(), 'some_path'))
+    self.delete_folder(Utils.join_path(os.getcwd(), 'some_path'))
 
   def test_parse_patterns(self):
     patterns = ['.txt', '.py', 'foo', 'bar.py', '*.go']
@@ -423,7 +430,7 @@ class TestUtils(TestCase):
     #Assuming <../tests/foo> is <../User/>
     base_path = Utils.join_path(self.base_path, 'foo')
 
-    os.makedirs(Utils.join_path(self.base_path, 'foo', 'bar'))
+    self.create_folder(Utils.join_path(self.base_path, 'foo', 'bar'))
     open(Utils.join_path(base_path, 'foo.txt'), 'a').close()
     open(Utils.join_path(base_path, 'bar.rb'), 'a').close()
     open(Utils.join_path(base_path, 'bar', 'foo.txt'), 'a').close()
@@ -457,7 +464,7 @@ class TestUtils(TestCase):
     self.assertEqual(len(filtered_files), 1)
     self.assertListEqual(filtered_files, expected)
 
-    shutil.rmtree(Utils.join_path(self.base_path, 'foo'))
+    self.delete_folder(Utils.join_path(self.base_path, 'foo'))
 
   def test_get_file_content(self):
     test_path = Utils.join_path(os.getcwd(), 'empty_file.json')
