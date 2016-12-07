@@ -233,12 +233,12 @@ class TestUtils(TestCase):
     open(Utils.join_path(self.base_path, 'foo', 'bar', 'file.go'), 'a').close()
     open(Utils.join_path(self.base_path, 'foo', 'bar', 'new_file.go'), 'a').close()
 
-    files = Utils.get_files(Utils.join_path(self.base_path, 'foo'))
+    files = sorted(Utils.get_files(Utils.join_path(self.base_path, 'foo')))
 
     #Unfiltered
     self.assertEqual(len(files), 6)
-    self.assertListEqual(Utils.exclude_files_by_patterns(files, []), files)
-    self.assertListEqual(Utils.exclude_files_by_patterns(files, ['.boo']), files)
+    self.assertListEqual(sorted(Utils.exclude_files_by_patterns(files, [])), files)
+    self.assertListEqual(sorted(Utils.exclude_files_by_patterns(files, ['.boo'])), files)
 
     # By extension
     filteredFiles = Utils.exclude_files_by_patterns(files, ['.txt'])
