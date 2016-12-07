@@ -104,7 +104,7 @@ class Utils:
         [string]: the joined path
     """
 
-    return os.path.join(*path_tuple)
+    return os.path.normpath(os.path.join(*path_tuple))
 
   @classmethod
   def get_files(cls, path):

@@ -70,6 +70,8 @@ class TestUtils(TestCase):
   def test_join_path(self):
     self.assertIsNotNone(Utils.join_path(''))
     self.assertIsNotNone(Utils.join_path('123', '1234'))
+    self.assertEqual(Utils.join_path('home', 'example'), 'home{}example'.format(Utils.os_separator()))
+    self.assertEqual(Utils.join_path('home', 'example', '..', 'example.go'), 'home{}example.go'.format(Utils.os_separator()))
 
   def test_get_files(self):
     with self.assertRaises(TypeError): Utils.get_files()
