@@ -113,3 +113,8 @@ Solved issues:
 
 Solved issues:
 - Syncing not works (https://github.com/mfuentesg/SyncSettings/issues/67)
+
+#2.4.4
+
+Solved issues:
+- Not able to exclude arbitrary files (https://github.com/mfuentesg/SyncSettings/issues/51)

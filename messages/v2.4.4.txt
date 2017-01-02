@@ -1,0 +1,4 @@
+Sync Settings v2.4.4
+
+Solved issues:
+- Not able to exclude arbitrary files (https://github.com/mfuentesg/SyncSettings/issues/51)
