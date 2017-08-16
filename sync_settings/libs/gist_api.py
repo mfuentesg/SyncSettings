@@ -85,6 +85,9 @@ class Gist:
     if response.status_code == 200:
       return response.json()
 
+    # Try to read gist for more descriptive error message
+    self.get(gist_id)
+
     raise GistException(Gist.__get_response_error('Cannot edit the gist', response))
 
   def list(self):
