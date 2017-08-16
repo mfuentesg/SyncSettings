@@ -30,7 +30,7 @@
   ],
 
   /**
-   * Files that always should be included
+   * Files that always should be included. All package settings are included by default.
    * Note: The files included here, overwrite the rule `excluded_files`
    */
   "included_files": [],
@@ -41,7 +41,7 @@
   "gist_id": "",
 
   /**
-   * Download automagically the new version on ST startup
+   * Download automagically the latest synced settings on SublimeText startup
    */
   "auto_upgrade": false
 }

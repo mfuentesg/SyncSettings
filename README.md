@@ -18,15 +18,24 @@ Sync Settings
 * Working on Windows, Linux and OSX
 * Working on [Sublime Text 2](http://sublimetext.com/2), [Sublime Text 3](http://sublimetext.com/3)
 
-## Installation:
+## Installation
 
 1. Install [Package Control](https://packagecontrol.io/installation)
 2. Open Package Control and looks for [Sync Settings](https://packagecontrol.io/packages/Sync%20Settings)
 
 ## Configuration
 
-1. Create an access [token in GitHub](https://github.com/settings/tokens/new)
+1. Create an access [token in GitHub](https://github.com/settings/tokens/new) with gist scope
 2. Paste token in configuration file `Preferences > Packages Settings > Sync Settings > Settings - User`
+
+## Quickstart
+
+* Do Configuration
+* If you have existing settings gist
+  * Put gist_id in config
+  * Run `Download`
+* Else
+  * Run `Create and Upload`
 
 ### Options
 
@@ -49,7 +58,7 @@ Sync Settings
   ]
 }
 ```
-* **included_files**: It is a list with all files what will be included by the plugin at the time of upload or download. You can include by folder name, file name and/or file extension.
+* **included_files**: It is a list with all files what will be included by the plugin at the time of upload or download. You can include by folder name, file name and/or file extension. All package settings are included by default.
 ```json
 /**
  * Included files example:
