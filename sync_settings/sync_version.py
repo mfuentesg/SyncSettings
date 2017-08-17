@@ -16,7 +16,7 @@ class SyncVersion:
 
     if (settings.get('access_token') and settings.get('gist_id')):
 
-      outdate_message = 'Your settings is out to date, download the latest version!'
+      outdate_message = 'Your settings are out of date. Download the latest version!'
 
       if (cls.has_cache()):
         try:
