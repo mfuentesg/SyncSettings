@@ -1,4 +1,4 @@
-Sync Settings
+Sync Settings [unmaintained]
 ===============
 
 [![SyncSettings](https://img.shields.io/packagecontrol/dt/Sync%20Settings.svg?maxAge=2592000)](https://packagecontrol.io/packages/Sync%20Settings)
