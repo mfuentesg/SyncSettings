@@ -1,48 +1,48 @@
 # -*- coding: utf-8 -*-
 
 import sublime
-from sublime_plugin import WindowCommand
-from ..sync_manager import SyncManager
-from ..sync_logger import SyncLogger
-from ..sync_version import SyncVersion
+import sublime_plugin
+
+from . import decorators
+from .. import sync_version as version, sync_manager as manager
+from ..libs import settings
+from ..libs import gist
+from ..libs.logger import logger
 from ..thread_progress import ThreadProgress
 
-class SyncSettingsUploadCommand(WindowCommand):
 
-  def __upload_request(self):
-    gist_id = SyncManager.settings('gist_id')
-
-    if gist_id:
-      try:
-        api = SyncManager.gist_api()
-
-        if api is not None:
-          files = SyncManager.get_files_content()
-          # Excluding SyncSettings.sublime-settings
-          files.pop(SyncManager.get_settings_filename(), None)
-
-          if len(files):
-            data = {'files': files}
-            gist_data = api.edit(gist_id, data)
-
-            SyncLogger.log(
-              'Your files were uploaded correctly',
-              SyncLogger.LOG_LEVEL_SUCCESS
+class SyncSettingsUploadCommand(sublime_plugin.WindowCommand):
+    def upload(self):
+        files = manager.get_files()
+        if not len(files):
+            sublime.status_message('Sync Settings: there are not files to upload')
+            return
+        try:
+            g = gist.Gist(settings.get('access_token')).update(
+                settings.get('gist_id'),
+                data={'files': files}
             )
-            SyncVersion.upgrade(gist_data)
-          else:
-            SyncLogger.log(
-              'There are not enough files to upload',
-              SyncLogger.LOG_LEVEL_WARNING
+            commit, *_ = g['history']
+            version.update_config_file({
+                'hash': commit['version'],
+                'created_at': commit['committed_at'],
+            })
+        except gist.NotFoundError as e:
+            msg = (
+                'Sync Settings:'
+                '\n\n{}\n\n'
+                'Do you want to create a new gist and upload your settings?'
             )
-      except Exception as e:
-        SyncLogger.log(e, SyncLogger.LOG_LEVEL_ERROR)
+            if sublime.yes_no_cancel_dialog(msg.format(str(e))) == sublime.DIALOG_YES:
+                self.window.run_command('sync_settings_create_and_upload')
+        except Exception as e:
+            logger.exception(e)
+            sublime.message_dialog('Sync Settings:\n\n{}'.format(str(e)))
 
-    else:
-      SyncLogger.log(
-        'Set `gist_id` property on the configuration file',
-        SyncLogger.LOG_LEVEL_WARNING
-      )
-
-  def run(self):
-    ThreadProgress(lambda: self.__upload_request(), 'Uploading files')
+    @decorators.check_settings('gist_id', 'access_token')
+    def run(self):
+        ThreadProgress(
+            target=self.upload,
+            message='uploading files',
+            success_message='files uploaded'
+        )

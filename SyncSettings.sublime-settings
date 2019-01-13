@@ -1,47 +1,41 @@
 {
-  /**
-    * This token allow to plugin do:
-    * - Create a Gist
-    * - Download a Gist
-    * - Upload a Gist
-    * - Delete a Gist
-   */
-  "access_token": "",
-
-  /**
-    * This option has a list with the excluded files
-   */
-  "excluded_files": [
-    ".dmg",
-    ".DS_Store",
-    ".DS_Store?",
-    ".exe",
-    ".Spotlight-V100",
-    ".Trashes",
-    "ehthumbs.db",
-    "oscrypto-ca-bundle.crt",
-    "SyncSettings.sublime-settings",
-    "Package Control.cache",
-    "Package Control.last-run",
-    "Package Control.merged-ca-bundle",
-    "Package Control.system-ca-bundle",
-    "Package Control.user-ca-bundle",
-    "Thumbs.db"
-  ],
-
-  /**
-   * Files that always should be included
-   * Note: The files included here, overwrite the rule `excluded_files`
-   */
-  "included_files": [],
-
-  /**
-   * Gist identifier for upload your configuration
-   */
-  "gist_id": "",
-
-  /**
-   * Download automagically the new version on ST startup
-   */
-  "auto_upgrade": false
+    /**
+      * This token allow to plugin do:
+      * - Create a Gist
+      * - Download a Gist
+      * - Upload a Gist
+      * - Delete a Gist
+     */
+    "access_token": "",
+    /**
+      * This option has a list with the excluded files
+     */
+    "excluded_files": [
+        "*.dmg",
+        "*.DS_Store*",
+        "*.exe",
+        "*.Spotlight-V100",
+        "*.Trashes",
+        "*ehthumbs.db",
+        "*oscrypto-ca-bundle.crt",
+        "*Package Control.cache/*",
+        "*Package Control.last-run",
+        "*Package Control.merged-ca-bundle",
+        "*Package Control.system-ca-bundle",
+        "*Package Control.user-ca-bundle",
+        "*Thumbs.db"
+    ],
+    /**
+     * Files that always should be included
+     * Note: The files included here, overwrite the rule `excluded_files`
+     */
+    "included_files": [],
+    /**
+     * Gist identifier for upload your configuration
+     */
+    "gist_id": "",
+    /**
+     * Download automagically the new version on ST startup
+     */
+    "auto_upgrade": false
 }

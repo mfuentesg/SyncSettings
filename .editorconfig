@@ -2,13 +2,11 @@ root = true
 
 [*]
 indent_style = space
-indent_size = 2
+indent_size = 4
 end_of_line = lf
 charset = utf-8
 insert_final_newline = true
 trim_trailing_whitespace = true
-draw_white_space = true
-trim_trailing_white_space_on_save = true
 
 [*.md]
 trim_trailing_whitespace = false

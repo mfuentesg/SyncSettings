@@ -1,64 +1,61 @@
 # -*- coding: utf-8 -*-
 
 import sublime
-from sublime_plugin import WindowCommand
-from ..sync_manager import SyncManager
-from ..sync_logger import SyncLogger
-from ..sync_version import SyncVersion
+import sublime_plugin
+
+from . import decorators
+from ..libs import settings
+from ..libs.logger import logger
+from ..libs.gist import Gist
+from .. import sync_version as version, sync_manager as manager
 from ..thread_progress import ThreadProgress
 
-class SyncSettingsCreateAndUploadCommand(WindowCommand):
-  def run(self):
-    if SyncManager.settings('access_token'):
-      return sublime.set_timeout(self.show_input_panel, 10)
-    else:
-      SyncLogger.log(
-        'Your `access_token` property it is not configured',
-        SyncLogger.LOG_LEVEL_WARNING
-      )
 
-  def show_input_panel(self):
-    self.window.show_input_panel(
-      caption='Sync Settings: Enter description',
-      initial_text='',
-      on_done=self.on_done,
-      on_change=None,
-      on_cancel=None
-    )
+class SyncSettingsCreateAndUploadCommand(sublime_plugin.WindowCommand):
+    @decorators.check_settings('access_token')
+    def run(self):
+        sublime.set_timeout(lambda: self.window.show_input_panel(
+            caption='Enter gist description',
+            initial_text='',
+            on_done=self.on_done,
+            on_change=None,
+            on_cancel=None
+        ), 10)
 
-  def __create_and_upload_request(self, description):
-    d = description if description != '' else ''
-    files = SyncManager.get_files_content()
-
-    if len(files):
-      try:
+    def on_done(self, description):
+        files = manager.get_files()
+        if not len(files):
+            sublime.status_message('Sync Settings: there are not files to upload')
+            return
         data = {'files': files}
-        api = SyncManager.gist_api()
+        if description:
+            data.update({'description': description})
+        ThreadProgress(
+            target=lambda: self.create(data),
+            message='creating gist'
+        )
 
-        if d != '': data.update({'description': d})
-        if api is not None:
-          gist_data = api.create(data)
-          dialog_message = ''.join([
-            'Sync Settings:\n\n',
-            'Do you want overwrite the current `gist_id` property?'
-          ])
-
-          if sublime.yes_no_cancel_dialog(dialog_message) == sublime.DIALOG_YES:
-            SyncManager.settings('gist_id', gist_data.get('id')).save_settings()
-            SyncVersion.upgrade(gist_data)
-
-          SyncLogger.log('Your settings were correctly backed', SyncLogger.LOG_LEVEL_SUCCESS)
-
-      except Exception as e:
-        SyncLogger.log(e, SyncLogger.LOG_LEVEL_ERROR)
-    else:
-      SyncLogger.log(
-        'There are not enough files to create a backup',
-        SyncLogger.LOG_LEVEL_WARNING
-      )
-
-  def on_done(self, description):
-    ThreadProgress(
-      lambda: self.__create_and_upload_request(description),
-      'Creating and uploading files'
-    )
+    @staticmethod
+    def create(data):
+        try:
+            g = Gist(settings.get('access_token')).create(data)
+            msg = (
+                'Sync Settings:\n\n'
+                'Your gist `{}` was created successfully\n\n'
+                'Do you want to overwrite the current `gist_id` property with the created gist?'
+            )
+            answer = sublime.yes_no_cancel_dialog(msg.format(g['id']))
+            if answer == sublime.DIALOG_NO:
+                sublime.set_clipboard(g['id'])
+                sublime.status_message('Sync Settings: the created gist`s id, has been copied to clipboard')
+            if answer == sublime.DIALOG_YES:
+                commit, *_ = g['history']
+                settings.update('gist_id', g['id'])
+                version.update_config_file({
+                    'hash': commit['version'],
+                    'created_at': commit['committed_at'],
+                })
+                sublime.status_message('Sync Settings: gist created')
+        except Exception as e:
+            logger.exception(e)
+            sublime.message_dialog('Sync Settings:\n\n{}'.format(str(e)))

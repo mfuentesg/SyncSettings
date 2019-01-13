@@ -1,51 +1,65 @@
-[{
-  "caption": "Preferences",
-  "mnemonic": "n",
-  "id": "preferences",
-  "children": [{
-    "caption": "Package Settings",
-    "mnemonic": "P",
-    "id": "package-settings",
-    "children": [{
-      "caption": "Sync Settings",
-      "children": [
-        {
-          "command": "open_file",
-          "args": {"file": "${packages}/Sync Settings/SyncSettings.sublime-settings"},
-          "caption": "Settings – Default"
-        },
-        {
-          "command": "open_file",
-          "args": {"file": "${packages}/User/SyncSettings.sublime-settings"},
-          "caption": "Settings – User"
-        },
-        { "caption": "-" },
-        {
-          "caption": "Sync Settings: Create and Upload",
-          "command": "sync_settings_create_and_upload"
-        },
-        {
-          "caption": "Sync Settings: Delete and Create",
-          "command": "sync_settings_delete_and_create"
-        },
-        {
-          "caption": "Sync Settings: Download",
-          "command": "sync_settings_download"
-        },
-        {
-          "caption": "Sync Settings: Upload",
-          "command": "sync_settings_upload"
-        },
-        {
-          "caption": "Sync Settings: Delete",
-          "command": "sync_settings_delete_and_create",
-          "args": {"create": false}
-        },
-        {
-          "caption": "Sync Settings: Show Logs",
-          "command": "sync_settings_open_logs"
-        }
-      ]
-    }]
-  }]
-}]
+[
+    {
+        "caption": "Preferences",
+        "mnemonic": "n",
+        "id": "preferences",
+        "children": [
+            {
+                "caption": "Package Settings",
+                "mnemonic": "P",
+                "id": "package-settings",
+                "children": [
+                    {
+                        "caption": "Sync Settings",
+                        "children": [
+                            {
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/Sync Settings/SyncSettings.sublime-settings"
+                                },
+                                "caption": "Settings – Default"
+                            },
+                            {
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/User/SyncSettings.sublime-settings"
+                                },
+                                "caption": "Settings – User"
+                            },
+                            {
+                                "caption": "-"
+                            },
+                            {
+                                "caption": "Sync Settings: Create and Upload",
+                                "command": "sync_settings_create_and_upload"
+                            },
+                            {
+                                "caption": "Sync Settings: Delete and Create",
+                                "command": "sync_settings_delete_and_create"
+                            },
+                            {
+                                "caption": "Sync Settings: Download",
+                                "command": "sync_settings_download"
+                            },
+                            {
+                                "caption": "Sync Settings: Upload",
+                                "command": "sync_settings_upload"
+                            },
+                            {
+                                "caption": "Sync Settings: Delete",
+                                "command": "sync_settings_delete_and_create",
+                                "args": {
+                                    "create": false
+                                }
+                            },
+                            {
+                                "caption": "Sync Settings: Show Logs",
+                                "command": "sync_settings_open_logs"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
