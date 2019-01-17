@@ -9,6 +9,7 @@ from ..libs import settings
 from ..libs.gist import Gist, NotFoundError
 from ..libs.logger import logger
 from ..thread_progress import ThreadProgress
+from .. import sync_version as version
 
 
 class SyncSettingsDeleteAndCreateCommand(sublime_plugin.WindowCommand):
@@ -17,6 +18,8 @@ class SyncSettingsDeleteAndCreateCommand(sublime_plugin.WindowCommand):
         try:
             Gist(settings.get('access_token')).delete(gid)
             settings.update('gist_id', '')
+            # delete information related to the deleted gist
+            version.update_config_file({})
             if should_create:
                 self.window.run_command('sync_settings_create_and_upload')
                 pass

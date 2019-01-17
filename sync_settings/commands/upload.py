@@ -22,7 +22,7 @@ class SyncSettingsUploadCommand(sublime_plugin.WindowCommand):
                 settings.get('gist_id'),
                 data={'files': files}
             )
-            commit, *_ = g['history']
+            commit = g['history'][0]
             version.update_config_file({
                 'hash': commit['version'],
                 'created_at': commit['committed_at'],

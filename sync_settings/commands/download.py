@@ -45,7 +45,7 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
                 'content': json.dumps(package_settings, sort_keys=True, indent=4)
             }
         })
-        commit, *_ = g['history']
+        commit = g['history'][0]
         settings.update('gist_id', g['id'])
         version.update_config_file({
             'hash': commit['version'],

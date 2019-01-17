@@ -20,7 +20,7 @@ def get_local_version():
 
 def get_remote_version():
     try:
-        commit, *_ = Gist().commits(settings.get('gist_id'))
+        commit = Gist().commits(settings.get('gist_id'))[0]
         return {
             'hash': commit['version'],
             'created_at': commit['committed_at'],

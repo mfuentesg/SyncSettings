@@ -49,7 +49,7 @@ class SyncSettingsCreateAndUploadCommand(sublime_plugin.WindowCommand):
                 sublime.set_clipboard(g['id'])
                 sublime.status_message('Sync Settings: the created gist`s id, has been copied to clipboard')
             if answer == sublime.DIALOG_YES:
-                commit, *_ = g['history']
+                commit = g['history'][0]
                 settings.update('gist_id', g['id'])
                 version.update_config_file({
                     'hash': commit['version'],
