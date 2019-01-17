@@ -5,9 +5,9 @@ import sublime_plugin
 
 from .decorators import check_settings
 
-from ..libs import settings
-from ..libs.gist import Gist, NotFoundError
+from ..libs import gist
 from ..libs.logger import logger
+from ..libs import settings
 from ..thread_progress import ThreadProgress
 from .. import sync_version as version
 
@@ -16,15 +16,21 @@ class SyncSettingsDeleteAndCreateCommand(sublime_plugin.WindowCommand):
     def delete_and_create(self, should_create=False):
         gid = settings.get('gist_id')
         try:
-            Gist(settings.get('access_token')).delete(gid)
+            gist.Gist(settings.get('access_token')).delete(gid)
             settings.update('gist_id', '')
             # delete information related to the deleted gist
             version.update_config_file({})
             if should_create:
                 self.window.run_command('sync_settings_create_and_upload')
                 pass
-        except NotFoundError:
-            settings.update('gist_id', '')
+        except gist.NotFoundError as e:
+            msg = (
+                'Sync Settings:\n\n'
+                '{}\n\n'
+                'Please check if the access token was created with the gist scope.\n\n'
+                'If the access token is correct, please, delete the value of `gist_id` property manually.'
+            )
+            sublime.message_dialog(msg.format(str(e)))
         except Exception as e:
             logger.exception(e)
             sublime.message_dialog('Sync Settings:\n\n{}'.format(str(e)))

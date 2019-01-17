@@ -33,6 +33,7 @@ def auth(func):
         if self.token is None:
             raise AuthenticationError('GitHub`s credentials are required')
         return func(self, *args, **kwargs)
+
     return auth_wrapper
 
 
@@ -42,6 +43,7 @@ def not_empty_gid(func):
         if not args[0]:
             raise ValueError('The given id `{}` is not valid'.format(args[0]))
         return func(self, *args, **kwargs)
+
     return not_empty_gid_wrapper
 
 
@@ -98,7 +100,7 @@ class Gist:
         if response.status_code >= 300:
             logger.warning(response.json())
         if response.status_code == 404:
-            raise NotFoundError('The requested gist do not exists')
+            raise NotFoundError('The requested gist do not exists, or the token has not enough permissions')
         if response.status_code in [401, 403]:
             raise AuthenticationError('The credentials are invalid, or the token does not have permissions')
         if response.status_code == 422:

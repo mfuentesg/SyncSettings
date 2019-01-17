@@ -29,12 +29,12 @@ class SyncSettingsUploadCommand(sublime_plugin.WindowCommand):
             })
         except gist.NotFoundError as e:
             msg = (
-                'Sync Settings:'
-                '\n\n{}\n\n'
-                'Do you want to create a new gist and upload your settings?'
+                'Sync Settings:\n\n'
+                '{}\n\n'
+                'Please check if the access token was created with the gist scope.\n\n'
+                'If the access token is correct, please, delete the value of `gist_id` property manually.'
             )
-            if sublime.yes_no_cancel_dialog(msg.format(str(e))) == sublime.DIALOG_YES:
-                self.window.run_command('sync_settings_create_and_upload')
+            sublime.message_dialog(msg.format(str(e)))
         except Exception as e:
             logger.exception(e)
             sublime.message_dialog('Sync Settings:\n\n{}'.format(str(e)))

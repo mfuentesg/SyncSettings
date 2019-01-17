@@ -4,9 +4,9 @@ import sublime
 import sublime_plugin
 
 from . import decorators
-from ..libs import settings
+from ..libs import gist
 from ..libs.logger import logger
-from ..libs.gist import Gist
+from ..libs import settings
 from .. import sync_version as version, sync_manager as manager
 from ..thread_progress import ThreadProgress
 
@@ -38,7 +38,7 @@ class SyncSettingsCreateAndUploadCommand(sublime_plugin.WindowCommand):
     @staticmethod
     def create(data):
         try:
-            g = Gist(settings.get('access_token')).create(data)
+            g = gist.Gist(settings.get('access_token')).create(data)
             msg = (
                 'Sync Settings:\n\n'
                 'Your gist `{}` was created successfully\n\n'
@@ -56,6 +56,14 @@ class SyncSettingsCreateAndUploadCommand(sublime_plugin.WindowCommand):
                     'created_at': commit['committed_at'],
                 })
                 sublime.status_message('Sync Settings: gist created')
+        except gist.NotFoundError as e:
+            msg = (
+                'Sync Settings:\n\n'
+                'Apparently the token was not created with gist scope enabled.\n\n'
+                'Please, check your token or create a new one.\n\n'
+                'more info: https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/'
+            )
+            sublime.message_dialog(msg.format(str(e)))
         except Exception as e:
             logger.exception(e)
             sublime.message_dialog('Sync Settings:\n\n{}'.format(str(e)))
