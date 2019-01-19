@@ -37,6 +37,8 @@ def decode(path):
 
 @os_path
 def join(*paths):
+    if not len(paths):
+        return ''
     return os.path.join(*paths)
 
 

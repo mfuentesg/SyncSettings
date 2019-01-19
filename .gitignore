@@ -13,3 +13,5 @@ tests/options.json
 .sync_settings_cache
 
 .idea
+cover
+.coverage

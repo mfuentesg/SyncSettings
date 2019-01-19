@@ -21,6 +21,32 @@ class GistTest(unittest.TestCase):
         self.mock_response = mock.Mock()
 
 
+class TestDecorators(unittest.TestCase):
+    token = None
+
+    def test_auth(self):
+        # `_` represents self argument
+        def to_test(*args):
+            return 'yay'
+
+        with self.assertRaises(gist.AuthenticationError):
+            gist.auth(to_test)(self)
+
+        self.token = 'valid token'
+        self.assertEqual(gist.auth(to_test)(self), 'yay')
+
+    def test_with_gid(self):
+        def to_test(*args):
+            return 'yay'
+
+        with self.assertRaises(ValueError):
+            gist.with_gid(to_test)(self, '')
+        with self.assertRaises(ValueError):
+            gist.with_gid(to_test)(self, None)
+
+        self.assertEqual(gist.with_gid(to_test)(self, '123123123'), 'yay')
+
+
 class GetGistTest(GistTest):
     def test_raise_error_without_gist_id(self):
         with self.assertRaises(ValueError):
@@ -37,7 +63,6 @@ class GetGistTest(GistTest):
     @mock.patch('requests.get')
     def test_raise_network_error(self, mock_get):
         mock_get.side_effect = requests.exceptions.ConnectionError()
-
         with self.assertRaises(gist.NetworkError):
             self.api.get('123123123')
 
@@ -76,6 +101,17 @@ class GetGistTest(GistTest):
         self.assertNotEqual(content['files']['dummy_file']['content'], response['files']['sync_file']['content'])
         self.assertEqual(content['files']['sync_file']['content'], response['files']['sync_file']['content'])
 
+    @mock.patch('requests.get')
+    def test_get_commits(self, mock_get):
+        self.mock_response.status_code = 200
+        with open(get_mock_path('gist.json'), 'r') as f:
+            content = json.load(f)
+            self.mock_response.json.return_value = content['history']
+        mock_get.return_value = self.mock_response
+        commits = self.api.commits('123123123')
+        self.assertEqual(1, len(commits))
+        self.assertEqual('57a7f021a713b1c5a6a199b54cc514735d2d462f', commits[0]['version'])
+
 
 class CreateGistTest(GistTest):
     def test_raise_authentication_error_without_token(self):
@@ -86,6 +122,36 @@ class CreateGistTest(GistTest):
         self.api = gist.Gist('some_access_token')
         with self.assertRaises(ValueError):
             self.api.create({})
+
+    @mock.patch('requests.patch')
+    def test_unprocessable_data_error(self, mock_patch):
+        self.mock_response.status_code = 422
+        mock_patch.return_value = self.mock_response
+        self.api = gist.Gist('some_access_token')
+        with self.assertRaises(gist.UnprocessableDataError):
+            self.api.update('123123123', {'description': 'some description'})
+
+    def test_raise_argument_exception_with_no_dict(self):
+        self.api = gist.Gist('some_access_token')
+        with self.assertRaises(ValueError):
+            self.api.create('')
+
+    @mock.patch('requests.post')
+    def test_valid_response(self, mock_post):
+        self.api = gist.Gist('123123123')
+        self.mock_response.status_code = 201
+        with open(get_mock_path('gist.json'), 'r') as f:
+            content = json.load(f)
+            self.mock_response.json.return_value = content
+        mock_post.return_value = self.mock_response
+        self.assertEqual(self.api.create({
+            'files': {
+                'file.txt': {
+                    'content': 'file with content'
+                }
+            },
+            'description': 'gist description'
+        }), content)
 
 
 class DeleteGistTest(GistTest):
@@ -118,10 +184,15 @@ class DeleteGistTest(GistTest):
 class UpdateGistTest(GistTest):
     def setUp(self):
         self.api = gist.Gist('access token')
+        self.mock_response = mock.Mock()
 
     def test_raise_argument_exception_without_data(self):
         with self.assertRaises(ValueError):
             self.api.update('asdfasdf', {})
+
+    def test_raise_argument_exception_with_no_dict(self):
+        with self.assertRaises(ValueError):
+            self.api.update('123123', '')
 
     def test_raise_argument_exception_without_id(self):
         with self.assertRaises(ValueError):
@@ -131,3 +202,15 @@ class UpdateGistTest(GistTest):
         self.api = gist.Gist()
         with self.assertRaises(gist.AuthenticationError):
             self.api.update('123', {})
+
+    @mock.patch('requests.patch')
+    def test_raise_authentication_with_gist_of_someone_else(self, mock_patch):
+        self.mock_response.status_code = 403
+        mock_patch.return_value = self.mock_response
+
+        with self.assertRaises(gist.AuthenticationError):
+            self.api.update('123123123', {
+                'files': {
+                    'file.txt': None
+                }
+            })

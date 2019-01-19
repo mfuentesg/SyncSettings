@@ -37,14 +37,14 @@ def auth(func):
     return auth_wrapper
 
 
-def not_empty_gid(func):
+def with_gid(func):
     @wraps(func)
-    def not_empty_gid_wrapper(self, *args, **kwargs):
+    def with_gid_wrapper(self, *args, **kwargs):
         if not args[0]:
             raise ValueError('The given id `{}` is not valid'.format(args[0]))
         return func(self, *args, **kwargs)
 
-    return not_empty_gid_wrapper
+    return with_gid_wrapper
 
 
 class Gist:
@@ -58,24 +58,24 @@ class Gist:
 
     @auth
     def create(self, data):
-        if not len(data):
+        if not isinstance(data, dict) or not len(data):
             raise ValueError('Gist can`t be created without data')
         return self.__do_request('post', self.make_uri(), data=json.dumps(data)).json()
 
     @auth
-    @not_empty_gid
+    @with_gid
     def update(self, gid, data):
-        if not len(data):
+        if not isinstance(data, dict) or not len(data):
             raise ValueError('Gist can`t be updated without data')
         return self.__do_request('patch', self.make_uri(gid), data=json.dumps(data)).json()
 
     @auth
-    @not_empty_gid
+    @with_gid
     def delete(self, gid):
         response = self.__do_request('delete', self.make_uri(gid))
         return response.status_code == 204
 
-    @not_empty_gid
+    @with_gid
     def get(self, gid):
         def get_raw_content(url):
             return self.__do_request('get', url).content
@@ -87,7 +87,7 @@ class Gist:
                 file_data['content'] = raw_content if raw_content else file_data['content']
         return data
 
-    @not_empty_gid
+    @with_gid
     def commits(self, gid):
         return self.__do_request('get', self.make_uri('{}/commits'.format(gid))).json()
 
