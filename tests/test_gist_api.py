@@ -3,7 +3,7 @@ import requests
 import json
 import sys
 import os
-from ..libs import gist as gist, path
+from sync_settings.libs import gist, path
 
 if sys.version_info < (3,):
     import mock
@@ -11,8 +11,8 @@ else:
     from unittest import mock
 
 
-def get_mock_path(f):
-    return path.join(os.path.abspath(os.path.dirname(__file__)), 'mocks', f)
+def get_output(f):
+    return path.join(os.path.abspath(os.path.dirname(__file__)), 'outputs', f)
 
 
 class GistTest(unittest.TestCase):
@@ -80,7 +80,7 @@ class GetGistTest(GistTest):
     @mock.patch('requests.get')
     def test_valid_response(self, mock_get):
         self.mock_response.status_code = 200
-        with open(get_mock_path('gist.json'), 'r') as f:
+        with open(get_output('gist.json'), 'r') as f:
             content = json.load(f)
             self.mock_response.json.return_value = content
 
@@ -90,7 +90,7 @@ class GetGistTest(GistTest):
     @mock.patch('requests.get')
     def test_valid_response_with_truncated_data(self, mock_get):
         self.mock_response.status_code = 200
-        with open(get_mock_path('truncated_gist.json'), 'r') as f:
+        with open(get_output('truncated_gist.json'), 'r') as f:
             content = json.load(f)
             self.mock_response.json.return_value = content
 
@@ -104,7 +104,7 @@ class GetGistTest(GistTest):
     @mock.patch('requests.get')
     def test_get_commits(self, mock_get):
         self.mock_response.status_code = 200
-        with open(get_mock_path('gist.json'), 'r') as f:
+        with open(get_output('gist.json'), 'r') as f:
             content = json.load(f)
             self.mock_response.json.return_value = content['history']
         mock_get.return_value = self.mock_response
@@ -140,7 +140,7 @@ class CreateGistTest(GistTest):
     def test_valid_response(self, mock_post):
         self.api = gist.Gist('123123123')
         self.mock_response.status_code = 201
-        with open(get_mock_path('gist.json'), 'r') as f:
+        with open(get_output('gist.json'), 'r') as f:
             content = json.load(f)
             self.mock_response.json.return_value = content
         mock_post.return_value = self.mock_response

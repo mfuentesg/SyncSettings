@@ -17,6 +17,6 @@ install:
     - 'pip install -r requirements.txt'
     - 'pip install nose coverage codecov'
 script:
-    - nosetests sync_settings/tests --with-coverage -v
+    - nosetests tests --with-coverage -v
 after_success:
     - codecov

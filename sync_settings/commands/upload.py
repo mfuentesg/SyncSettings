@@ -12,7 +12,8 @@ from ..thread_progress import ThreadProgress
 
 
 class SyncSettingsUploadCommand(sublime_plugin.WindowCommand):
-    def upload(self):
+    @staticmethod
+    def upload():
         files = manager.get_files()
         if not len(files):
             sublime.status_message('Sync Settings: there are not files to upload')

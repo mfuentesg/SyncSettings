@@ -4,18 +4,20 @@ import sublime
 import json
 import os
 from .libs.gist import Gist
-from .libs import settings
+from .libs import settings, path
 
-
-file_path = os.path.join(os.path.expanduser('~'), '.sync_settings', 'sync.json')
+file_path = path.join(os.path.expanduser('~'), '.sync_settings', 'sync.json')
 
 
 def get_local_version():
-    if not os.path.isfile(file_path):
+    if not path.exists(file_path):
         return {}
-    with open(file_path) as f:
-        data = json.load(f)
-    return data
+    try:
+        with open(file_path) as f:
+            return json.load(f)
+    except:
+        pass
+    return {}
 
 
 def get_remote_version():
@@ -25,8 +27,9 @@ def get_remote_version():
             'hash': commit['version'],
             'created_at': commit['committed_at'],
         }
-    except Exception:
-        return {}
+    except:
+        pass
+    return {}
 
 
 def update_config_file(info):

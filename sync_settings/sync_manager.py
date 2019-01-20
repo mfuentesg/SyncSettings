@@ -37,9 +37,11 @@ def edit_content(file, content):
 
 def should_exclude(file):
     patterns = settings.get('excluded_files') or []
+    # copy list to avoid side effects
+    p = patterns[:]
     # ignore SyncSettings.sublime-settings file to avoid not wanted changes
-    patterns.extend(['*SyncSettings.sublime-settings'])
-    for pattern in patterns:
+    p.extend(['*SyncSettings.sublime-settings'])
+    for pattern in p:
         if fnmatch(file, pattern):
             return True
     return False
@@ -47,6 +49,7 @@ def should_exclude(file):
 
 def should_include(file):
     patterns = settings.get('included_files') or []
+    # copy list to avoid side effects
     for pattern in patterns:
         # ignore SyncSettings.sublime-settings file to avoid not wanted changes
         if fnmatch(file, '*SyncSettings.sublime-settings'):

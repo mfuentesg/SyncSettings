@@ -43,8 +43,7 @@ def join(*paths):
 
 
 def exists(path, folder=False):
-    is_valid = os.path.isdir(path) if folder else os.path.isfile(path)
-    return os.path.exists(path) and is_valid
+    return os.path.isdir(path) if folder else os.path.isfile(path)
 
 
 def list_files(path):
