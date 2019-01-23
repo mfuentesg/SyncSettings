@@ -25,7 +25,7 @@ Sync Settings [unmaintained]
 
 ## Configuration
 
-1. Create an access [token in GitHub](https://github.com/settings/tokens/new)
+1. Create an access [token in GitHub](https://github.com/settings/tokens/new) (select the `gist` scope)
 2. Paste token in configuration file `Preferences > Packages Settings > Sync Settings > Settings - User`
 
 ### Options
