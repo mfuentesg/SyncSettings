@@ -5,10 +5,12 @@ import os
 import sublime
 
 from .libs import path, settings
-from .libs.logger import logger
+from .libs.logger import logger, path
 
 
 def get_content(file):
+    if not path.exists(file):
+        return ''
     try:
         with open(file, 'rb') as fi:
             # TODO: Figure how to solve these kind of errors (for now ignore it)
@@ -17,7 +19,7 @@ def get_content(file):
     except Exception as e:
         logger.warning('file `{}` has errors'.format(file))
         logger.exception(e)
-        return ''
+    return ''
 
 
 def edit_content(file, content):
