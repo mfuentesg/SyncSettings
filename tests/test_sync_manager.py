@@ -6,7 +6,7 @@ import os
 from sync_settings import sync_manager as manager
 
 
-def create_file(file, mode='wb', content=None):
+def create_file(file, mode='w', content=None):
     delete_file(file)
     with open(file, mode) as fi:
         if content:
