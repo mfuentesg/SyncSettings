@@ -5,7 +5,7 @@ import os
 import sublime
 
 from .libs import path, settings
-from .libs.logger import logger, path
+from .libs.logger import logger
 
 
 def get_content(file):

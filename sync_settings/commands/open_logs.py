@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import sublime_plugin
 import os
+import sublime_plugin
+
 from ..libs import path
 
 
