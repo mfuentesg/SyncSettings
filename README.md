@@ -141,3 +141,8 @@ You are welcome support this project using [Paypal](https://www.paypal.com/cgi-b
 
 ## License
 MIT License. © 2015-2016 Marcelo Fuentes
+
+## Support on Beerpay
+Hey dude! Help me out for a couple of :beers:!
+
+[![Beerpay](https://beerpay.io/mfuentesg/SyncSettings/badge.svg?style=beer-square)](https://beerpay.io/mfuentesg/SyncSettings)  [![Beerpay](https://beerpay.io/mfuentesg/SyncSettings/make-wish.svg?style=flat-square)](https://beerpay.io/mfuentesg/SyncSettings?focus=wish)
