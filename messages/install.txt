@@ -1,16 +1,32 @@
-Thanks for install Sync Settings
+Thanks for installing Sync Settings
 
-Sync Settings, is a cross-platform solution to keep the Sublime Text configuration updated.
+With Sync Settings, you are able to synchronize your settings among multiple devices, and keep them updated.
+Sync Settings, is powered by Github-Gist, providing you a secure and reliable way to store your backups.
 
-How works?
-Sync Settings uses Github-Gist allowing you to use all features that this service provides.
+Getting started
 
-Errors
-If you find errors in the plugin, you can to execute "Show Logs" command and report a new issue with the file content.
+1. Go to https://github.com/settings/tokens/new and create a new token with `gist` scope
+2. if Do you already have a gist?
+     Copy gist id and put it in config file
+     Run `Download` command
+   else
+     Run `Create and upload` command
 
-Donate
-You are welcome support this project using Paypal 
+Issues
+
+If you are experimenting an error or an unusual behavior, please let me know, reporting the error creating a issue on https://github.com/mfuentesg/SyncSettings/issues/new.
+Please, run `Show logs` command to complement the issue and find the bug faster.
+
+Btw, you are welcome to contribute whenever you want!
+
+
+Help me keep making awesome stuff.
+
+https://beerpay.io/mfuentesg/SyncSettings
 https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7XCNSKK5W7DKJ
 
-View on GitHub @mfuentesg
+More information visit
+
 https://github.com/mfuentesg/SyncSettings
+
+Marcelo!

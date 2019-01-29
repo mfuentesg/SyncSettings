@@ -5,7 +5,7 @@ Sync Settings [unmaintained]
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://raw.githubusercontent.com/mfuentesg/SyncSettings/master/LICENSE.md)
 [![SyncSettings release](https://img.shields.io/github/release/mfuentesg/SyncSettings.svg)](https://img.shields.io/github/release/mfuentesg/SyncSettings.svg?maxAge=2592000)
 [![Build Status](https://travis-ci.org/mfuentesg/SyncSettings.svg?branch=master)](https://travis-ci.org/mfuentesg/SyncSettings)
-
+[![Invite me a beer](https://beerpay.io/mfuentesg/SyncSettings/badge.svg?style=flat)](https://beerpay.io/mfuentesg/SyncSettings)
 
 **Sync Settings**, is a cross-platform solution to keep the [Sublime Text](http://sublimetext.com/) configuration updated.
 
