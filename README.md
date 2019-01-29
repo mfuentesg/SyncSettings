@@ -5,7 +5,8 @@ Sync Settings [unmaintained]
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://raw.githubusercontent.com/mfuentesg/SyncSettings/master/LICENSE.md)
 [![SyncSettings release](https://img.shields.io/github/release/mfuentesg/SyncSettings.svg)](https://img.shields.io/github/release/mfuentesg/SyncSettings.svg?maxAge=2592000)
 [![Build Status](https://travis-ci.org/mfuentesg/SyncSettings.svg?branch=master)](https://travis-ci.org/mfuentesg/SyncSettings)
-[![Invite me a beer](https://beerpay.io/mfuentesg/SyncSettings/badge.svg?style=flat)](https://beerpay.io/mfuentesg/SyncSettings)
+[![Become a backer](https://opencollective.com/syncsettings/tiers/backer/badge.svg?label=backer&color=brightgreen)](https://opencollective.com/syncsettings)
+[![Become a sponsor](https://opencollective.com/syncsettings/tiers/sponsor/badge.svg?label=sponsor&color=brightgreen)](https://opencollective.com/syncsettings)
 
 **Sync Settings**, is a cross-platform solution to keep the [Sublime Text](http://sublimetext.com/) configuration updated.
 
@@ -137,7 +138,10 @@ You can check the changes to this plugin [here](CHANGELOG.md)
 
 ## Donate
 
-You are welcome support this project using [Paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7XCNSKK5W7DKJ)
+You are welcome support this project using [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7XCNSKK5W7DKJ)
+
+[![Become a backer](https://opencollective.com/syncsettings/tiers/backer.svg?avatarHeight=50)](https://opencollective.com/syncsettings)
+
 
 ## License
-MIT License. © 2015-2016 Marcelo Fuentes
+MIT License. © 2015-Now Marcelo Fuentes
