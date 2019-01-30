@@ -1,7 +1,7 @@
 # Sync Settings
 
 [![SyncSettings](https://img.shields.io/packagecontrol/dt/Sync%20Settings.svg?maxAge=2592000)](https://packagecontrol.io/packages/Sync%20Settings)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)
 [![SyncSettings release](https://img.shields.io/github/release/mfuentesg/SyncSettings.svg)](https://img.shields.io/github/release/mfuentesg/SyncSettings.svg?maxAge=2592000)
 [![Build Status](https://travis-ci.org/mfuentesg/SyncSettings.svg?branch=master)](https://travis-ci.org/mfuentesg/SyncSettings)
 [![Coverage](https://img.shields.io/codecov/c/github/mfuentesg/SyncSettings.svg?style=flat)](https://codecov.io/gh/mfuentesg/SyncSettings)
