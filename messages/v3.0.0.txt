@@ -1,0 +1,38 @@
+Sync Settings v3.0.0
+
+I am happy to announce a new version of Sync Settings.
+This version includes a lot of improvements and bug fixes
+
+In the previous version of `Sync Settings`, all files are replaced automatically once completed the download,
+causing errors like infinite sublime text alerts when a dependency is not installed in your computer.
+
+In this version, Sync Settings will use `Package Control` commands, to ensure the installation of your packages,
+before to update `Preferences.sublime-settings` and `Package Control.sublime-settings` files.
+
+
+Improvements:
+
+- Add `unix shell style` for `excluded_files` and `included_files` options, using `fnmatch` library (wildcard).
+- Improve error messages due to connection error, or insufficient token permissions.
+- Delete custom logger by builtin logger
+- Delete stylized popups by status bar messages
+- Add ability to retrieve a gist without an access token
+- Better documentation
+
+Bug fixes:
+
+- Exclude `SyncSettings.sublime-settings` on sync (https://github.com/mfuentesg/SyncSettings/issues/80)
+- Fix files priority (https://github.com/mfuentesg/SyncSettings/issues/82)
+- Colour scheme needs to load first (https://github.com/mfuentesg/SyncSettings/issues/90)
+- Fix utf-8 error (https://github.com/mfuentesg/SyncSettings/issues/83)
+
+Help me keep making awesome stuff.
+
+https://beerpay.io/mfuentesg/SyncSettings
+https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7XCNSKK5W7DKJ
+
+More information visit
+
+https://github.com/mfuentesg/SyncSettings
+
+Marcelo!
