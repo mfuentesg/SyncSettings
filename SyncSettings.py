@@ -2,37 +2,40 @@
 
 import sublime
 import sys
-import threading
+import os
 
-VERSION = int(sublime.version())
+f = os.path.join(os.path.expanduser('~'), '.sync_settings')
+if not os.path.isdir(f):
+    os.mkdir(f)
 
-reloader = "sync_settings.reloader"
+reloader = 'sync_settings.reloader'
 
-if VERSION > 3000:
-  reloader = 'SyncSettings.' + reloader
-  from imp import reload
+if int(sublime.version()) > 3000:
+    from .sync_settings.commands import *
+
+    reloader = 'SyncSettings.' + reloader
+    from imp import reload
+else:
+    from sync_settings.commands import *
 
 # Make sure all dependencies are reloaded on upgrade
 if reloader in sys.modules:
-  reload(sys.modules[reloader])
-
-if VERSION > 3000:
-  from .sync_settings import reloader
-  from .sync_settings.commands import *
-  from .sync_settings.sync_version import SyncVersion
-else:
-  from sync_settings import reloader
-  from sync_settings.commands import *
-  from sync_settings.sync_version import SyncVersion
+    reload(sys.modules[reloader])
 
 
 def plugin_loaded():
-  threading.Thread(
-    target=SyncVersion.check_version
-  ).start()
+    from .sync_settings.libs import settings
+    from .sync_settings.thread_progress import ThreadProgress
+    from .sync_settings import sync_version as version
+    if settings.get('auto_upgrade'):
+        ThreadProgress(
+            target=version.upgrade,
+            message='checking current version'
+        )
 
-"""
+
+'''
   Sublime Text 2 Compatibility
-"""
+'''
 if sys.version_info < (3,):
-  plugin_loaded()
+    plugin_loaded()

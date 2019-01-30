@@ -1,47 +1,35 @@
 {
-  /**
-    * This token allow to plugin do:
-    * - Create a Gist
-    * - Download a Gist
-    * - Upload a Gist
-    * - Delete a Gist
-   */
-  "access_token": "",
+    // Brings write permission to Sync Settings over your gists (edit, delete and create).
+    // This option is not required, if you only want to download your backups
+    "access_token": "",
 
-  /**
-    * This option has a list with the excluded files
-   */
-  "excluded_files": [
-    ".dmg",
-    ".DS_Store",
-    ".DS_Store?",
-    ".exe",
-    ".Spotlight-V100",
-    ".Trashes",
-    "ehthumbs.db",
-    "oscrypto-ca-bundle.crt",
-    "SyncSettings.sublime-settings",
-    "Package Control.cache",
-    "Package Control.last-run",
-    "Package Control.merged-ca-bundle",
-    "Package Control.system-ca-bundle",
-    "Package Control.user-ca-bundle",
-    "Thumbs.db"
-  ],
+    // Identifier of your backup on gist.github.com.
+    "gist_id": "",
 
-  /**
-   * Files that always should be included
-   * Note: The files included here, overwrite the rule `excluded_files`
-   */
-  "included_files": [],
+    // In simple words, this option is a black list. Which means, every file
+    // that match with the defined pattern, will be ignored on sync.
+    "excluded_files": [
+        "*.dmg",
+        "*.DS_Store*",
+        "*.exe",
+        "*.Spotlight-V100",
+        "*.Trashes",
+        "*ehthumbs.db",
+        "*oscrypto-ca-bundle.crt",
+        "*Package Control.cache/*",
+        "*Package Control.last-run",
+        "*Package Control.merged-ca-bundle",
+        "*Package Control.system-ca-bundle",
+        "*Package Control.user-ca-bundle",
+        "*Thumbs.db"
+    ],
 
-  /**
-   * Gist identifier for upload your configuration
-   */
-  "gist_id": "",
+    // In simple words, this option is a white list. Which means, every file that
+    // match with the defined pattern, will be included on sync, even if it was
+    // included on `excluded_files` option.
+    "included_files": [],
 
-  /**
-   * Download automagically the new version on ST startup
-   */
-  "auto_upgrade": false
+    // If is `true`, your settings will be synced with the latest settings on
+    // gist.github.com when Sublime Text startup
+    "auto_upgrade": false
 }

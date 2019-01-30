@@ -1,0 +1,13 @@
+{
+    "files": {
+        "dummy_file": {
+            "truncated": true,
+            "raw_url": "https://fakedomain.com/gists/123123123",
+            "content": "fake content"
+        },
+        "sync_file": {
+            "truncated": false,
+            "content": "non truncated content"
+        }
+    }
+}

@@ -1,143 +1,125 @@
-Sync Settings [unmaintained]
-===============
+# Sync Settings
 
 [![SyncSettings](https://img.shields.io/packagecontrol/dt/Sync%20Settings.svg?maxAge=2592000)](https://packagecontrol.io/packages/Sync%20Settings)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://raw.githubusercontent.com/mfuentesg/SyncSettings/master/LICENSE.md)
 [![SyncSettings release](https://img.shields.io/github/release/mfuentesg/SyncSettings.svg)](https://img.shields.io/github/release/mfuentesg/SyncSettings.svg?maxAge=2592000)
 [![Build Status](https://travis-ci.org/mfuentesg/SyncSettings.svg?branch=master)](https://travis-ci.org/mfuentesg/SyncSettings)
+[![Become a backer](https://opencollective.com/syncsettings/tiers/backer/badge.svg?label=backer&color=brightgreen)](https://opencollective.com/syncsettings)
+[![Become a sponsor](https://opencollective.com/syncsettings/tiers/sponsor/badge.svg?label=sponsor&color=brightgreen)](https://opencollective.com/syncsettings)
+
+With [Sync Settings](https://packagecontrol.io/packages/Sync%20Settings), you are able to synchronize your [Sublime Text](http://sublimetext.com/) settings among multiple devices, and keep them updated.
+
+Being powered by GitHub-Gists, [Sync Settings](https://packagecontrol.io/packages/Sync%20Settings) provides you a reliable cross-platform solution to keep your backups secure.
+
+Please, follow the steps below to getting started with [Sync Settings](https://packagecontrol.io/packages/Sync%20Settings).
+
+> [Sync Settings](https://packagecontrol.io/packages/Sync%20Settings) works on Windows, Linux, macOS and [Sublime Text 3](http://sublimetext.com/3).
 
 
-**Sync Settings**, is a cross-platform solution to keep the [Sublime Text](http://sublimetext.com/) configuration updated.
+## Getting Started
 
-## How it works?
+1. Run `Package Control: Install Package` command, and looks for [Sync Settings](https://packagecontrol.io/packages/Sync%20Settings)
+2. Run `Sync Settings: Edit User Settings`
+3. **if** *Do you already have a gist?*
+    1. Copy `gist id` and put it in config file (`https://gist.github.com/<username>/<gist id>`) (`gist_id` property)
+    2. Run `Sync Settings: Download` command to retrieve your backup.
+4. **else**
+    1. Create an access token [here](https://github.com/settings/tokens/new) with `gist` scope checked.
+    2. Put the token in the config file (`access_token` property)
+    3. Run `Sync Settings: Create and Upload` command
 
-**Sync Settings** uses Github-Gist allowing you to use all features that this service provides.
+## Options
 
-## Support
+By default this plugin operates over [Sublime Text](http://www.sublimetext.com) packages folder (i.e `/Users/marcelo/Library/Application Support/Sublime Text 3/Packages/User`), which means, `excluded_files` and `included_files` will looks for files inside that folder.
 
-* Working on Windows, Linux and OSX
-* Working on [Sublime Text 2](http://sublimetext.com/2), [Sublime Text 3](http://sublimetext.com/3)
+| name | type | description |
+|---|---|---|
+| `access_token`  | `string` | Brings write permission to [Sync Settings](https://packagecontrol.io/packages/Sync%20Settings), over your gists (edit, delete and create). *(This option is not required, if you only want to download your backups)* | 
+| `gist_id`  | `string` | Identifier of your backup on [gist.github.com](gist.github.com). |
+| `auto_upgrade`  | `boolean` | If is `true`, your settings will be synced with the latest settings on [gist.github.com](gist.github.com) when [Sublime Text](http://www.sublimetext.com) startup |
+| `excluded_files`  | `[]string` | In simple words, this option is a black list. Which means, every file that match with the defined pattern, will be ignored on sync. |
+| `included_files`  | `[]string` | In simple words, this option is a white list. Which means, every file that match with the defined pattern, will be included on sync, even if it was included on `excluded_files` option. |
 
-## Installation:
+> Note: `excluded_files` and `included_files` are patterns defined as [unix shell style](http://tldp.org/LDP/GNU-Linux-Tools-Summary/html/x11655.htm).
 
-1. Install [Package Control](https://packagecontrol.io/installation)
-2. Open Package Control and looks for [Sync Settings](https://packagecontrol.io/packages/Sync%20Settings)
-
-## Configuration
-
-1. Create an access [token in GitHub](https://github.com/settings/tokens/new)
-2. Paste token in configuration file `Preferences > Packages Settings > Sync Settings > Settings - User`
-
-### Options
-
-* **access_token**: Access token provided by GitHub
-* **gist_id**: Identifier of the gist that will be used for the synchronization
-* **auto_upgrade**: If it is activated, your settings will be upgraded on startup (Download command)
-* **excluded_files**: It is a list with all files that will be ignored by the plugin at the time of upload or download. You can exclude by folder name, file name and/or file extension.
-```json
-/**
- * Excluded files example:
- * Note: Considers that each excluded item will begin with /Path/to/Sublime Text/Packages/User/
- */
-
-{
-  "excluded_files": [
-    ".txt",
-    "SublimeLinter",
-    "awesome_file.py",
-    "path/to/other/awesome/file.py"
-  ]
-}
-```
-* **included_files**: It is a list with all files what will be included by the plugin at the time of upload or download. You can include by folder name, file name and/or file extension.
-```json
-/**
- * Included files example:
- * Note: Considers that each include item will begin with /Path/to/Sublime Text/Packages/User/
- */
-
-{
-  "included_files": [
-    ".txt",
-    "SublimeLinter/some_file.py",
-    "awesome_file.py",
-    "path/to/other/awesome/file.py"
-  ]
-}
-```
 
 ## Commands
 
-1. **Create and Upload**: Creates a new gist and upload your settings. The Gist identifier will be included in `Preferences > Packages Settings > Sync Settings > Settings - User` if you accept the prompt message. 
-2. **Delete and Create**: Deletes the current gist and create a new with your settings.
-3. **Upload**: Upload your settings files, excluding the files included in "excluded files" option.
-4. **Download**: Download your settings files, overwriting the existing files, after downloaded your files [Sublime Text](http://www.sublimetext.com) need to be restarted.
-5. **Delete**: Deletes the current gist.
-6. **Show Logs**: Open a new view with the log file content.
-6. **Edit user settings**: Open a new view with the user settings.
-
-🤓 - See it in action ![SyncSettings in action!](http://g.recordit.co/I9UXWEHRHp.gif)
-
-## Tests
-
-You can run and add new tests using the following instructions. For more information consulting the [framework documentation](https://docs.python.org/3/library/unittest.html#module-unittest).
-
-### Requirements
-For running the tests, you need install the dependencies `pip install -r requirements.txt` and python 2.7+. Also, it is necessary create an environment variable called `SYNC_ACCESS_TOKEN`.
-
-### Run tests
-
-```bash
-# Linux/OSX
-export SYNC_ACCESS_TOKEN="<YOUR_ACCESS_TOKEN>"
-
-# Windows (Run as Administrator)
-setx SYNC_ACCESS_TOKEN "<YOUR_ACCESS_TOKEN>" -m
-
-
-#Run all tests
-python -m unittest discover -s ./tests/libs
-
-#For run an specific test just add the `p` flag
-python -m unittest discover -s ./tests/libs -p test_<name>.py
-```
-
-### Add Tests
-
-```bash
-touch test_<name>.py #Create a new file
-```
-
-```python
-#Example:
-
-from unittest import TestCase
-
-class TestExample(TestCase):
-  def test_upper(self):
-    self.assertEqual('foo'.upper(), 'FOO')
-
-  def test_<name>(self):
-    self.assertFalse('bar'.lower(), 'BAR')
-```
+| command | description |
+|---|---|
+|**Sync Settings: Create and Upload**|Creates a new backup on `gist.github.com` from your local files|
+|**Sync Settings: Delete and Create**|Deletes the remote reference of your gist and then, creates a new backup from your local files to `gist.github.com`|
+|**Sync Settings: Upload**|Upload a backup from your local files to `gist.github.com`|
+|**Sync Settings: Download**|Retrieves the latest version of your backup, using as reference the `gist_id` property defined in your settings file.|
+|**Sync Settings: Delete**|Deletes the remote version of your gist, using as reference the `gist_id` property defined in your settings file. (This action is irreversible)|
+|**Sync Settings: Show Logs**|Open a new view, with `Sync Settings` log file|
+|**Sync Settings: Edit User Settings**|Open a new view, with `Sync Settings` user settings.|
 
 ## Contributors
+
+Thank you for contribute to this project:
 
 * Ferron H - [@ferronrsmith](https://github.com/ferronrsmith)
 * Johannes Weber - [@JohaWeber](https://github.com/JohaWebert)
 * [@tomahl](https://github.com/tomahl)
 
-## Issues?
+## Issues
 
-If you find errors in the plugin, you can to execute "Show Logs" command and report a new [issue](https://github.com/mfuentesg/SyncSettings/issues/new) with the file content.
+If you are experimenting an error, or an unusual behavior. Please let me know,  creating a [new issue](https://github.com/mfuentesg/SyncSettings/issues/new) appending the logs provided by the  `Sync Settings: Show logs` command.
 
-## Changelog
+## Development
 
-You can check the changes to this plugin [here](CHANGELOG.md)
+You are welcome to contribute to this project, whenever you want.
 
-## Donate
+**Install dependencies**
 
-You are welcome support this project using [Paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7XCNSKK5W7DKJ)
+This project uses pipenv as environment and package manager, follow the instructions below and start contribute.
+
+```
+$ pipenv --python 3.7
+$ pip install -r requirements.txt
+```
+
+**Run tests**
+
+```
+$ pip install nose
+$ nosetests tests
+```
+
 
 ## License
-MIT License. © 2015-2016 Marcelo Fuentes
+
+Sync Settings is licensed under the MIT license.
+
+All of the source code, is under the license:
+
+```
+Copyright (c) since 2015, Marcelo Fuentes <marceloe.fuentes@gmail.com>.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+## Help me keep making awesome stuff
+
+Contribute with me, supporting this project through
+
+[![Become a backer](https://opencollective.com/syncsettings/tiers/backer.svg?avatarHeight=50)](https://opencollective.com/syncsettings)
+
+[![Become a backer](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/100px-PayPal.svg.png)](https://opencollective.com/syncsettings)

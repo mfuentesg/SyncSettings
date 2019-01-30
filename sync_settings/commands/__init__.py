@@ -5,9 +5,9 @@ from .open_logs import SyncSettingsOpenLogsCommand
 from .delete_and_create import SyncSettingsDeleteAndCreateCommand
 
 __all__ = [
-  'SyncSettingsCreateAndUploadCommand',
-  'SyncSettingsDownloadCommand',
-  'SyncSettingsUploadCommand',
-  'SyncSettingsOpenLogsCommand',
-  'SyncSettingsDeleteAndCreateCommand'
+    'SyncSettingsCreateAndUploadCommand',
+    'SyncSettingsDownloadCommand',
+    'SyncSettingsUploadCommand',
+    'SyncSettingsOpenLogsCommand',
+    'SyncSettingsDeleteAndCreateCommand'
 ]

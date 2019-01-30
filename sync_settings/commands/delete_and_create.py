@@ -1,53 +1,51 @@
 # -*- coding: utf-8 -*-
 
 import sublime
-from sublime_plugin import WindowCommand
-from ..sync_manager import SyncManager
-from ..sync_logger import SyncLogger
-from ..sync_version import SyncVersion
+import sublime_plugin
+
+from .decorators import check_settings
+
+from ..libs import gist
+from ..libs.logger import logger
+from ..libs import settings
 from ..thread_progress import ThreadProgress
+from .. import sync_version as version
 
-class SyncSettingsDeleteAndCreateCommand(WindowCommand):
-  def run(self, create = True):
-    if not (SyncManager.settings('access_token') and SyncManager.settings('gist_id')):
-      SyncLogger.log(
-        'You need set the `access_token` and `gist_id` properties',
-        SyncLogger.LOG_LEVEL_WARNING
-      )
-    else:
-      dialog_message = ''.join([
-        'Sync Settings:\n',
-        'Your backup will be deleted, are you sure?\n\n',
-        'Warning: This action is irreversible'
-      ])
 
-      if sublime.yes_no_cancel_dialog(dialog_message) == sublime.DIALOG_YES:
-        ThreadProgress(lambda: self.__delete_and_create_gist(create), 'Deleting backup')
+class SyncSettingsDeleteAndCreateCommand(sublime_plugin.WindowCommand):
+    def delete_and_create(self, should_create=False):
+        gid = settings.get('gist_id')
+        try:
+            gist.Gist(settings.get('access_token')).delete(gid)
+            settings.update('gist_id', '')
+            # delete information related to the deleted gist
+            version.update_config_file({})
+            if should_create:
+                self.window.run_command('sync_settings_create_and_upload')
+                pass
+        except gist.NotFoundError as e:
+            msg = (
+                'Sync Settings:\n\n'
+                '{}\n\n'
+                'Please check if the access token was created with the gist scope.\n\n'
+                'If the access token is correct, please, delete the value of `gist_id` property manually.'
+            )
+            sublime.message_dialog(msg.format(str(e)))
+        except Exception as e:
+            logger.exception(e)
+            sublime.message_dialog('Sync Settings:\n\n{}'.format(str(e)))
 
-  def __delete_and_create_gist(self, create):
-    gist_id = SyncManager.settings('gist_id')
-
-    if gist_id:
-      try:
-        api = SyncManager.gist_api()
-
-        if api is not None:
-          api.delete(gist_id)
-
-          SyncManager.settings('gist_id', '').save_settings()
-          SyncLogger.log(
-            'Your backup was deleted correctly',
-            SyncLogger.LOG_LEVEL_SUCCESS
-          )
-
-          SyncVersion.clear_cache()
-
-          if create:
-            self.window.run_command('sync_settings_create_and_upload')
-      except Exception as ex:
-        SyncLogger.log(ex, SyncLogger.LOG_LEVEL_ERROR)
-    else:
-      SyncLogger.log(
-        'Set `gist_id` property on the configuration file',
-        SyncLogger.LOG_LEVEL_WARNING
-      )
+    @check_settings('gist_id', 'access_token')
+    def run(self, create=True):
+        dialog_message = (
+            'Sync Settings:\n\n'
+            'This action will delete your remote backup, do you want to proceed with this action?\n\n'
+            'Note: this action is irreversible'
+        )
+        if sublime.yes_no_cancel_dialog(dialog_message) == sublime.DIALOG_YES:
+            gid = settings.get('gist_id')
+            ThreadProgress(
+                target=lambda: self.delete_and_create(should_create=create),
+                message='deleting gist `{}`'.format(gid),
+                success_message='gist deleted'
+            )
