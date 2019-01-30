@@ -25,3 +25,14 @@ Bug fixes:
 - Fix files priority (https://github.com/mfuentesg/SyncSettings/issues/82)
 - Colour scheme needs to load first (https://github.com/mfuentesg/SyncSettings/issues/90)
 - Fix utf-8 error (https://github.com/mfuentesg/SyncSettings/issues/83)
+
+Help me keep making awesome stuff.
+
+https://beerpay.io/mfuentesg/SyncSettings
+https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7XCNSKK5W7DKJ
+
+More information visit
+
+https://github.com/mfuentesg/SyncSettings
+
+Marcelo!
