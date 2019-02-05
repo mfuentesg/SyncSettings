@@ -24,6 +24,12 @@
         "*Thumbs.db"
     ],
 
+	// An HTTP proxy server to use for requests.
+    "http_proxy": "",
+
+    // An HTTPS proxy server to use for requests.
+    "https_proxy": "",
+
     // In simple words, this option is a white list. Which means, every file that
     // match with the defined pattern, will be included on sync, even if it was
     // included on `excluded_files` option.

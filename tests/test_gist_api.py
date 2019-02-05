@@ -214,3 +214,35 @@ class UpdateGistTest(GistTest):
                     'file.txt': None
                 }
             })
+
+
+class ProxiesTest(unittest.TestCase):
+    def test_proxies_property(self):
+        tests = [
+            {'proxies': {'http_proxy': '123.123.123.123'}, 'expected': {}},
+            {'proxies': {'http_proxy': None}, 'expected': {}},
+            {'proxies': {'https_proxy': None, 'http_proxy': 'http://12.1'}, 'expected': {}},
+            {'proxies': {'http_proxy': 'localhost:9090'}, 'expected': {}},
+            {'proxies': {'http_proxy': 'http://localhost:9090'}, 'expected': {'http': 'http://localhost:9090'}},
+            {
+                'proxies': {'http_proxy': 'http://localhost:9090', 'https_proxy': None},
+                'expected': {'http': 'http://localhost:9090'}
+            },
+            {
+                'proxies': {'https_proxy': 'https://localhost:9090', 'http_proxy': None},
+                'expected': {'https': 'https://localhost:9090'}
+            },
+            {
+                'proxies': {
+                    'https_proxy': 'https://localhost:9090',
+                    'http_proxy': 'http://localhost:9090',
+                },
+                'expected': {
+                    'https': 'https://localhost:9090',
+                    'http': 'http://localhost:9090',
+                }
+            },
+        ]
+        for test in tests:
+            g = gist.Gist(**test['proxies'])
+            self.assertDictEqual(test['expected'], g.proxies)

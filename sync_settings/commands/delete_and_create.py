@@ -16,7 +16,11 @@ class SyncSettingsDeleteAndCreateCommand(sublime_plugin.WindowCommand):
     def delete_and_create(self, should_create=False):
         gid = settings.get('gist_id')
         try:
-            gist.Gist(settings.get('access_token')).delete(gid)
+            gist.Gist(
+                token=settings.get('access_token'),
+                http_proxy=settings.get('http_proxy'),
+                https_proxy=settings.get('https_proxy')
+            ).delete(gid)
             settings.update('gist_id', '')
             # delete information related to the deleted gist
             version.update_config_file({})

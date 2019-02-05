@@ -38,7 +38,11 @@ class SyncSettingsCreateAndUploadCommand(sublime_plugin.WindowCommand):
     @staticmethod
     def create(data):
         try:
-            g = gist.Gist(settings.get('access_token')).create(data)
+            g = gist.Gist(
+                token=settings.get('access_token'),
+                http_proxy=settings.get('http_proxy'),
+                https_proxy=settings.get('https_proxy')
+            ).create(data)
             msg = (
                 'Sync Settings:\n\n'
                 'Your gist `{}` was created successfully\n\n'

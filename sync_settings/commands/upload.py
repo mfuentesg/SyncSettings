@@ -19,7 +19,11 @@ class SyncSettingsUploadCommand(sublime_plugin.WindowCommand):
             sublime.status_message('Sync Settings: there are not files to upload')
             return
         try:
-            g = gist.Gist(settings.get('access_token')).update(
+            g = gist.Gist(
+                token=settings.get('access_token'),
+                http_proxy=settings.get('http_proxy'),
+                https_proxy=settings.get('https_proxy')
+            ).update(
                 settings.get('gist_id'),
                 data={'files': files}
             )

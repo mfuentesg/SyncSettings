@@ -40,6 +40,8 @@ By default this plugin operates over [Sublime Text](http://www.sublimetext.com) 
 | `access_token`  | `string` | Brings write permission to [Sync Settings](https://packagecontrol.io/packages/Sync%20Settings), over your gists (edit, delete and create). *(This option is not required, if you only want to download your backups)* | 
 | `gist_id`  | `string` | Identifier of your backup on [gist.github.com](gist.github.com). |
 | `auto_upgrade`  | `boolean` | If is `true`, your settings will be synced with the latest settings on [gist.github.com](gist.github.com) when [Sublime Text](http://www.sublimetext.com) startup |
+| `http_proxy`  | `string` | An HTTP proxy server to use for requests. |
+| `https_proxy`  | `string` | An HTTPS proxy server to use for requests. |
 | `excluded_files`  | `[]string` | In simple words, this option is a black list. Which means, every file that match with the defined pattern, will be ignored on sync. |
 | `included_files`  | `[]string` | In simple words, this option is a white list. Which means, every file that match with the defined pattern, will be included on sync, even if it was included on `excluded_files` option. |
 
