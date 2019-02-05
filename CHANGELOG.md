@@ -1,3 +1,11 @@
+## v3.0.1
+
+Are you behind a restricted network?
+
+This version is for you, `http_proxy` and `https_proxy` properties were added to avoid those annoying network restrictions.
+
+https://github.com/mfuentesg/SyncSettings/issues/87
+
 ## v3.0.0
 
 I am happy to announce a new version of Sync Settings.
