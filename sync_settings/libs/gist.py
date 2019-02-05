@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import requests
 import json
+import re
+import requests
 from functools import wraps
 
 from .logger import logger
@@ -48,8 +49,10 @@ def with_gid(func):
 
 
 class Gist:
-    def __init__(self, token=None):
+    def __init__(self, token=None, http_proxy='', https_proxy=''):
         self.token = token
+        self.http_proxy = http_proxy
+        self.https_proxy = https_proxy
 
     @staticmethod
     def make_uri(endpoint=''):
@@ -94,7 +97,7 @@ class Gist:
     def __do_request(self, verb, url, **kwargs):
         # @TODO add support for proxies
         try:
-            response = getattr(requests, verb)(url, headers=self.headers, **kwargs)
+            response = getattr(requests, verb)(url, headers=self.headers, proxies=self.proxies, **kwargs)
         except requests.exceptions.ConnectionError:
             raise NetworkError('Can`t perform this action due to network errors. Check your internet connection.')
         if response.status_code >= 300:
@@ -112,8 +115,26 @@ class Gist:
 
     @property
     def headers(self):
-        return {} if self.token is None else {
+        return {} if not self.token else {
             'accept': 'application/vnd.github.v3+json',
             'content-type': 'application/json',
             'authorization': 'token {}'.format(self.token)
         }
+
+    @property
+    def proxies(self):
+        def check_proxy_url(url):
+            regex = re.compile(
+                r'^(?:http)s?://'  # http:// or https://
+                r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
+                r'localhost|'  # localhost...
+                r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
+                r'(?::\d+)?'  # optional port
+                r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+            return url and isinstance(url, str) and re.match(regex, url) is not None
+        proxies = dict()
+        if check_proxy_url(self.http_proxy):
+            proxies['http'] = self.http_proxy
+        if check_proxy_url(self.https_proxy):
+            proxies['https'] = self.https_proxy
+        return proxies

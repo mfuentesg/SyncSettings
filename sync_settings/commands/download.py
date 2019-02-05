@@ -54,7 +54,10 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
 
     def download(self):
         try:
-            g = Gist().get(settings.get('gist_id'))
+            g = Gist(
+                http_proxy=settings.get('http_proxy'),
+                https_proxy=settings.get('https_proxy')
+            ).get(settings.get('gist_id'))
             files = g['files']
 
             # save a reference to preferences and package control settings files
