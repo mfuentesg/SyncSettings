@@ -73,6 +73,8 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
             # read installed_packages from remote reference and merge it with the local version
             local_settings = sublime.load_settings('Package Control.sublime-settings')
             setting = 'installed_packages'
+            if setting not in package_settings:
+                package_settings[setting] = []
             package_settings[setting].append('Sync Settings')
             diff = set(package_settings.get(setting)).difference(set(local_settings.get(setting)))
             if len(diff) > 0:
