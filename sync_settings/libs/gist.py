@@ -80,15 +80,7 @@ class Gist:
 
     @with_gid
     def get(self, gid):
-        def get_raw_content(url):
-            return self.__do_request('get', url).content
-
-        data = self.__do_request('get', self.make_uri(gid)).json()
-        for _, file_data in data['files'].items():
-            if file_data['truncated']:
-                raw_content = get_raw_content(file_data['raw_url'])
-                file_data['content'] = raw_content if raw_content else file_data['content']
-        return data
+        return self.__do_request('get', self.make_uri(gid)).json()
 
     @with_gid
     def commits(self, gid):

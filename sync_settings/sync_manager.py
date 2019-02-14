@@ -2,10 +2,20 @@
 
 from fnmatch import fnmatch
 import os
+import sys
+import requests
+import shutil
 import sublime
+import threading
+import time
 
 from .libs import path, settings
 from .libs.logger import logger
+
+if sys.version_info < (3,):
+    from Queue import Queue
+else:
+    from queue import Queue
 
 
 def get_content(file):
@@ -20,21 +30,6 @@ def get_content(file):
         logger.warning('file `{}` has errors'.format(file))
         logger.exception(e)
     return ''
-
-
-def edit_content(file, content):
-    # TODO: Figure how to solve these kind of errors (for now ignore it)
-    #  `UnicodeDecodeError: 'utf-8' codec can't decode byte 0x86 in position 23: invalid start byte`
-    file_content = content.encode('utf-8', errors='ignore')
-    # ignore files without content
-    if not file_content:
-        return
-    # ensure full path before to create the file
-    directory = os.path.dirname(file)
-    if not path.exists(directory, True):
-        os.makedirs(directory)
-    with open(file, 'wb+') as fi:
-        fi.write(file_content)
 
 
 def should_exclude(file):
@@ -77,15 +72,50 @@ def get_files():
     return files_with_content
 
 
-def update_files(files):
+def download_file(q):
+    while not q.empty():
+        url, name = q.get()
+        try:
+            r = requests.get(url, stream=True)
+            if r.status_code == 200:
+                with open(name, 'wb') as f:
+                    r.raw.decode_content = True
+                    shutil.copyfileobj(r.raw, f)
+        except:
+            pass
+        finally:
+            q.task_done()
+
+
+def fetch_files(files, to=''):
+    if not path.exists(to, folder=True):
+        os.mkdir(to)
+    rq = Queue(maxsize=0)
     user_path = path.join(sublime.packages_path(), 'User')
-    for k, file in files.items():
+    items = files.items()
+    for k, file in items:
         decoded_name = path.decode(k)
         name = path.join(user_path, decoded_name)
         if should_exclude(name) and not should_include(name):
             continue
-        try:
-            edit_content(name, file['content'])
-        except Exception as e:
-            logger.warning('can`t edit file `{}`'.format(name))
-            logger.exception(e)
+        rq.put((file['raw_url'], path.join(to, k)))
+    threads = min(10, len(items))
+    for i in range(threads):
+        worker = threading.Thread(target=download_file, args=(rq,))
+        worker.setDaemon(True)
+        worker.start()
+        time.sleep(0.1)
+    rq.join()
+
+
+def move_files(origin):
+    user_path = path.join(sublime.packages_path(), 'User')
+    for f in os.listdir(origin):
+        # set preferences and package control files to the final of the list
+        if fnmatch(f, '*Preferences.sublime-settings') or fnmatch(f, '*Package%20Control.sublime-settings'):
+            continue
+        shutil.move(path.join(origin, f), path.join(user_path, path.decode(f)))
+
+    pending_files = ['Preferences.sublime-settings', 'Package%20Control.sublime-settings']
+    for f in pending_files:
+        shutil.move(path.join(origin, f), path.join(user_path, path.decode(f)))
