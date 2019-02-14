@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+import os
 import sublime
 import sublime_plugin
 
@@ -13,15 +14,7 @@ from ..thread_progress import ThreadProgress
 
 
 class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
-    @staticmethod
-    def parse_to_dict(files, filename):
-        file = files.get(path.encode(filename), {})
-        if not file or 'content' not in file:
-            return {}
-        try:
-            return json.loads(file['content'], encoding='utf-8')
-        except:
-            return {}
+    temp_folder = path.join(os.path.expanduser('~'), '.sync_settings', 'temp')
 
     def check_installation(self, packages, on_done=None):
         package_settings = sublime.load_settings('Package Control.sublime-settings').get('installed_packages')
@@ -35,16 +28,8 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
         if not should_call and on_done:
             on_done()
 
-    @staticmethod
-    def on_done(g, preferences, package_settings):
-        manager.update_files({
-            'Preferences.sublime-settings': {
-                'content': json.dumps(preferences, sort_keys=True, indent=4)
-            },
-            path.encode('Package Control.sublime-settings'): {
-                'content': json.dumps(package_settings, sort_keys=True, indent=4)
-            }
-        })
+    def on_done(self, g):
+        manager.move_files(self.temp_folder)
         commit = g['history'][0]
         settings.update('gist_id', g['id'])
         version.update_config_file({
@@ -60,16 +45,10 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
             ).get(settings.get('gist_id'))
             files = g['files']
 
-            # save a reference to preferences and package control settings files
-            package_settings = self.parse_to_dict(files, 'Package Control.sublime-settings')
-            preferences = self.parse_to_dict(files, 'Preferences.sublime-settings')
-
-            # avoid update before installing all packages
-            files.pop(path.encode('Package Control.sublime-settings'), None)
-            files.pop('Preferences.sublime-settings', None)
-
-            sublime.set_timeout(lambda: manager.update_files(files), 100)
-
+            manager.fetch_files(files, self.temp_folder)
+            package_settings = json.loads(
+                manager.get_content(path.join(self.temp_folder, path.encode('Package Control.sublime-settings')))
+            )
             # read installed_packages from remote reference and merge it with the local version
             local_settings = sublime.load_settings('Package Control.sublime-settings')
             setting = 'installed_packages'
@@ -79,10 +58,7 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
             diff = set(package_settings.get(setting)).difference(set(local_settings.get(setting)))
             if len(diff) > 0:
                 self.window.run_command('advanced_install_package', {'packages': list(diff)})
-            sublime.set_timeout(lambda: self.check_installation(
-                diff,
-                on_done=lambda: self.on_done(g, preferences, package_settings)
-            ), 100)
+            sublime.set_timeout(lambda: self.check_installation(diff, on_done=lambda: self.on_done(g)), 100)
         except Exception as e:
             logger.exception(e)
             sublime.message_dialog('Sync Settings:\n\n{}'.format(str(e)))
