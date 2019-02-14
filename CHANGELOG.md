@@ -1,3 +1,16 @@
+## v3.0.3
+
+This version includes encoding issues on download command, and minor improvements.
+
+- https://github.com/mfuentesg/SyncSettings/issues/115
+- https://github.com/mfuentesg/SyncSettings/issues/113
+
+## v3.0.2
+
+Fix error when installed_packages key does not exists
+
+- https://github.com/mfuentesg/SyncSettings/issues/112 
+
 ## v3.0.1
 
 Are you behind a restricted network?

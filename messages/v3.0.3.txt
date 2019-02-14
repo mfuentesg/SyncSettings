@@ -1,0 +1,17 @@
+Sync Settings v3.0.3
+
+This version includes encoding issues on download command, and minor improvements.
+
+- https://github.com/mfuentesg/SyncSettings/issues/115
+- https://github.com/mfuentesg/SyncSettings/issues/113
+
+Enjoy and help me keep making awesome stuff.
+
+https://opencollective.com/syncsettings
+https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7XCNSKK5W7DKJ
+
+More information visit
+
+https://github.com/mfuentesg/SyncSettings
+
+Marcelo!
