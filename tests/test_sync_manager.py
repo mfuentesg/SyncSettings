@@ -90,8 +90,3 @@ class TestSyncManager(unittest.TestCase):
     @mock.patch('sync_settings.sync_manager.path.exists', mock.MagicMock(return_value=True))
     def test_get_content_with_exception(self):
         self.assertEqual(manager.get_content('file.error'), '')
-
-    @mock.patch('sync_settings.sync_manager.path.exists')
-    def test_edit_content_without_content(self, exists_mock):
-        manager.edit_content('some_file.txt', '')
-        self.assertFalse(exists_mock.called)

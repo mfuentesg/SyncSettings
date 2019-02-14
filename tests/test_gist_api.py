@@ -88,20 +88,6 @@ class GetGistTest(GistTest):
         self.assertEqual(self.api.get('aa5a315d61ae9438b18d'), content)
 
     @mock.patch('requests.get')
-    def test_valid_response_with_truncated_data(self, mock_get):
-        self.mock_response.status_code = 200
-        with open(get_output('truncated_gist.json'), 'r') as f:
-            content = json.load(f)
-            self.mock_response.json.return_value = content
-
-        self.mock_response.content = 'truncated content'
-        mock_get.return_value = self.mock_response
-        response = self.api.get('aa5a315d61ae9438b18d0')
-        self.assertEqual(content['files']['dummy_file']['content'], 'truncated content')
-        self.assertNotEqual(content['files']['dummy_file']['content'], response['files']['sync_file']['content'])
-        self.assertEqual(content['files']['sync_file']['content'], response['files']['sync_file']['content'])
-
-    @mock.patch('requests.get')
     def test_get_commits(self, mock_get):
         self.mock_response.status_code = 200
         with open(get_output('gist.json'), 'r') as f:

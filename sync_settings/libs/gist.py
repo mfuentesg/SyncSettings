@@ -80,15 +80,7 @@ class Gist:
 
     @with_gid
     def get(self, gid):
-        def get_raw_content(url):
-            return self.__do_request('get', url).content
-
-        data = self.__do_request('get', self.make_uri(gid)).json()
-        for _, file_data in data['files'].items():
-            if file_data['truncated']:
-                raw_content = get_raw_content(file_data['raw_url'])
-                file_data['content'] = raw_content if raw_content else file_data['content']
-        return data
+        return self.__do_request('get', self.make_uri(gid)).json()
 
     @with_gid
     def commits(self, gid):
@@ -98,8 +90,8 @@ class Gist:
         # @TODO add support for proxies
         try:
             response = getattr(requests, verb)(url, headers=self.headers, proxies=self.proxies, **kwargs)
-        except requests.exceptions.ConnectionError:
-            raise NetworkError('Can`t perform this action due to network errors. Check your internet connection.')
+        except requests.exceptions.ConnectionError as e:
+            raise NetworkError('Can`t perform this action due to network errors. reason: {}'.format(str(e)))
         if response.status_code >= 300:
             logger.warning(response.json())
         if response.status_code == 404:
