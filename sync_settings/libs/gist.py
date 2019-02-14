@@ -90,8 +90,8 @@ class Gist:
         # @TODO add support for proxies
         try:
             response = getattr(requests, verb)(url, headers=self.headers, proxies=self.proxies, **kwargs)
-        except requests.exceptions.ConnectionError:
-            raise NetworkError('Can`t perform this action due to network errors. Check your internet connection.')
+        except requests.exceptions.ConnectionError as e:
+            raise NetworkError('Can`t perform this action due to network errors. reason: {}'.format(str(e)))
         if response.status_code >= 300:
             logger.warning(response.json())
         if response.status_code == 404:

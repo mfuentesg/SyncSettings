@@ -114,7 +114,11 @@ def move_files(origin):
         # set preferences and package control files to the final of the list
         if fnmatch(f, '*Preferences.sublime-settings') or fnmatch(f, '*Package%20Control.sublime-settings'):
             continue
-        shutil.move(path.join(origin, f), path.join(user_path, path.decode(f)))
+        name = path.join(user_path, path.decode(f))
+        directory = os.path.dirname(name)
+        if not path.exists(directory, True):
+            os.makedirs(directory)
+        shutil.move(path.join(origin, f), name)
 
     pending_files = ['Preferences.sublime-settings', 'Package%20Control.sublime-settings']
     for f in pending_files:
