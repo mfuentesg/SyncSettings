@@ -5,12 +5,14 @@ Sync Settings, is powered by Github-Gist, providing you a secure and reliable wa
 
 Getting started
 
-1. Go to https://github.com/settings/tokens/new and create a new token with `gist` scope
-2. if Do you already have a gist?
-     Copy gist id and put it in config file
-     Run `Download` command
-   else
-     Run `Create and upload` command
+1. Run `Sync Settings: Edit User Settings`
+2. **if** *Do you already have a gist?*
+    1. Copy `gist id` (`https://gist.github.com/<username>/<gist id>`) and put it in config file (`gist_id` property)
+    2. Run `Sync Settings: Download` command to retrieve your backup.
+3. **else**
+    1. Create an access token at https://github.com/settings/tokens/new with `gist` scope checked.
+    2. Put the token in the config file (`access_token` property)
+    3. Run `Sync Settings: Create and Upload` command
 
 Issues
 
