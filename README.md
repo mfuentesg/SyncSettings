@@ -67,6 +67,7 @@ Thank you for contribute to this project:
 * Ferron H - [@ferronrsmith](https://github.com/ferronrsmith)
 * Johannes Weber - [@JohaWeber](https://github.com/JohaWebert)
 * [@tomahl](https://github.com/tomahl)
+* [@mwilliammyers](https://github.com/mwilliammyers)
 
 ## Issues
 
