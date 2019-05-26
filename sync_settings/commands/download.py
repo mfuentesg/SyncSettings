@@ -40,6 +40,7 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
     def download(self):
         try:
             g = Gist(
+                token=settings.get('access_token'),
                 http_proxy=settings.get('http_proxy'),
                 https_proxy=settings.get('https_proxy')
             ).get(settings.get('gist_id'))
