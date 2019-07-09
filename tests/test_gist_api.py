@@ -25,7 +25,6 @@ class TestDecorators(unittest.TestCase):
     token = None
 
     def test_auth(self):
-        # `_` represents self argument
         def to_test(*args):
             return 'yay'
 
