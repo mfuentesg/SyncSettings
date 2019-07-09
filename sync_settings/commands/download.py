@@ -47,9 +47,10 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
             files = g['files']
 
             manager.fetch_files(files, self.temp_folder)
-            package_settings = json.loads(
-                manager.get_content(path.join(self.temp_folder, path.encode('Package Control.sublime-settings')))
+            file_content = manager.get_content(
+                path.join(self.temp_folder, path.encode('Package Control.sublime-settings'))
             )
+            package_settings = json.loads('{}' if file_content == '' else file_content)
             # read installed_packages from remote reference and merge it with the local version
             local_settings = sublime.load_settings('Package Control.sublime-settings')
             setting = 'installed_packages'
