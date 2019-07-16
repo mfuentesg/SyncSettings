@@ -122,4 +122,6 @@ def move_files(origin):
 
     pending_files = ['Preferences.sublime-settings', 'Package%20Control.sublime-settings']
     for f in pending_files:
+        if not path.exists(path.join(origin, f)):
+            continue
         shutil.move(path.join(origin, f), path.join(user_path, path.decode(f)))
