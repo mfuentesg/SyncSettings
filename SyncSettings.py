@@ -11,12 +11,12 @@ if not os.path.isdir(f):
 reloader = 'sync_settings.reloader'
 
 if int(sublime.version()) > 3000:
-    from .sync_settings.commands import *
+    from .sync_settings.commands import *  # noqa: F403, F401
 
     reloader = 'SyncSettings.' + reloader
     from imp import reload
 else:
-    from sync_settings.commands import *
+    from sync_settings.commands import *  # noqa: F403, F401
 
 # Make sure all dependencies are reloaded on upgrade
 if reloader in sys.modules:
