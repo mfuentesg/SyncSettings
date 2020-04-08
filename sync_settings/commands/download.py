@@ -54,7 +54,7 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
                     self.temp_folder, path.encode("Package Control.sublime-settings")
                 )
             )
-            package_settings = sublime.decode_content(
+            package_settings = sublime.decode_value(
                 "{}" if file_content == "" else file_content
             )
             # read installed_packages from remote reference and merge it with the local version
