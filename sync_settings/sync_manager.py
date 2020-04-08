@@ -81,7 +81,7 @@ def download_file(q):
                 with open(name, 'wb') as f:
                     r.raw.decode_content = True
                     shutil.copyfileobj(r.raw, f)
-        except:
+        except:  # noqa: E722
             pass
         finally:
             q.task_done()

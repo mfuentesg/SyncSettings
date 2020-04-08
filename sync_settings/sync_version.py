@@ -15,7 +15,7 @@ def get_local_version():
     try:
         with open(file_path) as f:
             return json.load(f)
-    except:
+    except:  # noqa: E722
         pass
     return {}
 
@@ -30,7 +30,7 @@ def get_remote_version():
             'hash': commit['version'],
             'created_at': commit['committed_at'],
         }
-    except:
+    except:  # noqa: E722
         pass
     return {}
 
