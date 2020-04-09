@@ -3,6 +3,8 @@
 import sublime
 
 from .libs import path, settings
+import json
+import os
 from .libs.gist import Gist
 
 file_path = path.join(os.path.expanduser('~'), '.sync_settings', 'sync.json')
@@ -29,7 +31,7 @@ def get_remote_version():
             'hash': commit['version'],
             'created_at': commit['committed_at'],
         }
-    except:
+    except:  # noqa: E722
         pass
     return {}
 

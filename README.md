@@ -30,6 +30,17 @@ Please, follow the steps below to getting started with [Sync Settings](https://p
     1. Create an access token [here](https://github.com/settings/tokens/new) with `gist` scope checked.
     2. Put the token in the config file (`access_token` property)
     3. Run `Sync Settings: Create and Upload` command
+    
+### File Format
+
+Please note - the config file uses the JSON format. A simplified example may look like the following.
+
+```
+{
+	"access_token": "xxxxxxxxxxxxxxxxxxxxxxxxx",
+	"gist_id": "xxxxxxxxxxxxxxxxxxxxxxxxx"
+}
+```
 
 ## Options
 
