@@ -66,7 +66,7 @@ class Gist:
         if not isinstance(data, dict) or not len(data):
             raise ValueError('Gist can`t be created without data')
         return self.__do_request(
-             "post",
+             'post',
              self.make_uri(),
              data=sublime.encode_value(data, True).encode('utf-8').decode('latin-1'),
          ).json()
@@ -77,7 +77,7 @@ class Gist:
         if not isinstance(data, dict) or not len(data):
             raise ValueError('Gist can`t be updated without data')
         return self.__do_request(
-             "patch",
+             'patch',
              self.make_uri(gid),
              data=sublime.encode_value(data, True).encode('utf-8').decode('latin-1'),
          ).json()
