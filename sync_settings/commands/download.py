@@ -15,12 +15,12 @@ from . import decorators
 
 
 class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
-    temp_folder = path.join(os.path.expanduser("~"), ".sync_settings", "temp")
+    temp_folder = path.join(os.path.expanduser('~'), '.sync_settings', 'temp')
 
     def check_installation(self, packages, on_done=None):
         package_settings = sublime.load_settings(
-            "Package Control.sublime-settings"
-        ).get("installed_packages")
+            'Package Control.sublime-settings'
+        ).get('installed_packages')
         should_call = False
         for package in packages:
             if package not in package_settings:
@@ -33,42 +33,42 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
 
     def on_done(self, g):
         manager.move_files(self.temp_folder)
-        commit = g["history"][0]
-        settings.update("gist_id", g["id"])
+        commit = g['history'][0]
+        settings.update('gist_id', g['id'])
         version.update_config_file(
-            {"hash": commit["version"], "created_at": commit["committed_at"],}
+            {'hash': commit['version'], 'created_at': commit['committed_at'],}
         )
 
     def download(self):
         try:
             g = Gist(
-                token=settings.get("access_token"),
-                http_proxy=settings.get("http_proxy"),
-                https_proxy=settings.get("https_proxy"),
-            ).get(settings.get("gist_id"))
-            files = g["files"]
+                token=settings.get('access_token'),
+                http_proxy=settings.get('http_proxy'),
+                https_proxy=settings.get('https_proxy'),
+            ).get(settings.get('gist_id'))
+            files = g['files']
 
             manager.fetch_files(files, self.temp_folder)
             file_content = manager.get_content(
                 path.join(
-                    self.temp_folder, path.encode("Package Control.sublime-settings")
+                    self.temp_folder, path.encode('Package Control.sublime-settings')
                 )
             )
             package_settings = sublime.decode_value(
-                "{}" if file_content == "" else file_content
+                '{}' if file_content == '' else file_content
             )
             # read installed_packages from remote reference and merge it with the local version
-            local_settings = sublime.load_settings("Package Control.sublime-settings")
-            setting = "installed_packages"
+            local_settings = sublime.load_settings('Package Control.sublime-settings')
+            setting = 'installed_packages'
             if setting not in package_settings:
                 package_settings[setting] = []
-            package_settings[setting].append("Sync Settings")
+            package_settings[setting].append('Sync Settings')
             diff = set(package_settings.get(setting)).difference(
                 set(local_settings.get(setting))
             )
             if len(diff) > 0:
                 self.window.run_command(
-                    "advanced_install_package", {"packages": list(diff)}
+                    'advanced_install_package', {'packages': list(diff)}
                 )
             sublime.set_timeout(
                 lambda: self.check_installation(diff, on_done=lambda: self.on_done(g)),
@@ -76,12 +76,12 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
             )
         except Exception as e:
             logger.exception(e)
-            sublime.message_dialog("Sync Settings:\n\n{}".format(str(e)))
+            sublime.message_dialog('Sync Settings:\n\n{}'.format(str(e)))
 
-    @decorators.check_settings("gist_id")
+    @decorators.check_settings('gist_id')
     def run(self):
         ThreadProgress(
             target=self.download,
-            message="downloading files",
-            success_message="files downloaded",
+            message='downloading files',
+            success_message='files downloaded',
         )
