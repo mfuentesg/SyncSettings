@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import re
-from functools import wraps
-
-import requests
 import json
+import re
+import requests
+from functools import wraps
 
 from .logger import logger
 
