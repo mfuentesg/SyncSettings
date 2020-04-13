@@ -4,8 +4,7 @@ import re
 from functools import wraps
 
 import requests
-
-import sublime
+import json
 
 from .logger import logger
 
@@ -68,7 +67,7 @@ class Gist:
         return self.__do_request(
              'post',
              self.make_uri(),
-             data=sublime.encode_value(data, True).encode('utf-8').decode('latin-1'),
+             data=json.dumps(data),
          ).json()
 
     @auth
@@ -79,7 +78,7 @@ class Gist:
         return self.__do_request(
              'patch',
              self.make_uri(gid),
-             data=sublime.encode_value(data, True).encode('utf-8').decode('latin-1'),
+             data=json.dumps(data),
          ).json()
 
     @auth
