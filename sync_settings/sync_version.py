@@ -36,7 +36,7 @@ def get_remote_version():
 
 def update_config_file(info):
     with open(file_path, 'w') as f:
-        f.write(sublime.encode_value(info, pretty=True))
+        f.write(sublime.encode_value(info, True))
 
 
 def show_update_dialog(on_yes=None):
