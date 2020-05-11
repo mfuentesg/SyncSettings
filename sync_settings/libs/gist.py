@@ -70,7 +70,7 @@ class Gist:
     def update(self, gid, data):
         if not isinstance(data, dict) or not len(data):
             raise ValueError('Gist can`t be updated without data')
-        return self.__do_request('patch', self.make_uri(gid), data=sublime.encode_value(data, True).json())
+        return self.__do_request('patch', self.make_uri(gid), data=sublime.encode_value(data, True)).json()
 
     @auth
     @with_gid
