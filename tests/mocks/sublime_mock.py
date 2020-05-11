@@ -30,8 +30,10 @@ def load_settings(*args):
         'excluded_files': []
     })
 
+
 def encode_value(*args):
     pass
+
 
 def decode_value(*args):
     pass
