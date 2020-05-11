@@ -48,13 +48,13 @@ class TestSyncVersion(unittest.TestCase):
         def encode_value(data, pretty):
             return json.dumps(data)
         v = encode_value({'hash': '123123123', 'created_at': '2019-01-11T02:15:15Z'}, True)
-        self.assertDictEqual("{'created_at': '2019-01-11T02:15:15Z', 'hash': '123123123'}", v)
+        self.assertEqual("{'created_at': '2019-01-11T02:15:15Z', 'hash': '123123123'}", v)
 
     @mock.patch('sublime.decode_value', mock.MagicMock(return_value=True))
     def test_get_local_version_with_decode(self):
         def decode_value(data):
             return json.loads(data)
-        v = decode_value("{'hash': '123123123', 'created_at': '2019-01-11T02:15:15Z'}")
+        v = decode_value('{"hash": "123123123", "created_at": "2019-01-11T02:15:15Z"}')
         self.assertDictEqual({'created_at': '2019-01-11T02:15:15Z', 'hash': '123123123'}, v)
 
     @mock.patch('sublime.yes_no_cancel_dialog', mock.MagicMock(return_value=1))
