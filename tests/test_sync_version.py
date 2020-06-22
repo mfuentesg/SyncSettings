@@ -43,19 +43,11 @@ class TestSyncVersion(unittest.TestCase):
         v = version.get_local_version()
         self.assertDictEqual({'hash': '123123123', 'created_at': '2019-01-11T02:15:15Z'}, v)
 
-    @mock.patch('sublime.decode_value', mock.MagicMock(return_value=True))
-    def test_get_local_version_with_encode(self):
-        def encode_value(data, pretty):
-            return json.dumps(data)
-        v = encode_value({'hash': '123123123', 'created_at': '2019-01-11T02:15:15Z'}, True)
-        self.assertEqual('{"hash": "123123123", "created_at": "2019-01-11T02:15:15Z"}', v)
-
-    @mock.patch('sublime.decode_value', mock.MagicMock(return_value=True))
-    def test_get_local_version_with_decode(self):
-        def decode_value(data):
-            return json.loads(data)
-        v = decode_value('{"hash": "123123123", "created_at": "2019-01-11T02:15:15Z"}')
-        self.assertDictEqual({'hash': '123123123', 'created_at': '2019-01-11T02:15:15Z'}, v)
+    @mock.patch('sync_settings.libs.path.exists', mock.MagicMock(return_value=True))
+    @mock.patch('sync_settings.sync_version.open',mock.mock_open(read_data='{"created_at": "2019-01-11T02:15:15Z", /* some comment */"hash": "123123123"}'),)
+    def test_get_local_version_with_commented_content(self):
+        v = version.get_local_version()
+        self.assertDictEqual({"hash": "123123123", "created_at": "2019-01-11T02:15:15Z"}, v)
 
     @mock.patch('sublime.yes_no_cancel_dialog', mock.MagicMock(return_value=1))
     def test_show_update_dialog(self):
