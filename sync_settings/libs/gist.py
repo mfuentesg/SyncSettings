@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import json
+import sublime
 import re
 import requests
 from functools import wraps
@@ -63,14 +63,14 @@ class Gist:
     def create(self, data):
         if not isinstance(data, dict) or not len(data):
             raise ValueError('Gist can`t be created without data')
-        return self.__do_request('post', self.make_uri(), data=json.dumps(data)).json()
+        return self.__do_request('post', self.make_uri(), data=sublime.encode_value(data, True)).json()
 
     @auth
     @with_gid
     def update(self, gid, data):
         if not isinstance(data, dict) or not len(data):
             raise ValueError('Gist can`t be updated without data')
-        return self.__do_request('patch', self.make_uri(gid), data=json.dumps(data)).json()
+        return self.__do_request('patch', self.make_uri(gid), data=sublime.encode_value(data, True)).json()
 
     @auth
     @with_gid

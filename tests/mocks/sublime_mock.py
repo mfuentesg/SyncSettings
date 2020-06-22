@@ -1,3 +1,6 @@
+import json
+import re
+
 DIALOG_YES = 1
 
 
@@ -29,3 +32,12 @@ def load_settings(*args):
         'included_files': [],
         'excluded_files': []
     })
+
+
+def encode_value(data, pretty):
+    return json.dumps(data)
+
+
+def decode_value(content):
+    decoded = re.sub(re.compile(r"/\*.*?\*/", re.DOTALL), "", content)
+    return json.loads(re.sub(re.compile(r"//.*?\n"), "", decoded))
