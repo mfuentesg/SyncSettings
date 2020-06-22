@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "mwilliammyers",
+      "name": "William Myers",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/2526129?v=4",
+      "profile": "http://mwilliammyers.com",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "SyncSettings",
+  "projectOwner": "mfuentesg",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
