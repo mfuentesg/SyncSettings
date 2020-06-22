@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import sublime
-import sys
 import os
+import sys
 
-f = os.path.join(os.path.expanduser('~'), '.sync_settings')
-if not os.path.isdir(f):
-    os.mkdir(f)
+import sublime
+
+from .sync_settings.libs import path, settings
+
+default_file_path = path.join(os.path.expanduser('~'), '.sync_settings', 'sync.json')
+file_path = settings.get("config_location") or default_file_path
+
+if not os.path.isdir(file_path):
+    os.mkdir(file_path)
 
 reloader = 'sync_settings.reloader'
 
@@ -27,11 +32,9 @@ def plugin_loaded():
     from .sync_settings.libs import settings
     from .sync_settings.thread_progress import ThreadProgress
     from .sync_settings import sync_version as version
+
     if settings.get('auto_upgrade'):
-        ThreadProgress(
-            target=version.upgrade,
-            message='checking current version'
-        )
+        ThreadProgress(target=version.upgrade, message='checking current version')
 
 
 '''

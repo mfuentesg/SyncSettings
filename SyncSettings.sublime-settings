@@ -1,4 +1,7 @@
 {
+    // Location for the .sync_settings configuration file
+    // Defaults: ~/.sync_settings
+    "config_location": "",
     // Brings write permission to Sync Settings over your gists (edit, delete and create).
     // This option is not required, if you only want to download your backups
     "access_token": "",

@@ -21,11 +21,13 @@ def save_settings(*args):
 
 
 def load_settings(*args):
-    return Settings({
-        'gist_id': 'gist-123123',
-        'access_token': 'access-token',
-        'http_proxy': '',
-        'https_proxy': '',
-        'included_files': [],
-        'excluded_files': []
-    })
+    return Settings(
+        {
+            'gist_id': 'gist-123123',
+            'access_token': 'access-token',
+            'http_proxy': '',
+            'https_proxy': '',
+            'included_files': [],
+            'excluded_files': [],
+        }
+    )
