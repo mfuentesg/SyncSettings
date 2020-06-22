@@ -4,7 +4,7 @@ import sys
 
 import sublime
 
-from .sync_settings.libs import logger, path, settings
+from .sync_settings.libs import settings
 
 settings.create_sync_settings_path()
 
