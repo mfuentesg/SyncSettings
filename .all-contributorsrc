@@ -22,6 +22,33 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "tomahl",
+      "name": "tomahl",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1665481?v=4",
+      "profile": "https://github.com/tomahl",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "JohaWeber",
+      "name": "Johannes Weber",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/2073401?v=4",
+      "profile": "http://nachvorne.de",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "mwilliammyers",
+      "name": "William Myers",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/2526129?v=4",
+      "profile": "http://mwilliammyers.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
