@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "TheSecEng",
+      "name": "Terminal",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/32599364?v=4",
+      "profile": "https://github.com/TheSecEng",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "SyncSettings",
+  "projectOwner": "mfuentesg",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
