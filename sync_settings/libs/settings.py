@@ -25,6 +25,8 @@ def get(key):
 def create_sync_settings_path():
     global sync_settings_path
     try:
+        if not os.path.isabs(sync_settings_path):
+            raise ValueError("not absolute path")
         os.mkdir(sync_settings_path, exist_ok=True)
     except FileExistsError:
         pass
