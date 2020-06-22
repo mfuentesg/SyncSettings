@@ -1,17 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import os
 import sys
 
 import sublime
 
-from .sync_settings.libs import path, settings
+from .sync_settings.libs import logger, path, settings
 
-default_file_path = path.join(os.path.expanduser('~'), '.sync_settings', 'sync.json')
-file_path = settings.get("config_location") or default_file_path
-
-if not os.path.isdir(file_path):
-    os.mkdir(file_path)
+settings.create_sync_settings_path()
 
 reloader = 'sync_settings.reloader'
 

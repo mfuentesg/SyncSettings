@@ -51,6 +51,7 @@ By default this plugin operates over [Sublime Text](http://www.sublimetext.com) 
 
 | name | type | description |
 |---|---|---|
+| `config_location` | `string` | Folder path to save SyncSetting specific info. E.g.: Logs, Last Upload Time, etc
 | `access_token`  | `string` | Brings write permission to [Sync Settings](https://packagecontrol.io/packages/Sync%20Settings), over your gists (edit, delete and create). *(This option is not required, if you only want to download your backups)* | 
 | `gist_id`  | `string` | Identifier of your backup on [gist.github.com](gist.github.com). |
 | `auto_upgrade`  | `boolean` | If is `true`, your settings will be synced with the latest settings on [gist.github.com](gist.github.com) when [Sublime Text](http://www.sublimetext.com) startup |

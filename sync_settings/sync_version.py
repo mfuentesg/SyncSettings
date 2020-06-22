@@ -1,21 +1,16 @@
 # -*- coding: utf-8 -*
 
-import os
-
 import sublime
 
 from .libs import path, settings
 from .libs.gist import Gist
 
-default_file_path = path.join(os.path.expanduser('~'), '.sync_settings', 'sync.json')
-file_path = settings.get("config_location") or default_file_path
-
 
 def get_local_version():
-    if not path.exists(file_path):
+    if not path.exists(settings.sync_settings_path):
         return {}
     try:
-        with open(file_path) as f:
+        with open(settings.sync_settings_path) as f:
             return sublime.decode_value(f.read())
     except:  # noqa: E722
         pass
@@ -37,7 +32,7 @@ def get_remote_version():
 
 
 def update_config_file(info):
-    with open(file_path, 'w') as f:
+    with open(settings.sync_settings_path, 'w') as f:
         f.write(sublime.encode_value(info, True))
 
 
