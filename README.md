@@ -90,11 +90,6 @@ Thank you for contribute to this project:
 <!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-* Ferron H - [@ferronrsmith](https://github.com/ferronrsmith)
-* Johannes Weber - [@JohaWeber](https://github.com/JohaWebert)
-* [@tomahl](https://github.com/tomahl)
-* [@mwilliammyers](https://github.com/mwilliammyers)
-
 ## Issues
 
 If you are experimenting an error, or an unusual behavior. Please let me know,  creating a [new issue](https://github.com/mfuentesg/SyncSettings/issues/new) appending the logs provided by the  `Sync Settings: Show logs` command.
