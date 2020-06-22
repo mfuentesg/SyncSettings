@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*
 
 import sublime
-import json
 import os
 from .libs.gist import Gist
 from .libs import settings, path
@@ -14,7 +13,7 @@ def get_local_version():
         return {}
     try:
         with open(file_path) as f:
-            return json.load(f)
+            return sublime.decode_value(f.read())
     except:  # noqa: E722
         pass
     return {}
@@ -37,7 +36,7 @@ def get_remote_version():
 
 def update_config_file(info):
     with open(file_path, 'w') as f:
-        json.dump(info, f)
+        f.write(sublime.encode_value(info, True))
 
 
 def show_update_dialog(on_yes=None):
