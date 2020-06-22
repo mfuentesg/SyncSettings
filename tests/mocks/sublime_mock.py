@@ -25,6 +25,7 @@ def load_settings(*args):
         {
             'gist_id': 'gist-123123',
             'access_token': 'access-token',
+            'config_location': 'fake/path',
             'http_proxy': '',
             'https_proxy': '',
             'included_files': [],
