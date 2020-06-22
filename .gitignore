@@ -15,3 +15,5 @@ tests/options.json
 .idea
 cover
 .coverage
+
+pyproject.toml

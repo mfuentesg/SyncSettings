@@ -1,3 +1,6 @@
+import json
+import re
+
 DIALOG_YES = 1
 
 
@@ -21,14 +24,21 @@ def save_settings(*args):
 
 
 def load_settings(*args):
-    return Settings(
-        {
-            'gist_id': 'gist-123123',
-            'access_token': 'access-token',
-            'config_location': 'fake/path',
-            'http_proxy': '',
-            'https_proxy': '',
-            'included_files': [],
-            'excluded_files': [],
-        }
-    )
+    return Settings({
+        'gist_id': 'gist-123123',
+        'access_token': 'access-token',
+        'config_location': 'fake/path',
+        'http_proxy': '',
+        'https_proxy': '',
+        'included_files': [],
+        'excluded_files': []
+    })
+
+
+def encode_value(data, pretty):
+    return json.dumps(data)
+
+
+def decode_value(content):
+    decoded = re.sub(re.compile(r"/\*.*?\*/", re.DOTALL), "", content)
+    return json.loads(re.sub(re.compile(r"//.*?\n"), "", decoded))
