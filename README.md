@@ -83,6 +83,7 @@ Thank you for contribute to this project:
 <table>
   <tr>
     <td align="center"><a href="https://ferronrsmith.github.io/"><img src="https://avatars2.githubusercontent.com/u/159764?v=4" width="100px;" alt=""/><br /><sub><b>Ferron H</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=ferronrsmith" title="Code">💻</a></td>
+    <td align="center"><a href="http://nachvorne.de"><img src="https://avatars3.githubusercontent.com/u/2073401?v=4" width="100px;" alt=""/><br /><sub><b>Johannes Weber</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=JohaWeber" title="Code">💻</a></td>
     <td align="center"><a href="http://mwilliammyers.com"><img src="https://avatars1.githubusercontent.com/u/2526129?v=4" width="100px;" alt=""/><br /><sub><b>William Myers</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=mwilliammyers" title="Code">💻</a></td>
   </tr>
 </table>
