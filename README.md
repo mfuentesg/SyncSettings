@@ -1,4 +1,7 @@
 # Sync Settings
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![SyncSettings](https://img.shields.io/packagecontrol/dt/Sync%20Settings.svg?maxAge=2592000)](https://packagecontrol.io/packages/Sync%20Settings)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)
@@ -74,6 +77,18 @@ By default this plugin operates over [Sublime Text](http://www.sublimetext.com) 
 ## Contributors
 
 Thank you for contribute to this project:
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="http://mwilliammyers.com"><img src="https://avatars1.githubusercontent.com/u/2526129?v=4" width="100px;" alt=""/><br /><sub><b>William Myers</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=mwilliammyers" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 * Ferron H - [@ferronrsmith](https://github.com/ferronrsmith)
 * Johannes Weber - [@JohaWeber](https://github.com/JohaWebert)
