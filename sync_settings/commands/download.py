@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 
 import os
+
 import sublime
 import sublime_plugin
 
-from . import decorators
-from .. import sync_version as version, sync_manager as manager
-from ..libs import settings, path
+from .. import sync_manager as manager
+from .. import sync_version as version
+from ..libs import path, settings
 from ..libs.gist import Gist
 from ..libs.logger import logger
 from ..thread_progress import ThreadProgress
+from . import decorators
 
 
 class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
@@ -31,24 +33,21 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
         manager.move_files(self.temp_folder)
         commit = g['history'][0]
         settings.update('gist_id', g['id'])
-        version.update_config_file({
-            'hash': commit['version'],
-            'created_at': commit['committed_at'],
-        })
+        version.update_config_file(
+            {'hash': commit['version'], 'created_at': commit['committed_at'],}
+        )
 
     def download(self):
         try:
             g = Gist(
                 token=settings.get('access_token'),
                 http_proxy=settings.get('http_proxy'),
-                https_proxy=settings.get('https_proxy')
+                https_proxy=settings.get('https_proxy'),
             ).get(settings.get('gist_id'))
             files = g['files']
 
             manager.fetch_files(files, self.temp_folder)
-            file_content = manager.get_content(
-                path.join(self.temp_folder, path.encode('Package Control.sublime-settings'))
-            )
+            file_content = manager.get_content(path.join(self.temp_folder, path.encode('Package Control.sublime-settings')))
             package_settings = sublime.decode_value('{}' if file_content == '' else file_content)
             # read installed_packages from remote reference and merge it with the local version
             local_settings = sublime.load_settings('Package Control.sublime-settings')
@@ -66,8 +65,4 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
 
     @decorators.check_settings('gist_id')
     def run(self):
-        ThreadProgress(
-            target=self.download,
-            message='downloading files',
-            success_message='files downloaded'
-        )
+        ThreadProgress(target=self.download, message='downloading files', success_message='files downloaded')

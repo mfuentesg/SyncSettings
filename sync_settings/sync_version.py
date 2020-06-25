@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*
 
-import sublime
 import os
+
+import sublime
+
+from .libs import path, settings
 from .libs.gist import Gist
-from .libs import settings, path
 
 file_path = path.join(os.path.expanduser('~'), '.sync_settings', 'sync.json')
 
@@ -21,10 +23,9 @@ def get_local_version():
 
 def get_remote_version():
     try:
-        commit = Gist(
-            http_proxy=settings.get('http_proxy'),
-            https_proxy=settings.get('https_proxy')
-        ).commits(settings.get('gist_id'))[0]
+        commit = Gist(http_proxy=settings.get('http_proxy'), https_proxy=settings.get('https_proxy')).commits(
+            settings.get('gist_id')
+        )[0]
         return {
             'hash': commit['version'],
             'created_at': commit['committed_at'],
@@ -40,11 +41,7 @@ def update_config_file(info):
 
 
 def show_update_dialog(on_yes=None):
-    msg = (
-        'Sync Settings:\n\n'
-        'Your settings seem out of date.\n\n'
-        'Do you want to download the latest version?'
-    )
+    msg = 'Sync Settings:\n\n' 'Your settings seem out of date.\n\n' 'Do you want to download the latest version?'
     if sublime.yes_no_cancel_dialog(msg) == sublime.DIALOG_YES:
         # call download command
         if on_yes:
@@ -61,6 +58,4 @@ def upgrade():
         return
     # TODO: check if get remote version failed
     if local['created_at'] < remote.get('created_at', ''):
-        show_update_dialog(
-            on_yes=lambda: update_config_file(remote)
-        )
+        show_update_dialog(on_yes=lambda: update_config_file(remote))
