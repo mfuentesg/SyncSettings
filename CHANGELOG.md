@@ -1,3 +1,17 @@
+## v3.0.8
+
+This version includes some minor fixes.
+
+- https://github.com/mfuentesg/SyncSettings/issues/165
+- https://github.com/mfuentesg/SyncSettings/issues/164
+
+## v3.0.7
+
+This version includes encoding fixes, and minor improvements.
+
+- https://github.com/mfuentesg/SyncSettings/issues/144
+- https://github.com/mfuentesg/SyncSettings/issues/119
+
 ## v3.0.3
 
 This version includes encoding issues on download command, and minor improvements.
