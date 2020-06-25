@@ -35,7 +35,7 @@ def load_settings(*args):
 
 
 def encode_value(data, pretty):
-    return json.dumps(data)
+    return json.dumps(data, ensure_ascii=False)
 
 
 def decode_value(content):

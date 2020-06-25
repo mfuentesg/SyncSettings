@@ -1,6 +1,7 @@
 import unittest
 import mock
 from sync_settings import sync_version as version
+from .mocks.sublime_mock import encode_value
 
 
 class TestSyncVersion(unittest.TestCase):
@@ -51,7 +52,18 @@ class TestSyncVersion(unittest.TestCase):
     )
     def test_get_local_version_with_commented_content(self):
         v = version.get_local_version()
-        self.assertDictEqual({"hash": "123123123", "created_at": "2019-01-11T02:15:15Z"}, v)
+        self.assertDictEqual({"hash": "123123123", "created_at": "2019-01-11T02:15:15Z"},v)
+
+    @mock.patch('sync_settings.libs.path.exists', mock.MagicMock(return_value=True))
+    @mock.patch(
+        'sync_settings.sync_version.open',
+        mock.mock_open(
+            read_data='{"created_at": "2019-01-11T02:15:15Z", "hash": "\u0492"}'
+        ),
+    )
+    def test_get_local_version_with_non_ascii_content(self):
+        v = version.get_local_version()
+        self.assertEqual(b'{"created_at": "2019-01-11T02:15:15Z", "hash": "\xd2\x92"}', encode_value(v, False).encode("utf-8"))
 
     @mock.patch('sublime.yes_no_cancel_dialog', mock.MagicMock(return_value=1))
     def test_show_update_dialog(self):
