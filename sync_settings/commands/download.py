@@ -5,9 +5,9 @@ import os
 import sublime
 import sublime_plugin
 
-from .. import sync_manager as manager
-from .. import sync_version as version
-from ..libs import path, settings
+from . import decorators
+from .. import sync_version as version, sync_manager as manager
+from ..libs import settings, path, file
 from ..libs.gist import Gist
 from ..libs.logger import logger
 from ..thread_progress import ThreadProgress
@@ -47,8 +47,10 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
             files = g['files']
 
             manager.fetch_files(files, self.temp_folder)
-            file_content = manager.get_content(path.join(self.temp_folder, path.encode('Package Control.sublime-settings')))
-            package_settings = sublime.decode_value('{}' if file_content == '' else file_content)
+            file_content = manager.get_content(
+                path.join(self.temp_folder, path.encode('Package Control.sublime-settings'))
+            )
+            package_settings = file.encode_json('{}' if file_content == '' else file_content)
             # read installed_packages from remote reference and merge it with the local version
             local_settings = sublime.load_settings('Package Control.sublime-settings')
             setting = 'installed_packages'
