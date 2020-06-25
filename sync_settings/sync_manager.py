@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from fnmatch import fnmatch
 import os
-import sys
-import requests
 import shutil
-import sublime
+import sys
 import threading
 import time
+from fnmatch import fnmatch
+
+import requests
+
+import sublime
 
 from .libs import path, settings
 from .libs.logger import logger

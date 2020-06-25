@@ -1,10 +1,20 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 
 import sublime
 
-from . import logger, path
+from . import path
+from .logger import logger
+
+if sys.version_info[0] == 2:
+    import errno
+
+    class FileExistsError(OSError):
+        def __init__(self, msg):
+            super(FileExistsError, self).__init__(errno.EEXIST, msg)
+
 
 filename = 'SyncSettings.sublime-settings'
 
@@ -31,13 +41,13 @@ def create_sync_settings_path():
     except FileExistsError:
         pass
     except Exception as e:
-        logger.logger.exception(e)
+        logger.exception(e)
         try:
             os.makedirs(_default_file_path, exist_ok=True)
         except FileExistsError:
             pass
         except Exception as e:
-            logger.logger.exception(e)
+            logger.exception(e)
             raise
         sync_settings_path = _default_file_path
 

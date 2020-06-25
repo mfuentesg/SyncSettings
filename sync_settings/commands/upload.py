@@ -3,12 +3,12 @@
 import sublime
 import sublime_plugin
 
-from . import decorators
-from .. import sync_version as version, sync_manager as manager
-from ..libs import settings
-from ..libs import gist
+from .. import sync_manager as manager
+from .. import sync_version as version
+from ..libs import gist, settings
 from ..libs.logger import logger
 from ..thread_progress import ThreadProgress
+from . import decorators
 
 
 class SyncSettingsUploadCommand(sublime_plugin.WindowCommand):
@@ -22,16 +22,12 @@ class SyncSettingsUploadCommand(sublime_plugin.WindowCommand):
             g = gist.Gist(
                 token=settings.get('access_token'),
                 http_proxy=settings.get('http_proxy'),
-                https_proxy=settings.get('https_proxy')
-            ).update(
-                settings.get('gist_id'),
-                data={'files': files}
-            )
+                https_proxy=settings.get('https_proxy'),
+            ).update(settings.get('gist_id'), data={'files': files})
             commit = g['history'][0]
-            version.update_config_file({
-                'hash': commit['version'],
-                'created_at': commit['committed_at'],
-            })
+            version.update_config_file(
+                {'hash': commit['version'], 'created_at': commit['committed_at'],}
+            )
         except gist.NotFoundError as e:
             msg = (
                 'Sync Settings:\n\n'
@@ -42,12 +38,9 @@ class SyncSettingsUploadCommand(sublime_plugin.WindowCommand):
             sublime.message_dialog(msg.format(str(e)))
         except Exception as e:
             logger.exception(e)
+            sublime.set_clipboard(str(files))
             sublime.message_dialog('Sync Settings:\n\n{}'.format(str(e)))
 
     @decorators.check_settings('gist_id', 'access_token')
     def run(self):
-        ThreadProgress(
-            target=self.upload,
-            message='uploading files',
-            success_message='files uploaded'
-        )
+        ThreadProgress(target=self.upload, message='uploading files', success_message='files uploaded')

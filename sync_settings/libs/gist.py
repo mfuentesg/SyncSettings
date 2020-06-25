@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import sublime
 import re
-import requests
 from functools import wraps
+
+import requests
+
+import sublime
 
 from .logger import logger
 
@@ -63,14 +65,14 @@ class Gist:
     def create(self, data):
         if not isinstance(data, dict) or not len(data):
             raise ValueError('Gist can`t be created without data')
-        return self.__do_request('post', self.make_uri(), data=sublime.encode_value(data, True)).json()
+        return self.__do_request('post', self.make_uri(), data=sublime.encode_value(data, True).encode("utf8")).json()
 
     @auth
     @with_gid
     def update(self, gid, data):
         if not isinstance(data, dict) or not len(data):
             raise ValueError('Gist can`t be updated without data')
-        return self.__do_request('patch', self.make_uri(gid), data=sublime.encode_value(data, True)).json()
+        return self.__do_request('patch', self.make_uri(gid), data=sublime.encode_value(data, True).encode("utf8")).json()
 
     @auth
     @with_gid
@@ -107,11 +109,15 @@ class Gist:
 
     @property
     def headers(self):
-        return {} if not self.token else {
-            'accept': 'application/vnd.github.v3+json',
-            'content-type': 'application/json',
-            'authorization': 'token {}'.format(self.token)
-        }
+        return (
+            {}
+            if not self.token
+            else {
+                'accept': 'application/vnd.github.v3+json',
+                'content-type': 'application/json',
+                'authorization': 'token {}'.format(self.token),
+            }
+        )
 
     @property
     def proxies(self):
@@ -122,8 +128,11 @@ class Gist:
                 r'localhost|'  # localhost...
                 r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
                 r'(?::\d+)?'  # optional port
-                r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+                r'(?:/?|[/?]\S+)$',
+                re.IGNORECASE,
+            )
             return url and isinstance(url, str) and re.match(regex, url) is not None
+
         proxies = dict()
         if check_proxy_url(self.http_proxy):
             proxies['http'] = self.http_proxy
