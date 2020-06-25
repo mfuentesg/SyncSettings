@@ -1,20 +1,12 @@
 # -*- coding: utf-8 -*-
 
+import errno
 import os
-import sys
 
 import sublime
 
 from . import path
 from .logger import logger
-
-if sys.version_info[0] == 2:
-    import errno
-
-    class FileExistsError(OSError):
-        def __init__(self, msg):
-            super(FileExistsError, self).__init__(errno.EEXIST, msg)
-
 
 filename = 'SyncSettings.sublime-settings'
 
@@ -32,25 +24,29 @@ def get(key):
     return sublime.load_settings(filename).get(key)
 
 
-def create_sync_settings_path():
+def create_sync_settings_path(location):
     global sync_settings_path
     try:
-        if not os.path.isabs(sync_settings_path):
+        if not os.path.isabs(location):
             raise ValueError("not absolute path")
-        os.mkdir(sync_settings_path, exist_ok=True)
-    except FileExistsError:
-        pass
-    except Exception as e:
-        logger.exception(e)
-        try:
-            os.makedirs(_default_file_path, exist_ok=True)
-        except FileExistsError:
+        os.mkdir(location)
+    except OSError as e:
+        if e.errno == errno.EEXIST:
             pass
-        except Exception as e:
+        else:
             logger.exception(e)
-            raise
-        sync_settings_path = _default_file_path
+            try:
+                os.mkdir(_default_file_path)
+            except OSError as e:
+                if e.errno == errno.EEXIST:
+                    return
+                else:
+                    raise e
+            sync_settings_path = path.join(_default_file_path, 'sync.json')
+            return
+    sync_settings_path = path.join(location, 'sync.json')
+    return
 
 
-_default_file_path = path.join(os.path.expanduser('~'), '.sync_settings', 'sync.json')
-sync_settings_path = get("config_location") or _default_file_path
+_default_file_path = path.join(os.path.expanduser('~'), '.sync_settings')
+sync_settings_path = str()

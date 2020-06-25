@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*
 
-import sublime
 import json
-import os
+
+import sublime
+
+from .libs import file, path, settings
 from .libs.gist import Gist
-from .libs import settings, path, file
 
 
 def get_local_version():
     if not path.exists(settings.sync_settings_path):
         return {}
     try:
-        with open(file_path) as f:
+        with open(settings.sync_settings_path) as f:
             return file.encode_json(f.read())
     except:  # noqa: E722
         pass
@@ -20,10 +21,9 @@ def get_local_version():
 
 def get_remote_version():
     try:
-        commit = Gist(
-            http_proxy=settings.get('http_proxy'),
-            https_proxy=settings.get('https_proxy')
-        ).commits(settings.get('gist_id'))[0]
+        commit = Gist(http_proxy=settings.get('http_proxy'), https_proxy=settings.get('https_proxy')).commits(
+            settings.get('gist_id')
+        )[0]
         return {
             'hash': commit['version'],
             'created_at': commit['committed_at'],

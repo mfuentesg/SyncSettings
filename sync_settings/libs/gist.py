@@ -6,8 +6,6 @@ from functools import wraps
 
 import requests
 
-import sublime
-
 from .logger import logger
 
 

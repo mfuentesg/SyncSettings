@@ -5,7 +5,6 @@ import os
 import sublime
 import sublime_plugin
 
-from . import decorators
 from .. import sync_version as version, sync_manager as manager
 from ..libs import settings, path, file
 from ..libs.gist import Gist

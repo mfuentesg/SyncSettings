@@ -4,10 +4,6 @@ import sys
 
 import sublime
 
-from .sync_settings.libs import settings
-
-settings.create_sync_settings_path()
-
 reloader = 'sync_settings.reloader'
 
 if int(sublime.version()) > 3000:
@@ -30,6 +26,8 @@ def plugin_loaded():
 
     if settings.get('auto_upgrade'):
         ThreadProgress(target=version.upgrade, message='checking current version')
+
+    settings.create_sync_settings_path(settings.get("config_location"))
 
 
 '''
