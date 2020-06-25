@@ -32,26 +32,26 @@ def get_content(file):
     return ''
 
 
-def should_exclude(file):
+def should_exclude(file_name):
     patterns = settings.get('excluded_files') or []
     # copy list to avoid side effects
     p = patterns[:]
     # ignore SyncSettings.sublime-settings file to avoid not wanted changes
     p.extend(['*SyncSettings.sublime-settings'])
     for pattern in p:
-        if fnmatch(file, pattern):
+        if fnmatch(file_name, pattern):
             return True
     return False
 
 
-def should_include(file):
+def should_include(file_name):
     patterns = settings.get('included_files') or []
     # copy list to avoid side effects
     for pattern in patterns:
         # ignore SyncSettings.sublime-settings file to avoid not wanted changes
-        if fnmatch(file, '*SyncSettings.sublime-settings'):
+        if fnmatch(file_name, '*SyncSettings.sublime-settings'):
             return False
-        if fnmatch(file, pattern):
+        if fnmatch(file_name, pattern):
             return True
     return False
 
