@@ -34,7 +34,7 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
         commit = g['history'][0]
         settings.update('gist_id', g['id'])
         version.update_config_file(
-            {'hash': commit['version'], 'created_at': commit['committed_at'],}
+            {'hash': commit['version'], 'created_at': commit['committed_at'], }
         )
 
     def download(self):
