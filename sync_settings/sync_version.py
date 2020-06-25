@@ -4,7 +4,7 @@ import sublime
 import json
 import os
 from .libs.gist import Gist
-from .libs import settings, path, json as sync_json
+from .libs import settings, path, file
 
 file_path = path.join(os.path.expanduser('~'), '.sync_settings', 'sync.json')
 
@@ -14,7 +14,7 @@ def get_local_version():
         return {}
     try:
         with open(file_path) as f:
-            return sync_json.loads(f.read())
+            return file.encode_json(f.read())
     except:  # noqa: E722
         pass
     return {}

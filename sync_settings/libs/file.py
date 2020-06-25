@@ -4,7 +4,7 @@ import json
 import re
 
 
-def loads(content):
+def encode_json(content):
     """
     It removes any comment inside json file, in order to have a valid json file.
     :param content:

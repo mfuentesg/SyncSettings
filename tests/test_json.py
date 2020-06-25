@@ -1,9 +1,9 @@
 import unittest
-from sync_settings.libs import json
+from sync_settings.libs import file
 
 
 class TestJSON(unittest.TestCase):
-    def test_loads_with_comment_blocks(self):
+    def test_encode_json_with_comment_blocks(self):
         content = """
             {
                 // gist id
@@ -14,13 +14,13 @@ class TestJSON(unittest.TestCase):
                 "access_token": "access_token"
             }
         """
-        self.assertDictEqual({'gist_id': '123123', 'access_token': 'access_token'}, json.loads(content))
+        self.assertDictEqual({'gist_id': '123123', 'access_token': 'access_token'}, file.encode_json(content))
 
-    def test_loads_without_comment_blocks(self):
+    def test_encode_json_without_comment_blocks(self):
         content = """
             {
                 "gist_id": "123123",
                 "access_token": "access_token"
             }
         """
-        self.assertDictEqual({'gist_id': '123123', 'access_token': 'access_token'}, json.loads(content))
+        self.assertDictEqual({'gist_id': '123123', 'access_token': 'access_token'}, file.encode_json(content))
