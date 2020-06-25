@@ -26,7 +26,7 @@ class SyncSettingsUploadCommand(sublime_plugin.WindowCommand):
             ).update(settings.get('gist_id'), data={'files': files})
             commit = g['history'][0]
             version.update_config_file(
-                {'hash': commit['version'], 'created_at': commit['committed_at'],}
+                {'hash': commit['version'], 'created_at': commit['committed_at'], }
             )
         except gist.NotFoundError as e:
             msg = (
