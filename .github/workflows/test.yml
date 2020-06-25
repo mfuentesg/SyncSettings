@@ -23,6 +23,6 @@ jobs:
 
     - name: Test with nosetests
       run: |
-        pip install nose coverage codecov
+        pip install coverage codecov
         nosetests tests --with-coverage -v
         codecov
