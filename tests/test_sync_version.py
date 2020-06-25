@@ -52,7 +52,7 @@ class TestSyncVersion(unittest.TestCase):
     )
     def test_get_local_version_with_commented_content(self):
         v = version.get_local_version()
-        self.assertDictEqual({"hash": "123123123", "created_at": "2019-01-11T02:15:15Z"},v)
+        self.assertDictEqual({"hash": "123123123", "created_at": "2019-01-11T02:15:15Z"}, v)
 
     @mock.patch('sync_settings.libs.path.exists', mock.MagicMock(return_value=True))
     @mock.patch(
