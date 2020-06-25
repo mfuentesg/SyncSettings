@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*
 
 import sublime
+import json
 import os
 from .libs.gist import Gist
-from .libs import settings, path
+from .libs import settings, path, file
 
 file_path = path.join(os.path.expanduser('~'), '.sync_settings', 'sync.json')
 
@@ -13,7 +14,7 @@ def get_local_version():
         return {}
     try:
         with open(file_path) as f:
-            return sublime.decode_value(f.read())
+            return file.encode_json(f.read())
     except:  # noqa: E722
         pass
     return {}
@@ -36,7 +37,7 @@ def get_remote_version():
 
 def update_config_file(info):
     with open(file_path, 'w') as f:
-        f.write(sublime.encode_value(info, True))
+        json.dump(info, f)
 
 
 def show_update_dialog(on_yes=None):
