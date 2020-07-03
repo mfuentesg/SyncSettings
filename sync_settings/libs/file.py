@@ -13,4 +13,4 @@ def encode_json(content):
         Deserialized json
     """
     decoded = re.sub(re.compile(r"/\*.*?\*/", re.DOTALL), "", content)
-    return json.loads(re.sub(re.compile(r"//.*?\n"), "", decoded))
+    return json.loads(re.sub(re.compile(r"(?:(?:^\s*)|\s+)\/\/.*$", re.MULTILINE), "", decoded))
