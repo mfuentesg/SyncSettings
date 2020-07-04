@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import json
-import re
-
+import sublime
 
 def encode_json(content):
     """
@@ -12,5 +10,4 @@ def encode_json(content):
     :return:
         Deserialized json
     """
-    decoded = re.sub(re.compile(r"/\*.*?\*/", re.DOTALL), "", content)
-    return json.loads(re.sub(re.compile(r"(?:(?:^\s*)|\s+)\/\/.*$", re.MULTILINE), "", decoded))
+    return sublime.decode_value(content)
