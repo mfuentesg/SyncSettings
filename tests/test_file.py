@@ -15,17 +15,22 @@ class TestJSON(unittest.TestCase):
                    another comment
                  */
                 "access_token": "access_token",
-                "another": "special char ؎"
+                "another": "special char ؎",
+
+                "url": "http://fake.com"
             }
         """
-        self.assertDictEqual({'gist_id': '123123', 'access_token': 'access_token', 'another': 'special char ؎'},
+        self.assertDictEqual({'gist_id': '123123', 'access_token': 'access_token', 'another': 'special char ؎',
+                              'url': 'http://fake.com'},
                              file.encode_json(content))
 
     def test_encode_json_without_comment_blocks(self):
         content = """
             {
                 "gist_id": "123123",
-                "access_token": "access_token"
+                "access_token": "access_token",
+                "url": "http://fake.com"
             }
         """
-        self.assertDictEqual({'gist_id': '123123', 'access_token': 'access_token'}, file.encode_json(content))
+        self.assertDictEqual({'gist_id': '123123', 'access_token': 'access_token', 'url': 'http://fake.com'},
+                             file.encode_json(content))
