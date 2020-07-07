@@ -28,25 +28,26 @@ def create_sync_settings_path(location):
     global sync_settings_path
     try:
         if not os.path.isabs(location):
-            raise ValueError("not absolute path")
-        os.mkdir(location)
+            sublime.error_message('%s is not absolute path, defaulting to %s' %
+                                  (location, default_file_path))
+            location = default_file_path
+        os.makedirs(location, exist_ok=True)
     except OSError as e:
-        if e.errno == errno.EEXIST:
-            pass
-        else:
+        if e.errno != errno.EEXIST:
+            sublime.message_dialog(
+                'Failed to make the path (%s), defaulting to %s' %
+                (location, default_file_path))
             logger.exception(e)
             try:
-                os.mkdir(_default_file_path)
+                os.makedirs(default_file_path, exist_ok=True)
             except OSError as e:
-                if e.errno == errno.EEXIST:
-                    return
-                else:
+                if e.errno != errno.EEXIST:
                     raise e
-            sync_settings_path = path.join(_default_file_path, 'sync.json')
+            sync_settings_path = path.join(default_file_path, 'sync.json')
             return
     sync_settings_path = path.join(location, 'sync.json')
     return
 
 
-_default_file_path = path.join(os.path.expanduser('~'), '.sync_settings')
+default_file_path = path.join(os.path.expanduser('~'), '.sync_settings')
 sync_settings_path = str()

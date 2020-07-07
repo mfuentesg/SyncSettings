@@ -28,10 +28,9 @@
     },
     {
         "caption": "Sync Settings: Edit User Settings",
-        "command": "edit_settings",
+        "command": "open_file",
         "args": {
-            "base_file": "${packages}/Sync Settings/SyncSettings.sublime-settings",
-            "default": "{\n\t$0\n}\n"
+            "file": "${packages}/User/SyncSettings.sublime-settings",
         }
     }
 ]

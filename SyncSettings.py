@@ -25,13 +25,15 @@ def plugin_loaded():
     from .sync_settings import sync_version as version
 
     if settings.get('auto_upgrade'):
-        ThreadProgress(target=version.upgrade, message='checking current version')
+        ThreadProgress(target=version.upgrade,
+                       message='checking current version')
 
-    settings.create_sync_settings_path(settings.get("config_location"))
+    settings.create_sync_settings_path(
+        settings.get('config_location') or settings.default_file_path)
 
 
 '''
   Sublime Text 2 Compatibility
 '''
-if sys.version_info < (3,):
+if sys.version_info < (3, ):
     plugin_loaded()
