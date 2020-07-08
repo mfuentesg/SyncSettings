@@ -30,7 +30,7 @@
         "caption": "Sync Settings: Edit User Settings",
         "command": "open_file",
         "args": {
-            "file": "${packages}/User/SyncSettings.sublime-settings",
+            "file": "${packages}/User/SyncSettings.sublime-settings"
         }
     }
 ]
