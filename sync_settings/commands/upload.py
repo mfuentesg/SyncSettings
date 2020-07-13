@@ -16,7 +16,8 @@ class SyncSettingsUploadCommand(sublime_plugin.WindowCommand):
     def upload():
         files = manager.get_files()
         if not len(files):
-            sublime.status_message('Sync Settings: there are not files to upload')
+            sublime.status_message(
+                'Sync Settings: there are not files to upload')
             return
         try:
             g = gist.Gist(
@@ -38,7 +39,6 @@ class SyncSettingsUploadCommand(sublime_plugin.WindowCommand):
             sublime.message_dialog(msg.format(str(e)))
         except Exception as e:
             logger.exception(e)
-            sublime.set_clipboard(str(files))
             sublime.message_dialog('Sync Settings:\n\n{}'.format(str(e)))
 
     @decorators.check_settings('gist_id', 'access_token')

@@ -35,8 +35,8 @@ def create_sync_settings_path(location):
     except OSError as e:
         if e.errno != errno.EEXIST:
             sublime.message_dialog(
-                'Failed to make the path (%s), defaulting to %s' %
-                (location, default_file_path))
+                'Failed to make the path ({}), defaulting to {}'.format(
+                    location, default_file_path))
             logger.exception(e)
             try:
                 os.makedirs(default_file_path, exist_ok=True)
