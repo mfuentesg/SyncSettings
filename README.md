@@ -9,9 +9,12 @@
 [![Build Status](https://travis-ci.org/mfuentesg/SyncSettings.svg?branch=master)](https://travis-ci.org/mfuentesg/SyncSettings)
 [![Coverage](https://img.shields.io/codecov/c/github/mfuentesg/SyncSettings.svg?style=flat)](https://codecov.io/gh/mfuentesg/SyncSettings)
 
+<a href="https://www.buymeacoffee.com/mfuentesg" target="_blank">
+   <img height="41" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" />
+</a>
 
-[![Become a backer](https://opencollective.com/syncsettings/tiers/backer/badge.svg?label=backer&color=brightgreen)](https://opencollective.com/syncsettings)
-[![Become a sponsor](https://opencollective.com/syncsettings/tiers/sponsor/badge.svg?label=sponsor&color=brightgreen)](https://opencollective.com/syncsettings)
+<br />
+<br />
 
 With [Sync Settings](https://packagecontrol.io/packages/Sync%20Settings), you are able to synchronize your [Sublime Text](http://sublimetext.com/) settings among multiple devices, and keep them updated.
 
@@ -155,4 +158,6 @@ Contribute with me, supporting this project through
 
 [![Become a backer](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/100px-PayPal.svg.png)](https://opencollective.com/syncsettings)
 
-<a href="https://www.buymeacoffee.com/mfuentesg" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+<a href="https://www.buymeacoffee.com/mfuentesg" target="_blank">
+   <img height="41" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" />
+</a>
