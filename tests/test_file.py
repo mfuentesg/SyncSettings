@@ -24,6 +24,35 @@ class TestJSON(unittest.TestCase):
                               'url': 'http://fake.com'},
                              file.encode_json(content))
 
+    def test_encode_json_with_trailing_comma(self):
+        content = """
+            {
+                "gist_id": "123123",
+                "access_token": "access_token",
+                "url": "http://fake.com",
+                "list": [{
+                    "url": "http://fake.com",
+                    "nested": {
+                        "url": "http://fake.com",
+                    },
+                },],
+            }
+        """
+
+        self.assertEqual(
+            {
+                'gist_id': '123123',
+                'access_token': 'access_token',
+                'url': 'http://fake.com',
+                'list': [{
+                    'url': 'http://fake.com',
+                    'nested': {
+                        'url': 'http://fake.com'
+                    }
+                }]
+            }, file.encode_json(content)
+        )
+
     def test_encode_json_without_comment_blocks(self):
         content = """
             {
