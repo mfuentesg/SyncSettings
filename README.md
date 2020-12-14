@@ -33,9 +33,11 @@ Please, follow the steps below to getting started with [Sync Settings](https://p
     1. Copy `gist id` and put it in config file (`https://gist.github.com/<username>/<gist id>`) (`gist_id` property)
     2. Run `Sync Settings: Download` command to retrieve your backup.
 4. **else**
-    1. Create an access token [here](https://github.com/settings/tokens/new) with `gist` scope checked.
-    2. Put the token in the config file (`access_token` property)
-    3. Run `Sync Settings: Create and Upload` command
+    1. Create an access token [here](https://github.com/settings/tokens/new) with `gist` scope checked and copy token
+    2. Create new gist [here](https://gist.github.com/) and copy gist id from URL (`https://gist.github.com/username/<gist id>`)
+    3. Paste the token to the config file (`access_token` property)
+    4. Paste the `gist id` to the config file (`gist_id` property)
+    5. Run `Sync Settings: Create and Upload` command
     
 ### File Format
 
