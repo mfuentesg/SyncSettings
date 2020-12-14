@@ -1,3 +1,9 @@
+## v3.1.0
+
+This version includes some minor fixes.
+
+- https://github.com/mfuentesg/SyncSettings/issues/185
+
 ## v3.0.8
 
 This version includes some minor fixes.

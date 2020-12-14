@@ -1,0 +1,15 @@
+Sync Settings v3.1.0
+
+This version includes some minor fixes.
+
+- https://github.com/mfuentesg/SyncSettings/issues/185
+
+Enjoy and help me keep making awesome stuff.
+
+https://www.buymeacoffee.com/mfuentesg
+
+More information visit
+
+https://github.com/mfuentesg/SyncSettings
+
+Marcelo!
