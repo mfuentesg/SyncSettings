@@ -90,6 +90,9 @@ def download_file(q):
 def fetch_files(files, to=''):
     if not path.exists(to, folder=True):
         os.mkdir(to)
+    else:
+        shutil.rmtree(to, ignore_errors=True)
+
     rq = Queue(maxsize=0)
     user_path = path.join(sublime.packages_path(), 'User')
     items = files.items()
@@ -99,6 +102,7 @@ def fetch_files(files, to=''):
         if should_exclude(name) and not should_include(name):
             continue
         rq.put((file['raw_url'], path.join(to, k)))
+
     threads = min(10, len(items))
     for i in range(threads):
         worker = threading.Thread(target=download_file, args=(rq,))
