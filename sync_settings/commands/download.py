@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import os
+import shutil
+
 import sublime
 import sublime_plugin
 
@@ -35,6 +37,7 @@ class SyncSettingsDownloadCommand(sublime_plugin.WindowCommand):
             'hash': commit['version'],
             'created_at': commit['committed_at'],
         })
+        shutil.rmtree(self.temp_folder, ignore_errors=True)
 
     def download(self):
         try:
