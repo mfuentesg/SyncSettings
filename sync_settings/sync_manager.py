@@ -2,7 +2,6 @@
 
 from fnmatch import fnmatch
 import os
-import sys
 import requests
 import shutil
 import sublime
@@ -12,10 +11,7 @@ import time
 from .libs import path, settings
 from .libs.logger import logger
 
-if sys.version_info < (3,):
-    from Queue import Queue
-else:
-    from queue import Queue
+from queue import Queue
 
 
 def get_content(file):
