@@ -1,6 +1,6 @@
 # Sync Settings
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![SyncSettings](https://img.shields.io/packagecontrol/dt/Sync%20Settings.svg?maxAge=2592000)](https://packagecontrol.io/packages/Sync%20Settings)
@@ -85,16 +85,18 @@ Thank you for contribute to this project:
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://ferronrsmith.github.io/"><img src="https://avatars2.githubusercontent.com/u/159764?v=4" width="100px;" alt=""/><br /><sub><b>Ferron H</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=ferronrsmith" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/tomahl"><img src="https://avatars0.githubusercontent.com/u/1665481?v=4" width="100px;" alt=""/><br /><sub><b>tomahl</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=tomahl" title="Code">💻</a></td>
-    <td align="center"><a href="http://nachvorne.de"><img src="https://avatars3.githubusercontent.com/u/2073401?v=4" width="100px;" alt=""/><br /><sub><b>Johannes Weber</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=JohaWeber" title="Code">💻</a></td>
-    <td align="center"><a href="http://mwilliammyers.com"><img src="https://avatars1.githubusercontent.com/u/2526129?v=4" width="100px;" alt=""/><br /><sub><b>William Myers</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=mwilliammyers" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/TheSecEng"><img src="https://avatars1.githubusercontent.com/u/32599364?v=4" width="100px;" alt=""/><br /><sub><b>Terminal</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=TheSecEng" title="Code">💻</a></td>
+    <td align="center"><a href="https://ferronrsmith.github.io/"><img src="https://avatars2.githubusercontent.com/u/159764?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ferron H</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=ferronrsmith" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/tomahl"><img src="https://avatars0.githubusercontent.com/u/1665481?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tomahl</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=tomahl" title="Code">💻</a></td>
+    <td align="center"><a href="http://nachvorne.de"><img src="https://avatars3.githubusercontent.com/u/2073401?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Johannes Weber</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=JohaWeber" title="Code">💻</a></td>
+    <td align="center"><a href="http://mwilliammyers.com"><img src="https://avatars1.githubusercontent.com/u/2526129?v=4?s=100" width="100px;" alt=""/><br /><sub><b>William Myers</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=mwilliammyers" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/TheSecEng"><img src="https://avatars1.githubusercontent.com/u/32599364?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Terminal</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=TheSecEng" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/mariohuq"><img src="https://avatars.githubusercontent.com/u/15021607?v=4?s=100" width="100px;" alt=""/><br /><sub><b>mariohuq</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=mariohuq" title="Code">💻</a></td>
   </tr>
 </table>
 
-<!-- markdownlint-enable -->
+<!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## Issues
