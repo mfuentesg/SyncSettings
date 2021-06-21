@@ -17,7 +17,7 @@ if sys.version_info >= (3,):
     from imp import reload
 
 # When reloading the package, we also need to reload the base "sync_settings"
-# module in ST3. This flag inidicates we should re-add the PC package path
+# module in ST3. This flag indicates we should re-add the PC package path
 # to the beginning of sys.path before we try to reload.
 do_insert = False
 is_zipped = False
@@ -51,7 +51,7 @@ if commands_name in sys.modules and sys.version_info >= (3,) and st_build < 3112
 # it will still have a reference to the old B. Thus we hard-code the dependency
 # order of the various SyncSettings modules so they get reloaded properly.
 #
-# There are solutions for doing this all programatically, but this is much easier
+# There are solutions for doing this all programmatically, but this is much easier
 # to understand.
 reload_mods = []
 for mod in sys.modules:
@@ -99,7 +99,7 @@ for suffix in mods_load_order:
     if mod in reload_mods:
         try:
             reload(sys.modules[mod])
-        except (ImportError):
+        except ImportError:
             pass  # Upgrade issues from PC 2.0 -> 3.0
 
     if sys.version_info >= (3,) and st_build < 3112:
