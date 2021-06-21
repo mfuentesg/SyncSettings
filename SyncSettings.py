@@ -21,21 +21,3 @@ else:
 # Make sure all dependencies are reloaded on upgrade
 if reloader in sys.modules:
     reload(sys.modules[reloader])
-
-
-def plugin_loaded():
-    from .sync_settings.libs import settings
-    from .sync_settings.thread_progress import ThreadProgress
-    from .sync_settings import sync_version as version
-    if settings.get('auto_upgrade'):
-        ThreadProgress(
-            target=version.upgrade,
-            message='checking current version'
-        )
-
-
-'''
-  Sublime Text 2 Compatibility
-'''
-if sys.version_info < (3,):
-    plugin_loaded()

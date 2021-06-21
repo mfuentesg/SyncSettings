@@ -1,14 +1,10 @@
 import unittest
 import requests
 import json
-import sys
 import os
 from sync_settings.libs import gist, path
 
-if sys.version_info < (3,):
-    import mock
-else:
-    from unittest import mock
+from unittest import mock
 
 
 def get_output(f):

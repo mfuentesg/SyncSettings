@@ -1,16 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import sys
 import os
 import platform
 from functools import wraps
-
-if sys.version_info < (3,):
-    from urllib import unquote
-    from urllib import quote
-else:
-    from urllib.parse import unquote
-    from urllib.parse import quote
+from urllib.parse import unquote
+from urllib.parse import quote
 
 
 def separator():
