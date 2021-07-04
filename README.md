@@ -50,19 +50,19 @@ Please note - the config file uses the JSON format. A simplified example may loo
 
 ## Options
 
-By default this plugin operates over [Sublime Text](http://www.sublimetext.com) packages folder (i.e `/Users/marcelo/Library/Application Support/Sublime Text 3/Packages/User`), which means, `excluded_files` and `included_files` will looks for files inside that folder.
+By default, this plugin operates over [Sublime Text](https://www.sublimetext.com) packages folder (i.e `/Users/<my_user>/Library/Application Support/Sublime Text 3/Packages/User`), which means, `excluded_files` and `included_files` will look for files inside that folder.
 
 | name | type | description |
 |---|---|---|
-| `access_token`  | `string` | Brings write permission to [Sync Settings](https://packagecontrol.io/packages/Sync%20Settings), over your gists (edit, delete and create). *(This option is not required, if you only want to download your backups)* | 
-| `gist_id`  | `string` | Identifier of your backup on [gist.github.com](gist.github.com). |
-| `auto_upgrade`  | `boolean` | If is `true`, your settings will be synced with the latest settings on [gist.github.com](gist.github.com) when [Sublime Text](http://www.sublimetext.com) startup |
+| `access_token`  | `string` | Brings write permission to [Sync Settings](https://packagecontrol.io/packages/Sync%20Settings) over your gists (edit, delete and create). *(This option is not required, if you only want to download your backups)* | 
+| `gist_id`  | `string` | Identifier of your backup on [gist.github.com](https://gist.github.com). |
+| `auto_upgrade`  | `boolean` | If is `true`, your settings will be synced with the latest settings on [gist.github.com](https://gist.github.com) when [Sublime Text](https://www.sublimetext.com) startup |
 | `http_proxy`  | `string` | An HTTP proxy server to use for requests. |
 | `https_proxy`  | `string` | An HTTPS proxy server to use for requests. |
 | `excluded_files`  | `[]string` | In simple words, this option is a black list. Which means, every file that match with the defined pattern, will be ignored on sync. |
 | `included_files`  | `[]string` | In simple words, this option is a white list. Which means, every file that match with the defined pattern, will be included on sync, even if it was included on `excluded_files` option. |
 
-> Note: `excluded_files` and `included_files` are patterns defined as [unix shell style](http://tldp.org/LDP/GNU-Linux-Tools-Summary/html/x11655.htm).
+> Note: `excluded_files` and `included_files` are patterns defined as [unix shell style](https://tldp.org/LDP/GNU-Linux-Tools-Summary/html/x11655.htm).
 
 
 ## Commands
@@ -87,8 +87,8 @@ Thank you for contribute to this project:
   <tr>
     <td align="center"><a href="https://ferronrsmith.github.io/"><img src="https://avatars2.githubusercontent.com/u/159764?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ferron H</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=ferronrsmith" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/tomahl"><img src="https://avatars0.githubusercontent.com/u/1665481?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tomahl</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=tomahl" title="Code">💻</a></td>
-    <td align="center"><a href="http://nachvorne.de"><img src="https://avatars3.githubusercontent.com/u/2073401?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Johannes Weber</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=JohaWeber" title="Code">💻</a></td>
-    <td align="center"><a href="http://mwilliammyers.com"><img src="https://avatars1.githubusercontent.com/u/2526129?v=4?s=100" width="100px;" alt=""/><br /><sub><b>William Myers</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=mwilliammyers" title="Code">💻</a></td>
+    <td align="center"><a href="https://nachvorne.de"><img src="https://avatars3.githubusercontent.com/u/2073401?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Johannes Weber</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=JohaWeber" title="Code">💻</a></td>
+    <td align="center"><a href="https://mwilliammyers.com"><img src="https://avatars1.githubusercontent.com/u/2526129?v=4?s=100" width="100px;" alt=""/><br /><sub><b>William Myers</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=mwilliammyers" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/TheSecEng"><img src="https://avatars1.githubusercontent.com/u/32599364?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Terminal</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=TheSecEng" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/mariohuq"><img src="https://avatars.githubusercontent.com/u/15021607?v=4?s=100" width="100px;" alt=""/><br /><sub><b>mariohuq</b></sub></a><br /><a href="https://github.com/mfuentesg/SyncSettings/commits?author=mariohuq" title="Code">💻</a></td>
   </tr>
@@ -109,26 +109,23 @@ You are welcome to contribute to this project, whenever you want.
 
 **Install dependencies**
 
-This project uses pipenv as environment and package manager, follow the instructions below and start contribute.
+This project uses pipenv as environment and package manager, follow the instructions below and start contributing.
 
 ```
 $ pipenv --python 3.7
-$ pip install -r requirements.txt
+$ pipenv install
 ```
 
 **Run tests**
 
 ```
-$ pip install nose
-$ nosetests tests
+$ pipenv run nosetests tests
 ```
 
 
 ## License
 
-Sync Settings is licensed under the MIT license.
-
-All of the source code, is under the license:
+Sync Settings is licensed under the MIT license along with all source code.
 
 ```
 Copyright (c) since 2015, Marcelo Fuentes <marceloe.fuentes@gmail.com>.

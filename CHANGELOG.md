@@ -1,3 +1,11 @@
+## v3.2.0
+
+This version deprecates sublime text v2 and includes minor improvements.
+
+https://github.com/mfuentesg/SyncSettings/issues/169
+https://github.com/mfuentesg/SyncSettings/pull/192
+https://github.com/mfuentesg/SyncSettings/issues/188
+
 ## v3.1.0
 
 This version includes some minor fixes.
