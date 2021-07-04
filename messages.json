@@ -20,5 +20,7 @@
     "v3.0.1": "messages/v3.0.1.txt",
     "v3.0.3": "messages/v3.0.3.txt",
     "v3.0.7": "messages/v3.0.7.txt",
-    "v3.0.8": "messages/v3.0.8.txt"
+    "v3.0.8": "messages/v3.0.8.txt",
+    "v3.1.0": "messages/v3.1.0.txt",
+    "v3.2.0": "messages/v3.2.0.txt"
 }
