@@ -1,3 +1,16 @@
+# UNMAINTAINED
+
+Sadly, I won't able to continue with the development of SyncSettings, it will be available on package control registry but won't receive new changes.
+
+SyncSettings has been a very challenging project and it tought me how to cope with a community and learn more about the open source world.
+Thanks for all the support during this time and I hope that SyncSttings remains being so useful like it was for me.
+
+Happy Coding!
+
+Marcelo
+
+---
+
 # Sync Settings
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
